@@ -18,7 +18,7 @@ const { current } = useRoute();
               My profile
             </RouterLink>
             <RouterLink :href="route('logout')" as="button" class="text-white hover:font-bold" method="post">
-              Log Out
+              Sign Out
             </RouterLink>
           </div>
           <div v-else>

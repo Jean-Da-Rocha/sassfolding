@@ -30,7 +30,7 @@ useHead({ title: 'Sign Up' });
             :required="true"
             autofocus
             class="w-full"
-            id="email"
+            id="name"
             type="text"
             v-model="form.fields.name"
           />
@@ -105,7 +105,10 @@ useHead({ title: 'Sign Up' });
           </div>
         </div>
         <div class="flex items-center justify-between">
-          <RouterLink :href="route('login')" class="text-sm font-medium text-primary-500 hover:text-primary-300 hover:underline">
+          <RouterLink
+            :href="route('login')"
+            class="text-sm font-medium text-primary-500 hover:text-primary-300 hover:underline"
+          >
             Already registered?
           </RouterLink>
         </div>

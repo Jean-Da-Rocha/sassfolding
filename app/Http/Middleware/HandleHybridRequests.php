@@ -27,6 +27,7 @@ class HandleHybridRequests extends Middleware
             flash: new FlashData(
                 error: $request->session()->get(FlashMessage::Error->value),
                 info: $request->session()->get(FlashMessage::Info->value),
+                status: $request->session()->get(FlashMessage::Status->value),
                 success: $request->session()->get(FlashMessage::Success->value),
                 warn: $request->session()->get(FlashMessage::Warning->value),
             ),

@@ -15,5 +15,7 @@ enum FlashMessage: string
 
     case Success = 'success';
 
+    case Status = 'status';
+
     case Warning = 'warn';
 }

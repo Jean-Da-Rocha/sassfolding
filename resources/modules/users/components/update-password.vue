@@ -8,18 +8,6 @@ const form = useForm({
     password: '',
     password_confirmation: '',
   },
-  hooks: {
-    error: () => {
-      if (form.errors.password) {
-        form.reset('password', 'password_confirmation');
-      }
-
-      if (form.errors.current_password) {
-        form.reset('current_password');
-      }
-    },
-    success: () => form.reset(),
-  },
   method: 'PUT',
   url: route('user-password.update'),
 });
@@ -28,7 +16,10 @@ const form = useForm({
 <template>
   <Card class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
-      <Message :life="5000" :sticky="false" class="-mt-3" severity="success" v-if="flashStatusMessage === 'password-updated'">
+      <Message
+        :life="5000" :sticky="false" class="-mt-3" severity="success"
+        v-if="flashStatusMessage === 'password-updated'"
+      >
         Password successfully updated
       </Message>
       <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">
