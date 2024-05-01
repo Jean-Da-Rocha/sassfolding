@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Data\BackofficeUserData;
 use App\Data\FlashData;
 use App\Data\RouteData;
 use App\Data\SecurityData;

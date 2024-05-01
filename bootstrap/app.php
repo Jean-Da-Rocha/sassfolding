@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Hybridly\Exceptions\HandleHybridExceptions;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -17,6 +19,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         HandleHybridExceptions::register()
             ->renderUsing(fn (Response $response) => view('error', [
-                'status' => $response->getStatusCode()
+                'status' => $response->getStatusCode(),
             ]));
     })->create();

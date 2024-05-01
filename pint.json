@@ -44,7 +44,6 @@
       "import_constants": true,
       "import_functions": true
     },
-    "Laravel/laravel_phpdoc_alignment": false,
     "modernize_strpos": true,
     "new_with_braces": true,
     "no_empty_comment": true,
