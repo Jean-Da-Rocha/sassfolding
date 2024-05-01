@@ -1,1 +1,1 @@
-#pnpx --no-install lint-staged
+pnpm --no-install lint-staged

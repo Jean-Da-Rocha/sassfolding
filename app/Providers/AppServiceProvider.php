@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
-use App\Models\User;
 use Carbon\CarbonImmutable;
+use Hybridly\Hybridly;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Console\CliDumper;
 use Illuminate\Foundation\Http\HtmlDumper;
 use Illuminate\Support\Facades\Date;
@@ -17,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(Hybridly $hybridly): void
     {
         HtmlDumper::dontIncludeSource();
         CliDumper::dontIncludeSource();
@@ -25,5 +26,8 @@ class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict();
         Model::unguard();
         Date::use(CarbonImmutable::class);
+
+        $hybridly->loadModulesFrom(resource_path('modules'), false);
+        $hybridly->loadLayoutsFrom(resource_path('modules/shared'));
     }
 }

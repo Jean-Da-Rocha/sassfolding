@@ -4,10 +4,13 @@ import { PrimeVueResolver } from 'unplugin-primevue-resolver';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  build: {
+    sourcemap: false,
+  },
   plugins: [
     hybridly({
       autoImports: {
-        imports: ['vitest'],
+        dirs: ['resources/modules/**'],
       },
       vueComponents: {
         dirs: ['resources/modules/**'],

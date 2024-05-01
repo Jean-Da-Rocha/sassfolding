@@ -1,6 +1,7 @@
 {
   "extends": "./.hybridly/tsconfig.json",
   "compilerOptions": {
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "sourceMap": false
   }
 }
