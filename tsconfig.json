@@ -1,0 +1,6 @@
+{
+  "extends": "./.hybridly/tsconfig.json",
+  "compilerOptions": {
+    "skipLibCheck": true
+  }
+}

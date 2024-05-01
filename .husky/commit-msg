@@ -1,0 +1,2 @@
+# Verify if your commit message sticks to the conventional commits.
+npx --no -- commitlint --edit "${1}"

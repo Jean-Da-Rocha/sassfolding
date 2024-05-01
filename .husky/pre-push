@@ -1,0 +1,2 @@
+# Verify whether your branch name passes the regex validation.
+# npx validate-branch-name

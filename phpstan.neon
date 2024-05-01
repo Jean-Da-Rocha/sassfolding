@@ -1,0 +1,16 @@
+includes:
+  - phpstan-baseline.neon
+  - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+  tmpDir: storage/phpstan
+  paths:
+    - app/
+
+  # Level 9 is the highest level
+  level: 9
+
+  reportUnmatchedIgnoredErrors: false
+
+  scanFiles:
+    - ./helpers/_ide_helper_models.php
