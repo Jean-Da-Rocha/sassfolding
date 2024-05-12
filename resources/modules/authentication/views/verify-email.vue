@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const flashStatusMessage = useProperty('flash.status');
+const flashStatus = useProperty('flash.status');
 
 const form = useForm({
   fields: {},
@@ -7,7 +7,7 @@ const form = useForm({
   url: route('verification.send'),
 });
 
-const isVerificationLinkSent = computed(() => flashStatusMessage.value === 'verification-link-sent');
+const isVerificationLinkSent = computed(() => flashStatus.value?.message === 'verification-link-sent');
 
 useHead({ title: 'Verify Email' });
 </script>

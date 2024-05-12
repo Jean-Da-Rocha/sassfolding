@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const flashStatusMessage = useProperty('flash.status');
+const flashStatus = useProperty('flash.status');
 
 const form = useForm({
   errorBag: 'updatePassword',
@@ -18,7 +18,7 @@ const form = useForm({
     <template #content>
       <Message
         :life="5000" :sticky="false" class="-mt-3" severity="success"
-        v-if="flashStatusMessage === 'password-updated'"
+        v-if="flashStatus?.message === 'password-updated'"
       >
         Password successfully updated
       </Message>

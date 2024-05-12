@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const flashStatusMessage = useProperty('flash.status');
+const flashStatus = useProperty('flash.status');
 
 const form = useForm({
   fields: {
@@ -15,8 +15,8 @@ useHead({ title: 'Forgot Password' });
 <template layout="shared::main">
   <Card class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
-      <Message :life="5000" :sticky="false" class="-mt-3" severity="success" v-if="flashStatusMessage">
-        {{ flashStatusMessage }}
+      <Message :life="5000" :sticky="false" class="-mt-3" severity="success" v-if="flashStatus?.message">
+        {{ flashStatus.message }}
       </Message>
       <div class="mb-4 text-sm">
         Forgot your password? No problem. Just let us know your email address and we will email you a password reset

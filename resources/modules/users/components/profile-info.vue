@@ -3,7 +3,7 @@ const props = defineProps<{
   user: App.Data.UserData | null;
 }>();
 
-const flashStatusMessage = useProperty('flash.status');
+const flashStatus = useProperty('flash.status');
 
 const form = useForm({
   errorBag: 'updateProfileInformation',
@@ -20,7 +20,7 @@ const form = useForm({
 <template>
   <Card class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
-      <Message :life="5000" :sticky="false" class="-mt-3" severity="success" v-if="flashStatusMessage === 'profile-information-updated'">
+      <Message :life="5000" :sticky="false" class="-mt-3" severity="success" v-if="flashStatus?.message === 'profile-information-updated'">
         Profile successfully updated
       </Message>
       <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">

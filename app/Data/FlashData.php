@@ -9,11 +9,11 @@ use Spatie\LaravelData\Data;
 final class FlashData extends Data
 {
     public function __construct(
-        public readonly mixed $error,
-        public readonly mixed $info,
-        public readonly mixed $status,
-        public readonly mixed $success,
-        public readonly mixed $warn,
+        public readonly FlashMessageData $error,
+        public readonly FlashMessageData $info,
+        public readonly FlashMessageData $status,
+        public readonly FlashMessageData $success,
+        public readonly FlashMessageData $warn,
     ) {
     }
 }
