@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const flashStatus = useProperty('flash.status');
 
-const form = useForm({
+const form = useForm<{ email: string }>({
   fields: {
     email: '',
   },
@@ -13,11 +13,11 @@ useHead({ title: 'Forgot Password' });
 </script>
 
 <template layout="shared::main">
-  <Card class="mx-auto mt-8 w-full max-w-[600px]">
+  <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
-      <Message :life="5000" :sticky="false" class="-mt-3" severity="success" v-if="flashStatus?.message">
+      <PrimeVueMessage :life="5000" :sticky="false" class="-mt-3" severity="success" v-if="flashStatus?.message">
         {{ flashStatus.message }}
-      </Message>
+      </PrimeVueMessage>
       <div class="mb-4 text-sm">
         Forgot your password? No problem. Just let us know your email address and we will email you a password reset
         link that will allow you to choose a new one.
@@ -31,8 +31,7 @@ useHead({ title: 'Forgot Password' });
             Email
           </label>
           <InputText
-            :class="{ 'border-red-500': form.errors.email }"
-            :required="true"
+            :invalid="form.errors.hasOwnProperty('email')"
             autofocus
             class="w-full"
             id="email"
@@ -44,7 +43,7 @@ useHead({ title: 'Forgot Password' });
           </div>
         </div>
         <div>
-          <Button
+          <PrimeVueButton
             :disabled="form.processing"
             class="w-full"
             label="Email Password Reset Link"
@@ -53,5 +52,5 @@ useHead({ title: 'Forgot Password' });
         </div>
       </form>
     </template>
-  </Card>
+  </PrimeVueCard>
 </template>

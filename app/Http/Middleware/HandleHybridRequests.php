@@ -14,7 +14,6 @@ use App\Enums\FlashMessage;
 use Hybridly\Http\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 
 class HandleHybridRequests extends Middleware
 {
@@ -26,38 +25,37 @@ class HandleHybridRequests extends Middleware
     public function share(Request $request): SharedData
     {
         return new SharedData(
+            // The errors array is used to type hint the 'error' property on the front-end.
+            // This property will be overwritten by Hybridly automatically.
             flash: new FlashData(
-                error: new FlashMessageData(
-                    key: Str::random(32),
-                    message: $request->session()->get(FlashMessage::Error->value),
-                    severity: 'error'
-                ),
-                info: new FlashMessageData(
-                    key: Str::random(32),
-                    message: $request->session()->get(FlashMessage::Info->value),
-                    severity: FlashMessage::Info->value,
-                ),
                 status: new FlashMessageData(
-                    key: Str::random(32),
                     message: $request->session()->get(FlashMessage::Status->value),
                     severity: FlashMessage::Status->value
                 ),
-                success: new FlashMessageData(
-                    key: Str::random(32),
-                    message: $request->session()->get(FlashMessage::Success->value),
-                    severity: FlashMessage::Success->value
-                ),
-                warn: new FlashMessageData(
-                    key: Str::random(32),
-                    message: $request->session()->get(FlashMessage::Warning->value),
-                    severity: FlashMessage::Warning->value,
-                ),
-
+                messages: [
+                    new FlashMessageData(
+                        message: $request->session()->get(FlashMessage::Error->value),
+                        severity: FlashMessage::Error->value,
+                    ),
+                    new FlashMessageData(
+                        message: $request->session()->get(FlashMessage::Info->value),
+                        severity: FlashMessage::Info->value,
+                    ),
+                    new FlashMessageData(
+                        message: $request->session()->get(FlashMessage::Success->value),
+                        severity: FlashMessage::Success->value
+                    ),
+                    new FlashMessageData(
+                        message: $request->session()->get(FlashMessage::Warning->value),
+                        severity: FlashMessage::Warning->value,
+                    ),
+                ],
             ),
             route: new RouteData(name: Route::currentRouteName()),
             security: new SecurityData(
                 user: UserData::optional(auth()->user()),
             ),
+            errors: [],
         );
     }
 }

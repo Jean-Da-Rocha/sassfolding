@@ -1,5 +1,5 @@
 import './tailwind.css';
-import Lara from '@/libraries/primevue/presets/lara';
+import Aura from '@/libraries/primevue/presets/aura';
 import type { MergeHead, VueHeadClient } from '@unhead/vue';
 import { createHead } from '@unhead/vue';
 import PrimeVue from 'primevue/config';
@@ -11,10 +11,10 @@ initializeHybridly({
     const head: VueHeadClient<MergeHead> = createHead();
 
     head.push({
-      titleTemplate: (title?: string): string => title ? `Powerboard - ${title}` : 'Powerboard',
+      titleTemplate: (title?: string): string => title ? `LVHP Scaffolding - ${title}` : 'LVHP Scaffolding',
     });
 
     vue.use(head);
-    vue.use(PrimeVue, { pt: Lara, ripple: true, unstyled: true });
+    vue.use(PrimeVue, { pt: Aura, ripple: true, unstyled: true });
   },
 }).then();

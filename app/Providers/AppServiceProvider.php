@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
         Date::use(CarbonImmutable::class);
 
-        $hybridly->loadModulesFrom(resource_path('modules'), false);
+        $hybridly->loadModulesFrom(resource_path('modules'));
         $hybridly->loadLayoutsFrom(resource_path('modules/shared'));
     }
 }

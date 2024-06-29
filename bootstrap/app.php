@@ -17,8 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->appendToGroup('web', [\App\Http\Middleware\HandleHybridRequests::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        HandleHybridExceptions::register()
-            ->renderUsing(fn (Response $response) => view('error', [
-                'status' => $response->getStatusCode(),
-            ]));
+        //        HandleHybridExceptions::register()
+        //            ->renderUsing(fn (Response $response) => view('error', [
+        //                'status' => $response->getStatusCode(),
+        //            ]));
     })->create();

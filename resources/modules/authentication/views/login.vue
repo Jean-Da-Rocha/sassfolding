@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const form = useForm({
+const form = useForm<{ email: string; password: string; remember: boolean }>({
   fields: {
     email: '',
     password: '',
@@ -13,7 +13,7 @@ useHead({ title: 'Sign In' });
 </script>
 
 <template layout="shared::main">
-  <Card class="mx-auto mt-8 w-full max-w-[600px]">
+  <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
       <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">
         <div>
@@ -23,9 +23,8 @@ useHead({ title: 'Sign In' });
           >
             Email
           </label>
-          <InputText
-            :class="{ 'border-red-500': form.errors.email }"
-            :required="true"
+          <PrimeVueInputText
+            :invalid="form.errors.hasOwnProperty('email')"
             autofocus
             class="w-full"
             id="email"
@@ -43,12 +42,11 @@ useHead({ title: 'Sign In' });
           >
             Password
           </label>
-          <Password
+          <PrimeVuePassword
             :feedback="false"
-            :pt="{
-              root: { class: ['w-full relative', { 'border-red-500': form.errors.password }] },
-            }"
-            :required="true"
+            :input-props="{ autocomplete: false }"
+            :invalid="form.errors.hasOwnProperty('password')"
+            class="w-full"
             for="password"
             id="password"
             input-class="w-full"
@@ -62,7 +60,7 @@ useHead({ title: 'Sign In' });
         <div class="flex items-center justify-between">
           <div class="flex items-start">
             <div class="flex h-5 items-center">
-              <Checkbox :binary="true" id="remember" v-model="form.fields.remember" />
+              <PrimeVueCheckbox :binary="true" id="remember" v-model="form.fields.remember" />
             </div>
             <div class="ml-3 text-sm">
               <label for="remember">Remember me</label>
@@ -73,7 +71,7 @@ useHead({ title: 'Sign In' });
           </RouterLink>
         </div>
         <div>
-          <Button
+          <PrimeVueButton
             :disabled="form.processing"
             class="w-full"
             label="Log in"
@@ -82,5 +80,5 @@ useHead({ title: 'Sign In' });
         </div>
       </form>
     </template>
-  </Card>
+  </PrimeVueCard>
 </template>

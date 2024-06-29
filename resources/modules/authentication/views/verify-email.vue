@@ -13,7 +13,7 @@ useHead({ title: 'Verify Email' });
 </script>
 
 <template layout="shared::main">
-  <Card class="mx-auto mt-8 w-full max-w-[600px]">
+  <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
       <div class="mb-4 text-sm">
         Thanks for signing up! Before getting started, could you verify your email address by clicking on the link
@@ -25,7 +25,7 @@ useHead({ title: 'Verify Email' });
       </div>
       <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">
         <div>
-          <Button
+          <PrimeVueButton
             :disabled="form.processing"
             class="w-full"
             label="Resend Verification Email"
@@ -34,5 +34,5 @@ useHead({ title: 'Verify Email' });
         </div>
       </form>
     </template>
-  </Card>
+  </PrimeVueCard>
 </template>

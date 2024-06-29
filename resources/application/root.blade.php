@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite
 </head>
-<body class="font-sans antialiased bg-slate-100">
-@hybridly(class: 'h-full')
+<body class="font-sans antialiased h-full bg-surface-50 dark:bg-surface-950">
+@hybridly
 </body>
 </html>

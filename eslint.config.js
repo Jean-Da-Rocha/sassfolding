@@ -6,7 +6,7 @@ export default await antfu({
     tailwindcss,
   },
   rules: {
-    'curly': ['off'],
+    'curly': ['error', 'multi-line', 'consistent'],
     'import/order': ['off'], // Disable this ESLint rule to avoid conflicts with 'perfectionist/sort-imports'
     'perfectionist/sort-array-includes': ['error'],
     'perfectionist/sort-imports': ['error'],
@@ -21,7 +21,8 @@ export default await antfu({
     'vue/attributes-order': ['off'],
   },
   stylistic: {
+    overrides: { 'ts/consistent-type-definitions': ['error', 'type'] },
     semi: true,
   },
   yaml: false,
-}, { ignores: ['resources/libraries/primevue/presets'] });
+}, { ignores: ['resources/libraries/primevue/presets', 'tsconfig.json', 'storage/**'] });

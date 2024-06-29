@@ -9,7 +9,7 @@ const { current } = useRoute();
       <div class="flex items-center justify-between">
         <div class="text-lg font-bold text-white">
           <RouterLink href="/">
-            LVHP Stack
+            LVHP Scaffolding
           </RouterLink>
         </div>
         <div class="flex items-center space-x-4">

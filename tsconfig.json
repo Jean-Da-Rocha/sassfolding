@@ -3,6 +3,7 @@
   "compilerOptions": {
     "noEmit": true,
     "sourceMap": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
   }
 }

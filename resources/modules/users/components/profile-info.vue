@@ -5,7 +5,7 @@ const props = defineProps<{
 
 const flashStatus = useProperty('flash.status');
 
-const form = useForm({
+const form = useForm<{ email?: string; name?: string }>({
   errorBag: 'updateProfileInformation',
   fields: {
     email: props.user?.email,
@@ -18,11 +18,11 @@ const form = useForm({
 </script>
 
 <template>
-  <Card class="mx-auto mt-8 w-full max-w-[600px]">
+  <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
-      <Message :life="5000" :sticky="false" class="-mt-3" severity="success" v-if="flashStatus?.message === 'profile-information-updated'">
+      <PrimeVueMessage :life="5000" :sticky="false" class="-mt-3" severity="success" v-if="flashStatus?.message === 'profile-information-updated'">
         Profile successfully updated
-      </Message>
+      </PrimeVueMessage>
       <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">
         <div>
           <label
@@ -31,9 +31,8 @@ const form = useForm({
           >
             Email
           </label>
-          <InputText
-            :class="{ 'border-red-500': form.errors.email }"
-            :required="true"
+          <PrimeVueInputText
+            :invalid="form.errors.hasOwnProperty('email')"
             autofocus
             class="w-full"
             id="email"
@@ -51,9 +50,8 @@ const form = useForm({
           >
             Name
           </label>
-          <InputText
-            :class="{ 'border-red-500': form.errors.name }"
-            :required="true"
+          <PrimeVueInputText
+            :invalid="form.errors.hasOwnProperty('name')"
             autofocus
             class="w-full"
             id="name"
@@ -65,13 +63,9 @@ const form = useForm({
           </div>
         </div>
         <div>
-          <Button
-            class="w-full"
-            label="Submit"
-            type="submit"
-          />
+          <PrimeVueButton :disabled="form.submit" class="w-full" label="Submit" type="submit" />
         </div>
       </form>
     </template>
-  </Card>
+  </PrimeVueCard>
 </template>

@@ -4,7 +4,7 @@ const props = defineProps<{
   token: string;
 }>();
 
-const form = useForm({
+const form = useForm<{ email: string; password: string; password_confirmation: string; token: string }>({
   fields: {
     email: props.email,
     password: '',
@@ -19,7 +19,7 @@ useHead({ title: 'Reset Password' });
 </script>
 
 <template layout="shared::main">
-  <Card class="mx-auto mt-8 w-full max-w-[600px]">
+  <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
       <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">
         <div>
@@ -29,9 +29,8 @@ useHead({ title: 'Reset Password' });
           >
             Email
           </label>
-          <InputText
-            :class="{ 'border-red-500': form.errors.email }"
-            :required="true"
+          <PrimeVueInputText
+            :invalid="form.errors.hasOwnProperty('email')"
             autofocus
             class="w-full"
             id="email"
@@ -49,12 +48,11 @@ useHead({ title: 'Reset Password' });
           >
             Password
           </label>
-          <Password
+          <PrimeVuePassword
             :feedback="false"
-            :pt="{
-              root: { class: ['w-full relative', { 'border-red-500': form.errors.password }] },
-            }"
-            :required="true"
+            :input-props="{ autocomplete: false }"
+            :invalid="form.errors.hasOwnProperty('password')"
+            class="w-full"
             for="password"
             id="password"
             input-class="w-full"
@@ -72,12 +70,11 @@ useHead({ title: 'Reset Password' });
           >
             Confirm Password
           </label>
-          <Password
+          <PrimeVuePassword
             :feedback="false"
-            :pt="{
-              root: { class: ['w-full relative', { 'border-red-500': form.errors.password_confirmation }] },
-            }"
-            :required="true"
+            :input-props="{ autocomplete: false }"
+            :invalid="form.errors.hasOwnProperty('password_confirmation')"
+            class="w-full"
             for="password_confirmation"
             id="password_confirmation"
             input-class="w-full"
@@ -89,7 +86,7 @@ useHead({ title: 'Reset Password' });
           </div>
         </div>
         <div>
-          <Button
+          <PrimeVueButton
             :disabled="form.processing"
             class="w-full"
             label="Reset Password"
@@ -98,5 +95,5 @@ useHead({ title: 'Reset Password' });
         </div>
       </form>
     </template>
-  </Card>
+  </PrimeVueCard>
 </template>

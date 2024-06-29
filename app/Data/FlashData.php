@@ -8,12 +8,9 @@ use Spatie\LaravelData\Data;
 
 final class FlashData extends Data
 {
+    /** @param array<array-key, FlashMessageData> $messages */
     public function __construct(
-        public readonly FlashMessageData $error,
-        public readonly FlashMessageData $info,
         public readonly FlashMessageData $status,
-        public readonly FlashMessageData $success,
-        public readonly FlashMessageData $warn,
-    ) {
-    }
+        public readonly array $messages = [],
+    ) {}
 }

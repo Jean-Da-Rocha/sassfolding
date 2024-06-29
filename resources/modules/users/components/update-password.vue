@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const flashStatus = useProperty('flash.status');
 
-const form = useForm({
+const form = useForm<{ current_password: string; password: string; password_confirmation: string }>({
   errorBag: 'updatePassword',
   fields: {
     current_password: '',
@@ -14,14 +14,14 @@ const form = useForm({
 </script>
 
 <template>
-  <Card class="mx-auto mt-8 w-full max-w-[600px]">
+  <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
-      <Message
+      <PrimeVueMessage
         :life="5000" :sticky="false" class="-mt-3" severity="success"
         v-if="flashStatus?.message === 'password-updated'"
       >
         Password successfully updated
-      </Message>
+      </PrimeVueMessage>
       <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">
         <div>
           <label
@@ -30,12 +30,11 @@ const form = useForm({
           >
             Current password
           </label>
-          <Password
+          <PrimeVuePassword
             :feedback="false"
-            :pt="{
-              root: { class: ['w-full relative', { 'border-red-500': form.errors.current_password }] },
-            }"
-            :required="true"
+            :input-props="{ autocomplete: false }"
+            :invalid="form.errors.hasOwnProperty('current_password')"
+            class="w-full"
             for="current_password"
             id="current_password"
             input-class="w-full"
@@ -53,12 +52,11 @@ const form = useForm({
           >
             New Password
           </label>
-          <Password
+          <PrimeVuePassword
             :feedback="false"
-            :pt="{
-              root: { class: ['w-full relative', { 'border-red-500': form.errors.password }] },
-            }"
-            :required="true"
+            :input-props="{ autocomplete: false }"
+            :invalid="form.errors.hasOwnProperty('password')"
+            class="w-full"
             for="password"
             id="password"
             input-class="w-full"
@@ -76,12 +74,11 @@ const form = useForm({
           >
             Confirm Password
           </label>
-          <Password
+          <PrimeVuePassword
             :feedback="false"
-            :pt="{
-              root: { class: ['w-full relative', { 'border-red-500': form.errors.password_confirmation }] },
-            }"
-            :required="true"
+            :input-props="{ autocomplete: false }"
+            :invalid="form.errors.hasOwnProperty('password_confirmation')"
+            class="w-full"
             for="password_confirmation"
             id="password_confirmation"
             input-class="w-full"
@@ -93,13 +90,9 @@ const form = useForm({
           </div>
         </div>
         <div>
-          <Button
-            class="w-full"
-            label="Submit"
-            type="submit"
-          />
+          <PrimeVueButton :disabled="form.processing" class="w-full" label="Submit" type="submit" />
         </div>
       </form>
     </template>
-  </Card>
+  </PrimeVueCard>
 </template>

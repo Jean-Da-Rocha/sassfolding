@@ -1,13 +1,16 @@
 import type { Config } from 'tailwindcss';
+import theme from 'tailwindcss/defaultTheme';
 
 export default {
   content: [
     './resources/**/*.{js,ts,vue,blade.php}',
   ],
+  darkMode: 'class',
   plugins: [],
   theme: {
     extend: {
       colors: {
+        'primary': 'rgb(var(--primary))',
         'primary-100': 'rgb(var(--primary-100))',
         'primary-200': 'rgb(var(--primary-200))',
         'primary-300': 'rgb(var(--primary-300))',
@@ -19,6 +22,12 @@ export default {
         'primary-800': 'rgb(var(--primary-800))',
         'primary-900': 'rgb(var(--primary-900))',
         'primary-950': 'rgb(var(--primary-950))',
+        'primary-active-color': 'rgb(var(--primary-active-color))',
+        'primary-highlight': 'rgb(var(--primary)/var(--primary-highlight-opacity))',
+        'primary-highlight-hover': 'rgb(var(--primary)/var(--primary-highlight-hover-opacity))',
+        'primary-highlight-inverse': 'rgb(var(--primary-highlight-inverse))',
+        'primary-hover': 'rgb(var(--primary-hover))',
+        'primary-inverse': 'rgb(var(--primary-inverse))',
         'surface-0': 'rgb(var(--surface-0))',
         'surface-100': 'rgb(var(--surface-100))',
         'surface-200': 'rgb(var(--surface-200))',
@@ -32,6 +41,10 @@ export default {
         'surface-900': 'rgb(var(--surface-900))',
         'surface-950': 'rgb(var(--surface-950))',
       },
+    },
+    screens: {
+      xs: '320px',
+      ...theme.screens,
     },
   },
 } satisfies Config;

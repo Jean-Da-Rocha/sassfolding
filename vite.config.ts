@@ -19,7 +19,7 @@ export default defineConfig({
             enabledCollections: ['heroicons'],
             prefix: false,
           }),
-          PrimeVueResolver(),
+          PrimeVueResolver({ prefix: 'PrimeVue' }),
         ],
       },
     }),

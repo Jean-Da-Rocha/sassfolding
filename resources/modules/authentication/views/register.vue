@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const form = useForm({
+const form = useForm<{ email: string; name: string; password: string; password_confirmation: string }>({
   fields: {
     email: '',
     name: '',
@@ -15,7 +15,7 @@ useHead({ title: 'Sign Up' });
 </script>
 
 <template layout="shared::main">
-  <Card class="mx-auto mt-8 w-full max-w-[600px]">
+  <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
       <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">
         <div>
@@ -25,9 +25,8 @@ useHead({ title: 'Sign Up' });
           >
             Name
           </label>
-          <InputText
-            :class="{ 'border-red-500': form.errors.name }"
-            :required="true"
+          <PrimeVueInputText
+            :invalid="form.errors.hasOwnProperty('email')"
             autofocus
             class="w-full"
             id="name"
@@ -45,9 +44,8 @@ useHead({ title: 'Sign Up' });
           >
             Email
           </label>
-          <InputText
-            :class="{ 'border-red-500': form.errors.email }"
-            :required="true"
+          <PrimeVueInputText
+            :invalid="form.errors.hasOwnProperty('email')"
             autofocus
             class="w-full"
             id="email"
@@ -65,12 +63,11 @@ useHead({ title: 'Sign Up' });
           >
             Password
           </label>
-          <Password
+          <PrimeVuePassword
             :feedback="false"
-            :pt="{
-              root: { class: ['w-full relative', { 'border-red-500': form.errors.password }] },
-            }"
-            :required="true"
+            :input-props="{ autocomplete: false }"
+            :invalid="form.errors.hasOwnProperty('password')"
+            class="w-full"
             for="password"
             id="password"
             input-class="w-full"
@@ -88,12 +85,11 @@ useHead({ title: 'Sign Up' });
           >
             Confirm Password
           </label>
-          <Password
+          <PrimeVuePassword
             :feedback="false"
-            :pt="{
-              root: { class: ['w-full relative', { 'border-red-500': form.errors.password_confirmation }] },
-            }"
-            :required="true"
+            :input-props="{ autocomplete: false }"
+            :invalid="form.errors.hasOwnProperty('password_confirmation')"
+            class="w-full"
             for="password_confirmation"
             id="password_confirmation"
             input-class="w-full"
@@ -113,7 +109,7 @@ useHead({ title: 'Sign Up' });
           </RouterLink>
         </div>
         <div>
-          <Button
+          <PrimeVueButton
             :disabled="form.processing"
             class="w-full"
             label="Register"
@@ -122,5 +118,5 @@ useHead({ title: 'Sign Up' });
         </div>
       </form>
     </template>
-  </Card>
+  </PrimeVueCard>
 </template>
