@@ -32,7 +32,7 @@ const form = useForm<{ current_password: string; password: string; password_conf
           </label>
           <PrimeVuePassword
             :feedback="false"
-            :input-props="{ autocomplete: false }"
+            :input-props="{ autocomplete: 'false' }"
             :invalid="form.errors.hasOwnProperty('current_password')"
             class="w-full"
             for="current_password"
@@ -54,7 +54,7 @@ const form = useForm<{ current_password: string; password: string; password_conf
           </label>
           <PrimeVuePassword
             :feedback="false"
-            :input-props="{ autocomplete: false }"
+            :input-props="{ autocomplete: 'false' }"
             :invalid="form.errors.hasOwnProperty('password')"
             class="w-full"
             for="password"
@@ -76,7 +76,7 @@ const form = useForm<{ current_password: string; password: string; password_conf
           </label>
           <PrimeVuePassword
             :feedback="false"
-            :input-props="{ autocomplete: false }"
+            :input-props="{ autocomplete: 'false' }"
             :invalid="form.errors.hasOwnProperty('password_confirmation')"
             class="w-full"
             for="password_confirmation"

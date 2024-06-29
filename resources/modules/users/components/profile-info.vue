@@ -63,7 +63,7 @@ const form = useForm<{ email?: string; name?: string }>({
           </div>
         </div>
         <div>
-          <PrimeVueButton :disabled="form.submit" class="w-full" label="Submit" type="submit" />
+          <PrimeVueButton :disabled="form.processing" class="w-full" label="Submit" type="submit" />
         </div>
       </form>
     </template>

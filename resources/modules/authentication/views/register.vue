@@ -65,7 +65,7 @@ useHead({ title: 'Sign Up' });
           </label>
           <PrimeVuePassword
             :feedback="false"
-            :input-props="{ autocomplete: false }"
+            :input-props="{ autocomplete: 'false' }"
             :invalid="form.errors.hasOwnProperty('password')"
             class="w-full"
             for="password"
@@ -87,7 +87,7 @@ useHead({ title: 'Sign Up' });
           </label>
           <PrimeVuePassword
             :feedback="false"
-            :input-props="{ autocomplete: false }"
+            :input-props="{ autocomplete: 'false' }"
             :invalid="form.errors.hasOwnProperty('password_confirmation')"
             class="w-full"
             for="password_confirmation"

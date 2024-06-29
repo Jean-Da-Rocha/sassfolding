@@ -44,7 +44,7 @@ useHead({ title: 'Sign In' });
           </label>
           <PrimeVuePassword
             :feedback="false"
-            :input-props="{ autocomplete: false }"
+            :input-props="{ autocomplete: 'false' }"
             :invalid="form.errors.hasOwnProperty('password')"
             class="w-full"
             for="password"
