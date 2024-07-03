@@ -25,8 +25,6 @@ class HandleHybridRequests extends Middleware
     public function share(Request $request): SharedData
     {
         return new SharedData(
-            // The errors array is used to type hint the 'error' property on the front-end.
-            // This property will be overwritten by Hybridly automatically.
             flash: new FlashData(
                 status: new FlashMessageData(
                     message: $request->session()->get(FlashMessage::Status->value),
@@ -55,6 +53,8 @@ class HandleHybridRequests extends Middleware
             security: new SecurityData(
                 user: UserData::optional(auth()->user()),
             ),
+            // The errors array is used to type hint the 'error' property on the front-end.
+            // This property will be overwritten by Hybridly automatically.
             errors: [],
         );
     }
