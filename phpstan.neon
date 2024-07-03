@@ -13,4 +13,4 @@ parameters:
   reportUnmatchedIgnoredErrors: false
 
   scanFiles:
-    - ./helpers/_ide_helper_models.php
+    - _ide_helper_models.php
