@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // TODO: check that link is a route.
-defineProps<{ isActive: boolean; link: string }>();
+defineProps<{ isActive?: boolean; link: string }>();
 </script>
 
 <template>
