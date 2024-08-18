@@ -1,5 +1,9 @@
+<script setup lang="ts">
+const sidebarIsOpen = ref<boolean>(false);
+</script>
+
 <template>
-  <SidebarTransition>
+  <SidebarTransition v-model:sidebarIsOpen="sidebarIsOpen">
     <!-- Responsive sidebar for mobile devices -->
     <Sidebar />
   </SidebarTransition>
@@ -8,6 +12,9 @@
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
     <Sidebar />
   </div>
+
+  <!-- Navbar visible only for mobile devices -->
+  <Navbar v-model:sidebarIsOpen="sidebarIsOpen" />
 
   <main class="py-10 lg:pl-72">
     <div class="px-4 sm:px-6 lg:px-8">

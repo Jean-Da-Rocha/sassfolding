@@ -1,10 +1,10 @@
-<script setup>
-const sidebarOpen = ref(false);
+<script setup lang="ts">
+const sidebarIsOpen = defineModel<boolean>('sidebarIsOpen');
 </script>
 
 <template>
-  <HeadlessTransitionRoot :show="sidebarOpen" as="template">
-    <HeadlessDialog @close="sidebarOpen = false" as="div" class="relative z-50 lg:hidden">
+  <HeadlessTransitionRoot :show="sidebarIsOpen" as="template">
+    <HeadlessDialog @close="sidebarIsOpen = false" as="div" class="relative z-50 lg:hidden">
       <HeadlessTransitionChild
         as="template"
         enter="transition-opacity ease-linear duration-300"
@@ -38,7 +38,7 @@ const sidebarOpen = ref(false);
               leave-to="opacity-0"
             >
               <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
-                <button @click="sidebarOpen = false" class="-m-2.5 p-2.5" type="button">
+                <button @click="sidebarIsOpen = false" class="-m-2.5 p-2.5" type="button">
                   <span class="sr-only">Close sidebar</span>
                   <HeroiconsXMark aria-hidden="true" class="size-6 text-surface-700 dark:text-surface-0/80" />
                 </button>

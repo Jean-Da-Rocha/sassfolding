@@ -1,14 +1,11 @@
 <script setup lang="ts">
-const overlayPanel = ref();
-
-const toggle = (event: Event) => overlayPanel.value.toggle(event);
-
 const { user } = useSecurity();
 
-const userInitials = `${user.value?.name}`
-  .split(' ')
-  .map((word): string => word[0].toUpperCase())
-  .join('');
+const { initials } = useInitials(user.value?.name);
+
+const profileOverlayForDesktop = ref();
+
+const toggle = (event: Event) => profileOverlayForDesktop.value.toggle(event);
 </script>
 
 <template>
@@ -21,12 +18,12 @@ const userInitials = `${user.value?.name}`
       <span
         class="flex size-8 items-center justify-center rounded-full border bg-surface-50 text-[0.625rem] font-medium dark:bg-surface-900 dark:text-surface-0/80"
       >
-        {{ userInitials }}
+        {{ initials }}
       </span>
       <span>{{ user?.name }}</span>
     </div>
 
-    <PrimeVuePopover ref="overlayPanel">
+    <PrimeVuePopover ref="profileOverlayForDesktop">
       <div class="w-full">
         <RouterLink
           :href="route('profile')"

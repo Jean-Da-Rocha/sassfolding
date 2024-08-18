@@ -1,17 +1,17 @@
 <template>
-  <aside class="h-screen">
+  <aside class="h-screen w-full">
     <div class="flex size-full flex-col bg-surface-0 dark:bg-surface-900">
       <SidebarHeader />
       <SidebarBody>
-        <MenuDropdown title="Collections">
+        <MenuDropdown title="Menu Dropdown 1">
           <Menu>
             <MenuItem link="test">
-              Cards
+              Menu Item 1
             </MenuItem>
           </Menu>
           <Menu>
             <MenuItem link="test">
-              Sets
+              Menu Item 2
             </MenuItem>
           </Menu>
         </MenuDropdown>
