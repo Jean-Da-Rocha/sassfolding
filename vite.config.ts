@@ -1,6 +1,6 @@
+import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 import hybridly from 'hybridly/vite';
 import IconsResolver from 'unplugin-icons/resolver';
-import { PrimeVueResolver } from 'unplugin-primevue-resolver';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -19,7 +19,7 @@ export default defineConfig({
             enabledCollections: ['heroicons'],
             prefix: false,
           }),
-          PrimeVueResolver({ prefix: 'PrimeVue' }),
+          PrimeVueResolver({ components: { prefix: 'PrimeVue' } }),
         ],
       },
     }),
