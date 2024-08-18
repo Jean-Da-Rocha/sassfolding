@@ -13,6 +13,7 @@ export default await antfu({
     'perfectionist/sort-interfaces': ['error'],
     'perfectionist/sort-objects': ['error'],
     'perfectionist/sort-vue-attributes': ['error'],
+    'style/brace-style': ['error', '1tbs'],
     'tailwindcss/classnames-order': ['error'],
     'tailwindcss/enforces-negative-arbitrary-values': ['error'],
     'tailwindcss/enforces-shorthand': ['error'],
