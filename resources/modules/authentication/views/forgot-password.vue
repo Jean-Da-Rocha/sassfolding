@@ -12,7 +12,7 @@ const form = useForm<{ email: string }>({
 useHead({ title: 'Forgot Password' });
 </script>
 
-<template layout="shared::main">
+<template layout="shared::guest">
   <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
       <PrimeVueMessage :life="5000" :sticky="false" class="-mt-3" severity="success" v-if="flashStatus?.message">
@@ -30,7 +30,7 @@ useHead({ title: 'Forgot Password' });
           >
             Email
           </label>
-          <InputText
+          <PrimeVueInputText
             :invalid="form.errors.hasOwnProperty('email')"
             autofocus
             class="w-full"

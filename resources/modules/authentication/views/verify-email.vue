@@ -12,7 +12,7 @@ const isVerificationLinkSent = computed(() => flashStatus.value?.message === 've
 useHead({ title: 'Verify Email' });
 </script>
 
-<template layout="shared::main">
+<template layout="shared::guest">
   <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
       <div class="mb-4 text-sm">

@@ -12,7 +12,7 @@ const form = useForm<{ email: string; password: string; remember: boolean }>({
 useHead({ title: 'Sign In' });
 </script>
 
-<template layout="shared::main">
+<template layout="shared::guest">
   <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
       <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">
