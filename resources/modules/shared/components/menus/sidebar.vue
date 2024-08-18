@@ -1,3 +1,6 @@
+<script setup lang="ts">
+</script>
+
 <template>
   <aside>
     <div class="flex size-full flex-col bg-surface-0 dark:bg-surface-900">
@@ -7,10 +10,15 @@
         </span>
       </div>
       <div class="mt-4 overflow-y-auto">
-        <MenuDropdown title="Collection">
+        <MenuDropdown title="Collections">
           <Menu>
             <MenuItem link="test">
-              My collection
+              Cards
+            </MenuItem>
+          </Menu>
+          <Menu>
+            <MenuItem link="test">
+              Sets
             </MenuItem>
           </Menu>
         </MenuDropdown>
