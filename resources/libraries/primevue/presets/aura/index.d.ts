@@ -1,19 +1,17 @@
-import type { Component, DirectiveOptions } from 'vue';
+import type { Component, Directive } from 'vue';
 
 declare module '@/libraries/primevue/presets/aura' {
   const globalModule: Component;
   const directives: {
-    tooltip: DirectiveOptions;
-    badgedirective: DirectiveOptions;
-    ripple: DirectiveOptions;
+    tooltip: Directive;
+    ripple: Directive;
   };
+
   const autocomplete: Component;
-  const calendar: Component;
   const cascadeselect: Component;
   const checkbox: Component;
-  const chips: Component;
   const colorpicker: Component;
-  const dropdown: Component;
+  const datepicker: Component;
   const floatlabel: Component;
   const iconfield: Component;
   const inputgroup: Component;
@@ -21,7 +19,6 @@ declare module '@/libraries/primevue/presets/aura' {
   const inputgroupaddon: Component;
   const inputmask: Component;
   const inputnumber: Component;
-  const inputswitch: Component;
   const inputtext: Component;
   const knob: Component;
   const listbox: Component;
@@ -29,12 +26,13 @@ declare module '@/libraries/primevue/presets/aura' {
   const password: Component;
   const radiobutton: Component;
   const rating: Component;
+  const select: Component;
   const selectbutton: Component;
   const slider: Component;
   const textarea: Component;
   const togglebutton: Component;
+  const toggleswitch: Component;
   const treeselect: Component;
-  const tristatecheckbox: Component;
   const button: Component;
   const speeddial: Component;
   const splitbutton: Component;
@@ -56,12 +54,13 @@ declare module '@/libraries/primevue/presets/aura' {
   const scrollpanel: Component;
   const splitter: Component;
   const stepper: Component;
-  const tabview: Component;
+  const tabs: Component;
   const toolbar: Component;
   const confirmpopup: Component;
+  const confirmdialog: Component;
   const dialog: Component;
-  const overlaypanel: Component;
-  const sidebar: Component;
+  const drawer: Component;
+  const popover: Component;
   const fileupload: Component;
   const breadcrumb: Component;
   const contextmenu: Component;
@@ -70,11 +69,9 @@ declare module '@/libraries/primevue/presets/aura' {
   const menubar: Component;
   const megamenu: Component;
   const panelmenu: Component;
-  const steps: Component;
   const tabmenu: Component;
   const tieredmenu: Component;
   const message: Component;
-  const inlinemessage: Component;
   const toast: Component;
   const carousel: Component;
   const galleria: Component;
@@ -96,16 +93,13 @@ declare module '@/libraries/primevue/presets/aura' {
     global: Component;
     directives: {
       tooltip: DirectiveOptions;
-      badgedirective: DirectiveOptions;
       ripple: DirectiveOptions;
     };
     autocomplete: Component;
-    calendar: Component;
     cascadeselect: Component;
     checkbox: Component;
-    chips: Component;
     colorpicker: Component;
-    dropdown: Component;
+    datepicker: Component;
     floatlabel: Component;
     iconfield: Component;
     inputgroup: Component;
@@ -113,7 +107,6 @@ declare module '@/libraries/primevue/presets/aura' {
     inputgroupaddon: Component;
     inputmask: Component;
     inputnumber: Component;
-    inputswitch: Component;
     inputtext: Component;
     knob: Component;
     listbox: Component;
@@ -121,12 +114,13 @@ declare module '@/libraries/primevue/presets/aura' {
     password: Component;
     radiobutton: Component;
     rating: Component;
+    select: Component;
     selectbutton: Component;
     slider: Component;
     textarea: Component;
     togglebutton: Component;
+    toggleswitch: Component;
     treeselect: Component;
-    tristatecheckbox: Component;
     button: Component;
     speeddial: Component;
     splitbutton: Component;
@@ -148,12 +142,13 @@ declare module '@/libraries/primevue/presets/aura' {
     scrollpanel: Component;
     splitter: Component;
     stepper: Component;
-    tabview: Component;
+    tabs: Component;
     toolbar: Component;
     confirmpopup: Component;
+    confirmdialog: Component;
     dialog: Component;
-    overlaypanel: Component;
-    sidebar: Component;
+    drawer: Component;
+    popover: Component;
     fileupload: Component;
     breadcrumb: Component;
     contextmenu: Component;
@@ -162,11 +157,9 @@ declare module '@/libraries/primevue/presets/aura' {
     menubar: Component;
     megamenu: Component;
     panelmenu: Component;
-    steps: Component;
     tabmenu: Component;
     tieredmenu: Component;
     message: Component;
-    inlinemessage: Component;
     toast: Component;
     carousel: Component;
     galleria: Component;

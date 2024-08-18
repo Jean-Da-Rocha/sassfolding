@@ -1,11 +1,9 @@
 import global from './global.js';
 import autocomplete from './autocomplete';
-import calendar from './calendar';
 import cascadeselect from './cascadeselect';
 import checkbox from './checkbox';
-import chips from './chips';
 import colorpicker from './colorpicker';
-import dropdown from './dropdown';
+import datepicker from './datepicker';
 import floatlabel from './floatlabel';
 import iconfield from './iconfield';
 import inputgroup from './inputgroup';
@@ -13,7 +11,6 @@ import inputotp from './inputotp';
 import inputgroupaddon from './inputgroupaddon';
 import inputmask from './inputmask';
 import inputnumber from './inputnumber';
-import inputswitch from './inputswitch';
 import inputtext from './inputtext';
 import knob from './knob';
 import listbox from './listbox';
@@ -21,12 +18,13 @@ import multiselect from './multiselect';
 import password from './password';
 import radiobutton from './radiobutton';
 import rating from './rating';
+import select from './select';
 import selectbutton from './selectbutton';
 import slider from './slider';
 import textarea from './textarea';
 import togglebutton from './togglebutton';
+import toggleswitch from './toggleswitch';
 import treeselect from './treeselect';
-import tristatecheckbox from './tristatecheckbox';
 import button from './button';
 import speeddial from './speeddial';
 import splitbutton from './splitbutton';
@@ -48,12 +46,13 @@ import panel from './panel';
 import scrollpanel from './scrollpanel';
 import splitter from './splitter';
 import stepper from './stepper';
-import tabview from './tabview';
+import tabs from './tabs';
 import toolbar from './toolbar';
 import confirmpopup from './confirmpopup';
+import confirmdialog from './confirmdialog';
 import dialog from './dialog';
-import overlaypanel from './overlaypanel';
-import sidebar from './sidebar';
+import drawer from './drawer';
+import popover from './popover';
 import tooltip from './tooltip';
 import fileupload from './fileupload';
 import breadcrumb from './breadcrumb';
@@ -63,18 +62,15 @@ import menu from './menu';
 import menubar from './menubar';
 import megamenu from './megamenu';
 import panelmenu from './panelmenu';
-import steps from './steps';
 import tabmenu from './tabmenu';
 import tieredmenu from './tieredmenu';
 import message from './message';
-import inlinemessage from './inlinemessage';
 import toast from './toast';
 import carousel from './carousel';
 import galleria from './galleria';
 import image from './image';
 import avatar from './avatar';
 import badge from './badge';
-import badgedirective from './badgedirective';
 import blockui from './blockui';
 import chip from './chip';
 import inplace from './inplace';
@@ -91,16 +87,13 @@ export default {
     global,
     directives: {
         tooltip,
-        badgedirective,
         ripple
     },
     autocomplete,
-    calendar,
     cascadeselect,
     checkbox,
-    chips,
     colorpicker,
-    dropdown,
+    datepicker,
     floatlabel,
     iconfield,
     inputgroup,
@@ -108,7 +101,6 @@ export default {
     inputgroupaddon,
     inputmask,
     inputnumber,
-    inputswitch,
     inputtext,
     knob,
     listbox,
@@ -116,12 +108,13 @@ export default {
     password,
     radiobutton,
     rating,
+    select,
     selectbutton,
     slider,
     textarea,
     togglebutton,
+    toggleswitch,
     treeselect,
-    tristatecheckbox,
     button,
     speeddial,
     splitbutton,
@@ -143,12 +136,13 @@ export default {
     scrollpanel,
     splitter,
     stepper,
-    tabview,
+    tabs,
     toolbar,
     confirmpopup,
+    confirmdialog,
     dialog,
-    overlaypanel,
-    sidebar,
+    drawer,
+    popover,
     fileupload,
     breadcrumb,
     contextmenu,
@@ -157,11 +151,9 @@ export default {
     menubar,
     megamenu,
     panelmenu,
-    steps,
     tabmenu,
     tieredmenu,
     message,
-    inlinemessage,
     toast,
     carousel,
     galleria,
