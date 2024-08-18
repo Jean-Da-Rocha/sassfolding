@@ -23,7 +23,7 @@ const toggle = (event: Event) => profileOverlayForDesktop.value.toggle(event);
       <span>{{ user?.name }}</span>
     </div>
 
-    <PrimeVuePopover ref="profileOverlayForDesktop">
+    <PrimeVuePopover class="ml-5 w-full max-w-[200px]" ref="profileOverlayForDesktop">
       <div class="w-full">
         <RouterLink
           :href="route('profile')"
