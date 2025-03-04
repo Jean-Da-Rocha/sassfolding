@@ -100,14 +100,6 @@ useHead({ title: 'Sign Up' });
             {{ form.errors.password_confirmation }}
           </div>
         </div>
-        <div class="flex items-center justify-between">
-          <RouterLink
-            :href="route('login')"
-            class="text-sm font-medium text-primary-500 hover:text-primary-300 hover:underline"
-          >
-            Already registered?
-          </RouterLink>
-        </div>
         <div>
           <PrimeVueButton
             :disabled="form.processing"
@@ -117,6 +109,12 @@ useHead({ title: 'Sign Up' });
           />
         </div>
       </form>
+      <div class="text-center mt-8">
+        Already have an account?
+        <RouterLink :href="route('login')" class="text-primary-500 hover:text-primary-700">
+          Sign In
+        </RouterLink>
+      </div>
     </template>
   </PrimeVueCard>
 </template>

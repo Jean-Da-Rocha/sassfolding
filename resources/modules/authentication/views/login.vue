@@ -66,7 +66,7 @@ useHead({ title: 'Sign In' });
               <label for="remember">Remember me</label>
             </div>
           </div>
-          <RouterLink :href="route('password.request')" class="text-sm font-medium text-primary-500 hover:text-primary-300 hover:underline">
+          <RouterLink :href="route('password.request')" class="text-sm font-medium text-primary-500 hover:text-primary-700 hover:underline">
             Forgot your password?
           </RouterLink>
         </div>
@@ -74,11 +74,17 @@ useHead({ title: 'Sign In' });
           <PrimeVueButton
             :disabled="form.processing"
             class="w-full"
-            label="Log in"
+            label="Sign In"
             type="submit"
           />
         </div>
       </form>
+      <div class="text-center mt-8">
+        Don't have an account?
+        <RouterLink :href="route('register')" class="text-primary-500 hover:text-primary-700">
+          Sign Up
+        </RouterLink>
+      </div>
     </template>
   </PrimeVueCard>
 </template>

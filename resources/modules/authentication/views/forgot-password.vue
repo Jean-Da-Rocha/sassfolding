@@ -15,9 +15,9 @@ useHead({ title: 'Forgot Password' });
 <template layout="shared::guest">
   <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
-      <PrimeVueMessage v-if="flashStatus?.message" :life="5000" :sticky="false" class="-mt-3" severity="success">
+      <div v-if="flashStatus?.message" class="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
         {{ flashStatus.message }}
-      </PrimeVueMessage>
+      </div>
       <div class="mb-4 text-sm">
         Forgot your password? No problem. Just let us know your email address and we will email you a password reset
         link that will allow you to choose a new one.
@@ -51,6 +51,12 @@ useHead({ title: 'Forgot Password' });
           />
         </div>
       </form>
+      <div class="mt-8 text-center">
+        <span>Or, return to the</span>
+        <RouterLink class="text-primary-500 hover:text-primary-700" :href="route('login')">
+          login page
+        </RouterLink>
+      </div>
     </template>
   </PrimeVueCard>
 </template>
