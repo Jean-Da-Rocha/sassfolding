@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const sidebarIsOpen = defineModel<boolean>('sidebarIsOpen');
+const isSidebarForMobileDeviceOpened = defineModel<boolean>('isSidebarForMobileDeviceOpened');
 </script>
 
 <template>
-  <HeadlessTransitionRoot :show="sidebarIsOpen" as="template">
-    <HeadlessDialog as="div" class="relative z-50 lg:hidden" @close="sidebarIsOpen = false">
+  <HeadlessTransitionRoot :show="isSidebarForMobileDeviceOpened" as="template">
+    <HeadlessDialog as="div" class="relative z-50 lg:hidden" @close="isSidebarForMobileDeviceOpened = false">
       <HeadlessTransitionChild
         as="template"
         enter="transition-opacity ease-linear duration-300"
@@ -20,12 +20,13 @@ const sidebarIsOpen = defineModel<boolean>('sidebarIsOpen');
       <div class="fixed inset-0 flex">
         <HeadlessTransitionChild
           as="template"
-          enter="transition ease-in-out duration-300 transform"
-          enter-from="-translate-x-full"
-          enter-to="translate-x-0"
-          leave="transition ease-in-out duration-300 transform"
-          leave-from="translate-x-0"
-          leave-to="-translate-x-full"
+          class="opacity-0"
+          enter="ease-in-out duration-500"
+          enter-from="opacity-0"
+          enter-to="opacity-100"
+          leave="ease-in-out duration-500"
+          leave-from="opacity-100"
+          leave-to="opacity-0"
         >
           <HeadlessDialogPanel class="relative mr-16 flex w-full max-w-xs flex-1">
             <HeadlessTransitionChild
@@ -38,9 +39,9 @@ const sidebarIsOpen = defineModel<boolean>('sidebarIsOpen');
               leave-to="opacity-0"
             >
               <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
-                <button class="-m-2.5 p-2.5" type="button" @click="sidebarIsOpen = false">
+                <button class="-m-2.5 p-2.5" type="button" @click="isSidebarForMobileDeviceOpened = false">
                   <span class="sr-only">Close sidebar</span>
-                  <HeroiconsXMark aria-hidden="true" class="size-6 text-surface-700 dark:text-surface-0/80" />
+                  <HeroiconsXMark aria-hidden="true" class="size-6 text-white dark:text-surface-0/80 hover:cursor-pointer" />
                 </button>
               </div>
             </HeadlessTransitionChild>
