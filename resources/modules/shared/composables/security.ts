@@ -1,14 +1,9 @@
-import type { ComputedRef } from '@vue/runtime-core';
-
 export function useSecurity(): {
   isUserAuthenticated: ComputedRef<boolean>;
   user: ComputedRef<App.Data.UserData | null>;
 } {
-  const user = useProperty('security.user');
-  const isUserAuthenticated = computed(() => Boolean(user.value));
+  const user = useProperty<App.Data.UserData | null>('security.user');
+  const isUserAuthenticated = computed<boolean>(() => Boolean(user.value));
 
-  return {
-    isUserAuthenticated,
-    user,
-  };
+  return { isUserAuthenticated, user };
 }

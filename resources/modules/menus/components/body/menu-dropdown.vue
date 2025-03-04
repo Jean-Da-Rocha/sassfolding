@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{ title: string }>();
 
-const dropdownMenuIsCollapsed = ref<boolean>(true);
+const isDropdownMenuCollapsed = ref<boolean>(true);
 </script>
 
 <template>
@@ -10,13 +10,13 @@ const dropdownMenuIsCollapsed = ref<boolean>(true);
       <li>
         <div
           class="flex cursor-pointer items-center justify-between rounded-md p-3 text-surface-700 hover:bg-surface-100 dark:text-surface-0/80 dark:hover:bg-surface-700"
-          @click="() => dropdownMenuIsCollapsed = !dropdownMenuIsCollapsed"
+          @click="() => isDropdownMenuCollapsed = !isDropdownMenuCollapsed"
         >
           <h2 class="text-sm font-bold uppercase">
             {{ title }}
           </h2>
           <HeroiconsChevronDown
-            :class="{ 'rotate-180': dropdownMenuIsCollapsed }"
+            :class="{ 'rotate-180': isDropdownMenuCollapsed }"
             class="transform transition-transform duration-200"
           />
         </div>
@@ -29,8 +29,8 @@ const dropdownMenuIsCollapsed = ref<boolean>(true);
           leave-to-class="scale-y-0 opacity-0"
         >
           <div
-            v-show="dropdownMenuIsCollapsed"
-            class="max-h-40 overflow-hidden"
+            v-show="isDropdownMenuCollapsed"
+            class="overflow-hidden"
           >
             <slot />
           </div>
