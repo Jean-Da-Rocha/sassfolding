@@ -1,5 +1,8 @@
 <script setup lang="ts">
 const isSidebarForMobileDeviceOpened = ref<boolean>(false);
+const darkMode = useDark();
+
+useToggle(darkMode);
 </script>
 
 <template>

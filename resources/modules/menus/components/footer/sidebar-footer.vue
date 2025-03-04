@@ -14,15 +14,11 @@ const toggleProfileOverlay = (event: Event) => profileOverlay.value?.toggle(even
     <div>
       <hr class="border-surface-300 dark:border-surface-700 mx-3 mb-3">
       <div
-        class="m-4 flex cursor-pointer items-center justify-center gap-2 rounded-sm p-2 text-sm text-surface-700 transition-colors duration-150 hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-800"
+        class="m-4 flex cursor-pointer items-center gap-2 rounded-sm p-2 text-sm text-surface-700 transition-colors duration-150 hover:bg-surface-100 dark:text-surface-0/80 dark:hover:bg-surface-700"
         @click="toggleProfileOverlay"
       >
-        <span
-          class="flex size-8 items-center justify-center rounded-full bg-surface-200 text-[0.625rem] font-medium text-surface-700 dark:bg-surface-900 dark:text-surface-0/80"
-        >
-          {{ getInitials(user?.name) }}
-        </span>
-        <span class="mr-8">{{ user?.name }}</span>
+        <PrimeVueAvatar :label="getInitials(user?.name)" shape="circle" />
+        <span>{{ user?.name }}</span>
       </div>
     </div>
 
