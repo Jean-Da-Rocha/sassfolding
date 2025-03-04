@@ -20,10 +20,10 @@ useHead({ title: 'Verify Email' });
         we just emailed to you? If you didn't receive the email, we will gladly send you another.
       </div>
 
-      <div class="mb-4 text-sm font-medium text-green-600 dark:text-green-400" v-if="isVerificationLinkSent">
+      <div v-if="isVerificationLinkSent" class="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
         A new verification link has been sent to the email address you provided during registration.
       </div>
-      <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">
+      <form class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
         <div>
           <PrimeVueButton
             :disabled="form.processing"

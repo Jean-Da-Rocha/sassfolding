@@ -32,7 +32,7 @@ function redirectBackToPreviousUrl() {
         </p>
       </div>
       <div class="mt-6">
-        <Button @click="redirectBackToPreviousUrl" label="Go back" severity="info" />
+        <Button label="Go back" severity="info" @click="redirectBackToPreviousUrl" />
       </div>
     </div>
   </div>

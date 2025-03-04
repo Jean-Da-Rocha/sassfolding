@@ -1,60 +1,43 @@
-/**
-* This injects Tailwind's base styles and any base styles registered by
-* plugins.
-*/
-@tailwind base;
+@import 'tailwindcss/theme.css' layer(tailwind-theme);
+@import "tailwindcss/preflight.css" layer(tailwind-base);
+@import 'tailwindcss/utilities.css' layer(tailwind-utilities);
+@import '../assets/primevue/tailwind.css' layer(primevue);
 
-/**
- * This injects Tailwind's component classes and any component classes
- * registered by plugins.
- */
-@tailwind components;
+@layer tailwind-theme, tailwind-base, primevue, tailwind-utilities;
 
-/**
- * This injects Tailwind's utility classes and any utility classes registered
- * by plugins.
- */
-@tailwind utilities;
+@plugin 'tailwindcss-primeui';
 
-/**
- * Use this directive to control where Tailwind injects the hover, focus,
- * responsive, dark mode, and other variants of each class.
- *
- * If omitted, Tailwind will append these classes to the very end of
- * your stylesheet by default.
- */
-@tailwind variants;
-
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Primary and Surface Palettes */
 :root {
-    --p-primary-50: var(--p-surface-50);
-    --p-primary-100: var(--p-surface-100);
-    --p-primary-200: var(--p-surface-200);
-    --p-primary-300: var(--p-surface-300);
-    --p-primary-400: var(--p-surface-400);
-    --p-primary-500: var(--p-surface-500);
-    --p-primary-600: var(--p-surface-600);
-    --p-primary-700: var(--p-surface-700);
-    --p-primary-800: var(--p-surface-800);
-    --p-primary-900: var(--p-surface-900);
-    --p-primary-950: var(--p-surface-950);
+    --p-primary-50: var(--color-blue-50);
+    --p-primary-100: var(--color-blue-100);
+    --p-primary-200: var(--color-blue-200);
+    --p-primary-300: var(--color-blue-300);
+    --p-primary-400: var(--color-blue-400);
+    --p-primary-500: var(--color-blue-500);
+    --p-primary-600: var(--color-blue-600);
+    --p-primary-700: var(--color-blue-700);
+    --p-primary-800: var(--color-blue-800);
+    --p-primary-900: var(--color-blue-900);
+    --p-primary-950: var(--color-blue-950);
     --p-surface-0: #ffffff;
-    --p-surface-50: #f8fafc;
-    --p-surface-100: #f1f5f9;
-    --p-surface-200: #e2e8f0;
-    --p-surface-300: #cbd5e1;
-    --p-surface-400: #94a3b8;
-    --p-surface-500: #64748b;
-    --p-surface-600: #475569;
-    --p-surface-700: #334155;
-    --p-surface-800: #1e293b;
-    --p-surface-900: #0f172a;
-    --p-surface-950: #020617;
+    --p-surface-50: var(--color-zinc-50);
+    --p-surface-100: var(--color-zinc-100);
+    --p-surface-200: var(--color-zinc-200);
+    --p-surface-300: var(--color-zinc-300);
+    --p-surface-400: var(--color-zinc-400);
+    --p-surface-500: var(--color-zinc-500);
+    --p-surface-600: var(--color-zinc-600);
+    --p-surface-700: var(--color-zinc-700);
+    --p-surface-800: var(--color-zinc-800);
+    --p-surface-900: var(--color-zinc-900);
+    --p-surface-950: var(--color-zinc-950);
     --p-content-border-radius: 6px;
 }
 
-/* Light Mode */
+/* Light */
 :root {
     --p-primary-color: var(--p-primary-500);
     --p-primary-contrast-color: var(--p-surface-0);
@@ -72,3 +55,33 @@
     --p-text-muted-color: var(--p-surface-500);
     --p-text-hover-muted-color: var(--p-surface-600);
 }
+
+/*
+ * Dark Mode
+ * Defaults to system, change the selector to match the darkMode in tailwind.config.
+ * For example;
+ * darkMode: ['selector', '[class*="app-dark"]']
+ * should be;
+ * :root[class="app-dark"] {
+*/
+@media (prefers-color-scheme: dark) {
+    :root[class*="dark"] {
+        --p-primary-color: var(--p-primary-400);
+        --p-primary-contrast-color: var(--p-surface-900);
+        --p-primary-hover-color: var(--p-primary-300);
+        --p-primary-active-color: var(--p-primary-200);
+        --p-content-border-color: var(--p-surface-700);
+        --p-content-hover-background: var(--p-surface-800);
+        --p-content-hover-color: var(--p-surface-0);
+        --p-highlight-background: color-mix(in srgb, var(--p-primary-400), transparent 84%);
+        --p-highlight-color: rgba(255, 255, 255, 0.87);
+        --p-highlight-focus-background: color-mix(in srgb, var(--p-primary-400), transparent 76%);
+        --p-highlight-focus-color: rgba(255, 255, 255, 0.87);
+        --p-text-color: var(--p-surface-0);
+        --p-text-hover-color: var(--p-surface-0);
+        --p-text-muted-color: var(--p-surface-400);
+        --p-text-hover-muted-color: var(--p-surface-300);
+    }
+}
+
+

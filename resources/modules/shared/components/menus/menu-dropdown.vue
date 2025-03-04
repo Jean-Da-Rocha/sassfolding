@@ -9,8 +9,8 @@ const dropdownMenuIsCollapsed = ref<boolean>(true);
     <ul class="m-0 list-none px-4">
       <li>
         <div
-          @click="() => dropdownMenuIsCollapsed = !dropdownMenuIsCollapsed"
           class="flex cursor-pointer items-center justify-between rounded-md p-3 text-surface-700 hover:bg-surface-100 dark:text-surface-0/80 dark:hover:bg-surface-700"
+          @click="() => dropdownMenuIsCollapsed = !dropdownMenuIsCollapsed"
         >
           <h2 class="text-sm font-bold uppercase">
             {{ title }}
@@ -29,8 +29,8 @@ const dropdownMenuIsCollapsed = ref<boolean>(true);
           leave-to-class="scale-y-0 opacity-0"
         >
           <div
-            class="max-h-40 overflow-hidden"
             v-show="dropdownMenuIsCollapsed"
+            class="max-h-40 overflow-hidden"
           >
             <slot />
           </div>

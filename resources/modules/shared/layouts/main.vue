@@ -3,7 +3,7 @@ const sidebarIsOpen = ref<boolean>(false);
 </script>
 
 <template>
-  <SidebarTransition v-model:sidebarIsOpen="sidebarIsOpen">
+  <SidebarTransition v-model:sidebar-is-open="sidebarIsOpen">
     <!-- Responsive sidebar for mobile devices -->
     <Sidebar />
   </SidebarTransition>
@@ -14,7 +14,7 @@ const sidebarIsOpen = ref<boolean>(false);
   </div>
 
   <!-- Navbar visible only for mobile devices -->
-  <Navbar v-model:sidebarIsOpen="sidebarIsOpen" />
+  <Navbar v-model:sidebar-is-open="sidebarIsOpen" />
 
   <main class="py-10 lg:pl-72">
     <div class="px-4 sm:px-6 lg:px-8">

@@ -20,10 +20,10 @@ const form = useForm<{ email?: string; name?: string }>({
 <template>
   <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
-      <PrimeVueMessage :life="5000" :sticky="false" class="-mt-3" severity="success" v-if="flashStatus?.message === 'profile-information-updated'">
+      <PrimeVueMessage v-if="flashStatus?.message === 'profile-information-updated'" :life="5000" :sticky="false" class="-mt-3" severity="success">
         Profile successfully updated
       </PrimeVueMessage>
-      <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">
+      <form class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
         <div>
           <label
             class="mb-2 block text-sm font-medium"
@@ -32,14 +32,14 @@ const form = useForm<{ email?: string; name?: string }>({
             Email
           </label>
           <PrimeVueInputText
+            id="email"
+            v-model="form.fields.email"
             :invalid="form.errors.hasOwnProperty('email')"
             autofocus
             class="w-full"
-            id="email"
             type="text"
-            v-model="form.fields.email"
           />
-          <div class="mt-2 text-red-500" v-if="form.errors.email">
+          <div v-if="form.errors.email" class="mt-2 text-red-500">
             {{ form.errors.email }}
           </div>
         </div>
@@ -51,14 +51,14 @@ const form = useForm<{ email?: string; name?: string }>({
             Name
           </label>
           <PrimeVueInputText
+            id="name"
+            v-model="form.fields.name"
             :invalid="form.errors.hasOwnProperty('name')"
             autofocus
             class="w-full"
-            id="name"
             type="text"
-            v-model="form.fields.name"
           />
-          <div class="mt-2 text-red-500" v-if="form.errors.name">
+          <div v-if="form.errors.name" class="mt-2 text-red-500">
             {{ form.errors.name }}
           </div>
         </div>

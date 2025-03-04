@@ -17,12 +17,12 @@ const form = useForm<{ current_password: string; password: string; password_conf
   <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
       <PrimeVueMessage
-        :life="5000" :sticky="false" class="-mt-3" severity="success"
-        v-if="flashStatus?.message === 'password-updated'"
+        v-if="flashStatus?.message === 'password-updated'" :life="5000" :sticky="false" class="-mt-3"
+        severity="success"
       >
         Password successfully updated
       </PrimeVueMessage>
-      <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">
+      <form class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
         <div>
           <label
             class="mb-2 block text-sm font-medium"
@@ -31,17 +31,17 @@ const form = useForm<{ current_password: string; password: string; password_conf
             Current password
           </label>
           <PrimeVuePassword
+            id="current_password"
+            v-model="form.fields.current_password"
             :feedback="false"
             :input-props="{ autocomplete: 'false' }"
             :invalid="form.errors.hasOwnProperty('current_password')"
             class="w-full"
             for="current_password"
-            id="current_password"
             input-class="w-full"
             toggle-mask
-            v-model="form.fields.current_password"
           />
-          <div class="mt-2 text-red-500" v-if="form.errors.current_password">
+          <div v-if="form.errors.current_password" class="mt-2 text-red-500">
             {{ form.errors.current_password }}
           </div>
         </div>
@@ -53,17 +53,17 @@ const form = useForm<{ current_password: string; password: string; password_conf
             New Password
           </label>
           <PrimeVuePassword
+            id="password"
+            v-model="form.fields.password"
             :feedback="false"
             :input-props="{ autocomplete: 'false' }"
             :invalid="form.errors.hasOwnProperty('password')"
             class="w-full"
             for="password"
-            id="password"
             input-class="w-full"
             toggle-mask
-            v-model="form.fields.password"
           />
-          <div class="mt-2 text-red-500" v-if="form.errors.password">
+          <div v-if="form.errors.password" class="mt-2 text-red-500">
             {{ form.errors.password }}
           </div>
         </div>
@@ -75,17 +75,17 @@ const form = useForm<{ current_password: string; password: string; password_conf
             Confirm Password
           </label>
           <PrimeVuePassword
+            id="password_confirmation"
+            v-model="form.fields.password_confirmation"
             :feedback="false"
             :input-props="{ autocomplete: 'false' }"
             :invalid="form.errors.hasOwnProperty('password_confirmation')"
             class="w-full"
             for="password_confirmation"
-            id="password_confirmation"
             input-class="w-full"
             toggle-mask
-            v-model="form.fields.password_confirmation"
           />
-          <div class="mt-2 text-red-500" v-if="form.errors.password_confirmation">
+          <div v-if="form.errors.password_confirmation" class="mt-2 text-red-500">
             {{ form.errors.password_confirmation }}
           </div>
         </div>

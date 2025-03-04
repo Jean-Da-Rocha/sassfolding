@@ -15,12 +15,12 @@ defineProps<{ isActive?: boolean; link: string }>();
       class="flex cursor-pointer items-center rounded-md p-3 transition-colors duration-200 "
     >
       <span
-        class="mr-2 flex size-6 items-center justify-center rounded-full border bg-gray-50 text-[0.625rem] font-medium"
         v-if="$slots.initials"
+        class="mr-2 flex size-6 items-center justify-center rounded-full border bg-gray-50 text-[0.625rem] font-medium"
       >
         <slot name="initials" />
       </span>
-      <span class="mr-2 size-6 shrink-0" v-if="$slots.icon">
+      <span v-if="$slots.icon" class="mr-2 size-6 shrink-0">
         <slot name="icon" />
       </span>
       <span class="text-sm">
