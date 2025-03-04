@@ -19,7 +19,7 @@ const { current } = useRoute();
     >
       <span
         v-if="menuItem.initial && !menuItem.icon"
-        class="mr-2 flex size-6 items-center justify-center rounded-full border bg-gray-50 text-[0.625rem] font-medium text-surface-700"
+        class="flex size-6 mr-2 items-center justify-center rounded-full bg-surface-200 text-[0.625rem] font-medium text-surface-700 dark:bg-surface-900 dark:text-surface-0/80"
       >
         {{ menuItem.initial }}
       </span>
