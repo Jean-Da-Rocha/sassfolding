@@ -14,7 +14,7 @@ const toggle = (event: Event) => profileOverlayForMobile.value.toggle(event);
   <nav
     class="sticky top-0 z-40 flex items-center gap-x-6 bg-surface-50 p-4 shadow-sm dark:bg-surface-900 sm:px-6 lg:hidden"
   >
-    <button @click="sidebarIsOpen = true" class="-m-2.5 p-2.5 lg:hidden" type="button">
+    <button class="-m-2.5 p-2.5 lg:hidden" type="button" @click="sidebarIsOpen = true">
       <span class="sr-only">Open sidebar</span>
       <HeroiconsBars3 aria-hidden="true" class="size-6 text-surface-700 dark:text-surface-0/80" />
     </button>
@@ -22,8 +22,8 @@ const toggle = (event: Event) => profileOverlayForMobile.value.toggle(event);
       Dashboard
     </div>
     <span
-      @click="(event: Event) => profileOverlayForMobile.toggle(event)"
       class="hover:cursor-pointer"
+      @click="(event: Event) => profileOverlayForMobile.toggle(event)"
     >
       <span class="sr-only">Your profile</span>
       <span
@@ -38,10 +38,10 @@ const toggle = (event: Event) => profileOverlayForMobile.value.toggle(event);
     <div class="w-full">
       <RouterLink
         :href="route('profile')"
-        @click="toggle"
         as="button"
         class="flex w-full items-center p-2 text-sm text-surface-700 hover:bg-surface-100 dark:text-surface-0/80 dark:hover:bg-surface-700"
         method="get"
+        @click="toggle"
       >
         <HeroiconsUser class="size-5" />
         <span class="mx-2 text-sm font-medium">Profile</span>

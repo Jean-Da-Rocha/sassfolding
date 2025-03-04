@@ -34,13 +34,13 @@ function generateUniqueIdentifier() {
 </script>
 
 <template>
-  <div :key="key" v-for="{ message, key, severity } in flashMessages">
-    <PrimeVueMessage :life="5000" :severity="severity" :sticky="false" v-if="message">
+  <div v-for="{ message, key, severity } in flashMessages" :key="key">
+    <PrimeVueMessage v-if="message" :life="5000" :severity="severity" :sticky="false">
       {{ message }}
     </PrimeVueMessage>
   </div>
 
-  <PrimeVueMessage :key="key" :life="5000" :sticky="false" severity="error" v-for="{ error, key } in validationErrors">
+  <PrimeVueMessage v-for="{ error, key } in validationErrors" :key="key" :life="5000" :sticky="false" severity="error">
     {{ error }}
   </PrimeVueMessage>
 </template>

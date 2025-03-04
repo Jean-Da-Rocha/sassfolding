@@ -21,7 +21,7 @@ useHead({ title: 'Reset Password' });
 <template layout="shared::guest">
   <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
-      <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">
+      <form class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
         <div>
           <label
             class="mb-2 block text-sm font-medium"
@@ -30,14 +30,14 @@ useHead({ title: 'Reset Password' });
             Email
           </label>
           <PrimeVueInputText
+            id="email"
+            v-model="form.fields.email"
             :invalid="form.errors.hasOwnProperty('email')"
             autofocus
             class="w-full"
-            id="email"
             type="text"
-            v-model="form.fields.email"
           />
-          <div class="mt-2 text-red-500" v-if="form.errors.email">
+          <div v-if="form.errors.email" class="mt-2 text-red-500">
             {{ form.errors.email }}
           </div>
         </div>
@@ -49,17 +49,17 @@ useHead({ title: 'Reset Password' });
             Password
           </label>
           <PrimeVuePassword
+            id="password"
+            v-model="form.fields.password"
             :feedback="false"
             :input-props="{ autocomplete: 'false' }"
             :invalid="form.errors.hasOwnProperty('password')"
             class="w-full"
             for="password"
-            id="password"
             input-class="w-full"
             toggle-mask
-            v-model="form.fields.password"
           />
-          <div class="mt-2 text-red-500" v-if="form.errors.password">
+          <div v-if="form.errors.password" class="mt-2 text-red-500">
             {{ form.errors.password }}
           </div>
         </div>
@@ -71,17 +71,17 @@ useHead({ title: 'Reset Password' });
             Confirm Password
           </label>
           <PrimeVuePassword
+            id="password_confirmation"
+            v-model="form.fields.password_confirmation"
             :feedback="false"
             :input-props="{ autocomplete: 'false' }"
             :invalid="form.errors.hasOwnProperty('password_confirmation')"
             class="w-full"
             for="password_confirmation"
-            id="password_confirmation"
             input-class="w-full"
             toggle-mask
-            v-model="form.fields.password_confirmation"
           />
-          <div class="mt-2 text-red-500" v-if="form.errors.password_confirmation">
+          <div v-if="form.errors.password_confirmation" class="mt-2 text-red-500">
             {{ form.errors.password_confirmation }}
           </div>
         </div>

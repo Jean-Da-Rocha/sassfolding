@@ -15,7 +15,7 @@ useHead({ title: 'Sign In' });
 <template layout="shared::guest">
   <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
-      <form @submit.prevent="form.submit" class="space-y-4 md:space-y-6">
+      <form class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
         <div>
           <label
             class="mb-2 block text-sm font-medium"
@@ -24,14 +24,14 @@ useHead({ title: 'Sign In' });
             Email
           </label>
           <PrimeVueInputText
+            id="email"
+            v-model="form.fields.email"
             :invalid="form.errors.hasOwnProperty('email')"
             autofocus
             class="w-full"
-            id="email"
             type="text"
-            v-model="form.fields.email"
           />
-          <div class="mt-2 text-red-500" v-if="form.errors.email">
+          <div v-if="form.errors.email" class="mt-2 text-red-500">
             {{ form.errors.email }}
           </div>
         </div>
@@ -43,30 +43,30 @@ useHead({ title: 'Sign In' });
             Password
           </label>
           <PrimeVuePassword
+            id="password"
+            v-model="form.fields.password"
             :feedback="false"
             :input-props="{ autocomplete: 'false' }"
             :invalid="form.errors.hasOwnProperty('password')"
             class="w-full"
             for="password"
-            id="password"
             input-class="w-full"
             toggle-mask
-            v-model="form.fields.password"
           />
-          <div class="mt-2 text-red-500" v-if="form.errors.password">
+          <div v-if="form.errors.password" class="mt-2 text-red-500">
             {{ form.errors.password }}
           </div>
         </div>
         <div class="flex items-center justify-between">
           <div class="flex items-start">
             <div class="flex h-5 items-center">
-              <PrimeVueCheckbox :binary="true" id="remember" v-model="form.fields.remember" />
+              <PrimeVueCheckbox id="remember" v-model="form.fields.remember" :binary="true" />
             </div>
             <div class="ml-3 text-sm">
               <label for="remember">Remember me</label>
             </div>
           </div>
-          <RouterLink :href="route('password.request')" class="text-sm font-medium text-primary-500 hover:text-primary-300 hover:underline">
+          <RouterLink :href="route('password.request')" class="text-sm font-medium text-primary-500 hover:text-primary-700 hover:underline">
             Forgot your password?
           </RouterLink>
         </div>
@@ -74,11 +74,17 @@ useHead({ title: 'Sign In' });
           <PrimeVueButton
             :disabled="form.processing"
             class="w-full"
-            label="Log in"
+            label="Sign In"
             type="submit"
           />
         </div>
       </form>
+      <div class="text-center mt-8">
+        Don't have an account?
+        <RouterLink :href="route('register')" class="text-primary-500 hover:text-primary-700">
+          Sign Up
+        </RouterLink>
+      </div>
     </template>
   </PrimeVueCard>
 </template>
