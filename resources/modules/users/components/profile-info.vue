@@ -1,11 +1,10 @@
 <script setup lang="ts">
-const props = defineProps<{ user: App.Data.UserData }>();
+const props = defineProps<{ user: App.Data.UserData | null }>();
 
 const form = useForm<{ email: string; name: string }>({
-  errorBag: 'updateProfileInformation',
   fields: {
-    email: props.user.email,
-    name: props.user.name,
+    email: props.user?.email ?? '',
+    name: props.user?.name ?? '',
   },
   method: 'PUT',
   preserveState: false,

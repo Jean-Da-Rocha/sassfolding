@@ -27,7 +27,7 @@ const toggleProfileOverlay = (event: Event) => profileOverlay.value?.toggle(even
         <RouterLink
           :href="route('profile')"
           as="button"
-          class="flex w-full items-center p-2 text-sm text-surface-700 hover:bg-surface-100 dark:text-surface-0/80 dark:hover:bg-surface-700"
+          class="cursor-pointer flex w-full items-center p-2 text-sm text-surface-700 hover:bg-surface-100 dark:text-surface-0/80 dark:hover:bg-surface-700"
           method="get"
           @click="toggleProfileOverlay"
         >
@@ -37,7 +37,7 @@ const toggleProfileOverlay = (event: Event) => profileOverlay.value?.toggle(even
         <RouterLink
           :href="route('logout')"
           as="button"
-          class="flex w-full items-center p-2 text-sm text-surface-700 hover:bg-surface-100 dark:text-surface-0/80 dark:hover:bg-surface-700"
+          class="cursor-pointer flex w-full items-center p-2 text-sm text-surface-700 hover:bg-surface-100 dark:text-surface-0/80 dark:hover:bg-surface-700"
           method="post"
         >
           <HeroiconsArrowLeftOnRectangle class="size-5" />

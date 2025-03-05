@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const flashStatus = useProperty('flash.status');
-
 const form = useForm<{ email: string }>({
   fields: {
     email: '',
@@ -15,9 +13,7 @@ useHead({ title: 'Forgot Password' });
 <template layout="shared::guest">
   <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
-      <div v-if="flashStatus?.message" class="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
-        {{ flashStatus.message }}
-      </div>
+      <AlertMessage />
       <div class="mb-4 text-sm">
         Forgot your password? No problem. Just let us know your email address and we will email you a password reset
         link that will allow you to choose a new one.

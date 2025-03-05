@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const form = useForm<{ current_password: string; password: string; password_confirmation: string }>({
-  errorBag: 'updatePassword',
   fields: {
     current_password: '',
     password: '',

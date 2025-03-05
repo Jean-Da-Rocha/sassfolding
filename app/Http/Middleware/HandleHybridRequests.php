@@ -10,7 +10,7 @@ use App\Data\RouteData;
 use App\Data\SecurityData;
 use App\Data\SharedData;
 use App\Data\UserData;
-use App\Enums\FlashMessage;
+use App\Enums\FlashMessageEnum;
 use Hybridly\Http\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,26 +26,22 @@ class HandleHybridRequests extends Middleware
     {
         return new SharedData(
             flash: new FlashData(
-                status: new FlashMessageData(
-                    message: $request->session()->get(FlashMessage::Status->value),
-                    severity: FlashMessage::Status->value
-                ),
                 messages: [
                     new FlashMessageData(
-                        message: $request->session()->get(FlashMessage::Error->value),
-                        severity: FlashMessage::Error->value,
+                        message: $request->session()->get(FlashMessageEnum::Error->value),
+                        severity: FlashMessageEnum::Error->value,
                     ),
                     new FlashMessageData(
-                        message: $request->session()->get(FlashMessage::Info->value),
-                        severity: FlashMessage::Info->value,
+                        message: $request->session()->get(FlashMessageEnum::Info->value),
+                        severity: FlashMessageEnum::Info->value,
                     ),
                     new FlashMessageData(
-                        message: $request->session()->get(FlashMessage::Success->value),
-                        severity: FlashMessage::Success->value
+                        message: $request->session()->get(FlashMessageEnum::Success->value),
+                        severity: FlashMessageEnum::Success->value
                     ),
                     new FlashMessageData(
-                        message: $request->session()->get(FlashMessage::Warning->value),
-                        severity: FlashMessage::Warning->value,
+                        message: $request->session()->get(FlashMessageEnum::Warning->value),
+                        severity: FlashMessageEnum::Warning->value,
                     ),
                 ],
             ),
