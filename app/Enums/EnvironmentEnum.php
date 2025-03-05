@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum Environment: string
+enum EnvironmentEnum: string
 {
     case Local = 'local';
     case Production = 'production';

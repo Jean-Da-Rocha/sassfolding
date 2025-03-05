@@ -1,46 +1,50 @@
 <script setup lang="ts">
-function useFlashMessages() {
+export type FlashMessageReturnType = Pick<App.Data.FlashMessageData, 'message' | 'severity'> & {
+  key: number;
+};
+
+export type ValidationErrorReturnType = {
+  error: string | string[];
+  key: number;
+};
+
+function useFlashMessages(): FlashMessageReturnType[] {
   const { flash } = useProperties();
 
-  return flash?.messages.map(flashMessage => ({
-    key: generateUniqueIdentifier(),
+  return flash?.messages.map((flashMessage: App.Data.FlashMessageData) => ({
+    key: crypto.randomUUID(),
     message: flashMessage.message,
     severity: flashMessage.severity,
   })) || [];
 }
 
-function useValidationErrors() {
+function useValidationErrors(): ValidationErrorReturnType[] {
   const { errors } = useProperties();
 
-  // Check if the errors object has a custom Laravel validation bag (i.e 'updatePassword').
-  const hasCustomValidationBag = Object.values(errors).every(error => typeof error === 'object' && error !== null);
-
-  const errorValues = hasCustomValidationBag
-    ? Object.values(errors).flatMap(errorObject => Object.values(errorObject))
-    : Object.values(errors);
-
-  return errorValues.map(error => ({
+  return Object.values(errors).map((error: string[]) => ({
     error,
-    key: generateUniqueIdentifier(),
+    key: crypto.randomUUID(),
   }));
 }
 
-const flashMessages = computed(useFlashMessages);
-const validationErrors = computed(useValidationErrors);
-
-function generateUniqueIdentifier() {
-  return Math.floor(Date.now() * Math.random());
-}
+const flashMessages = computed<FlashMessageReturnType[]>(useFlashMessages);
+const validationErrors = computed<ValidationErrorReturnType[]>(useValidationErrors);
 </script>
 
 <template>
   <div v-for="{ message, key, severity } in flashMessages" :key="key">
-    <PrimeVueMessage v-if="message" :life="5000" :severity="severity" :sticky="false">
+    <PrimeVueMessage v-if="message" :life="5000" :severity="severity" :sticky="false" class="mb-5">
       {{ message }}
     </PrimeVueMessage>
   </div>
 
-  <PrimeVueMessage v-for="{ error, key } in validationErrors" :key="key" :life="5000" :sticky="false" severity="error">
+  <PrimeVueMessage
+    v-for="{ error, key } in validationErrors" :key="key"
+    :life="5000"
+    :sticky="false"
+    class="mb-5"
+    severity="error"
+  >
     {{ error }}
   </PrimeVueMessage>
 </template>

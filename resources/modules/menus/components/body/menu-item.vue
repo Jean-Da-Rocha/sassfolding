@@ -17,16 +17,11 @@ const { current } = useRoute();
       :href="menuItem.routeName ? route(menuItem.routeName) : '#'"
       class="flex cursor-pointer items-center rounded-md p-3 transition-colors duration-200 "
     >
-      <span
-        v-if="menuItem.initial && !menuItem.icon"
-        class="mr-2 flex size-6 items-center justify-center rounded-full border bg-gray-50 text-[0.625rem] font-medium text-surface-700"
-      >
-        {{ menuItem.initial }}
-      </span>
+      <PrimeVueAvatar v-if="menuItem.initial && !menuItem.icon" :label="menuItem.initial" shape="circle" size="normal" />
       <span v-if="menuItem.icon" class="-mb-1 size-6 shrink-0">
         <component :is="menuItem.icon" />
       </span>
-      <span class="text-sm">
+      <span class="text-sm ml-2">
         <slot />
       </span>
     </RouterLink>
