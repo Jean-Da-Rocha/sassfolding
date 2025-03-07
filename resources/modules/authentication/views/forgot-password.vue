@@ -18,7 +18,7 @@ useHead({ title: 'Forgot Password' });
         Forgot your password? No problem. Just let us know your email address and we will email you a password reset
         link that will allow you to choose a new one.
       </div>
-      <form class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
+      <form v-focustrap class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
         <div>
           <label
             class="mb-2 block text-sm font-medium"

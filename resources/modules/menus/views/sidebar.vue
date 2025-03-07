@@ -1,7 +1,7 @@
 <template>
   <SidebarLayout>
     <SidebarHeader>
-      My Logo
+      <span class="font-bold uppercase text-surface-700 dark:text-surface-0/80">Sassfolding</span>
     </SidebarHeader>
     <SidebarBody>
       <MenuDropdown

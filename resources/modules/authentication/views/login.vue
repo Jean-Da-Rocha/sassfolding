@@ -15,7 +15,7 @@ useHead({ title: 'Sign In' });
 <template layout="shared::guest">
   <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
-      <form class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
+      <form v-focustrap class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
         <div>
           <label
             class="mb-2 block text-sm font-medium"
