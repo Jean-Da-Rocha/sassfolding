@@ -9,6 +9,11 @@
     "prepare": "husky",
     "vue-tsc": "vue-tsc --noEmit"
   },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
     "@primevue/auto-import-resolver": "^4.3.1",
