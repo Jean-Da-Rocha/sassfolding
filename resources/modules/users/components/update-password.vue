@@ -26,7 +26,7 @@ const form = useForm<{ current_password: string; password: string; password_conf
           <form class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
             <div>
               <label
-                class="mb-2 block text-sm font-medium text-surface-700 dark:text-surface-0/80"
+                class="mb-2 block text-sm font-medium dark:text-surface-0"
                 for="current_password"
               >
                 Current password
@@ -48,7 +48,7 @@ const form = useForm<{ current_password: string; password: string; password_conf
             </div>
             <div>
               <label
-                class="mb-2 block text-sm font-medium text-surface-700 dark:text-surface-0/80"
+                class="mb-2 block text-sm font-medium dark:text-surface-0"
                 for="password"
               >
                 New Password
@@ -70,7 +70,7 @@ const form = useForm<{ current_password: string; password: string; password_conf
             </div>
             <div>
               <label
-                class="mb-2 block text-sm font-medium text-surface-700 dark:text-surface-0/80"
+                class="mb-2 block text-sm font-medium dark:text-surface-0"
                 for="password_confirmation"
               >
                 Confirm Password

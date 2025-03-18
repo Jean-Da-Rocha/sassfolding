@@ -1,5 +1,5 @@
 <template>
-  <nav class="mt-4 grow overflow-y-auto">
+  <nav>
     <slot />
   </nav>
 </template>

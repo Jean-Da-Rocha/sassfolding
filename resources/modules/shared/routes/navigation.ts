@@ -1,10 +1,8 @@
 import type { NavigationType } from '@/modules/menus/types/navigation-type';
 
-export const navigation: Record<string, NavigationType[]> = {
-  modules: [
-    { initial: 'M', navigationLinkName: 'Module 1' },
-    { initial: 'M', navigationLinkName: 'Module 2' },
-    { initial: 'M', navigationLinkName: 'Module 3' },
-    { initial: 'M', navigationLinkName: 'Module 4' },
-  ],
-};
+export const navigation: NavigationType[] = [
+  { icon: 'pi-calendar', navigationLinkName: 'Calendar' },
+  { icon: 'pi-search', navigationLinkName: 'Search' },
+  { icon: 'pi-users', navigationLinkName: 'Team' },
+  { icon: 'pi-cog', navigationLinkName: 'Settings' },
+];
