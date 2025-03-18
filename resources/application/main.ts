@@ -7,6 +7,7 @@ import FocusTrap from 'primevue/focustrap';
 import Tooltip from 'primevue/tooltip';
 import { initializeHybridly } from 'virtual:hybridly/config';
 
+import 'primeicons/primeicons.css';
 import './tailwind.css';
 
 initializeHybridly({
