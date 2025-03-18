@@ -1,21 +1,19 @@
 <script setup lang="ts">
 const darkMode = useDark();
-
 useToggle(darkMode);
 </script>
 
 <template>
-  <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col">
-    <Sidebar />
-  </div>
+  <div class="flex">
+    <Sidebar class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col" />
 
-  <!-- Navbar visible only for mobile devices -->
-  <!--  <Navbar /> -->
+    <div class="flex flex-1 flex-col">
+      <Navbar />
 
-  <main class="py-10 lg:pl-24">
-    <div class="px-4 sm:px-6 lg:px-8">
-      <AlertMessage />
-      <slot />
+      <main class="flex-1 py-10 sm:px-6 px-8 lg:pl-24">
+        <AlertMessage />
+        <slot />
+      </main>
     </div>
-  </main>
+  </div>
 </template>
