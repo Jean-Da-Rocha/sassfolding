@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Concerns;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Validation\Rules\Password;
 
 trait WithPasswordValidationRule
@@ -12,7 +11,7 @@ trait WithPasswordValidationRule
     /**
      * Get the validation rules used to validate passwords.
      *
-     * @return array<int, array|string|ValidationRule>
+     * @return array<int, Password|string>
      */
     protected function passwordRules(): array
     {
