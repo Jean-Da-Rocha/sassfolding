@@ -6,7 +6,6 @@ useHead({ title: 'User Profile' });
 
 <template layout="shared::main">
   <div class="grid gap-6">
-    <ToggleDarkMode />
     <ProfileInfo :user="user" />
     <UpdatePassword />
   </div>

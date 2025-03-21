@@ -1,7 +1,7 @@
 <template>
-  <aside class="h-screen w-full">
-    <div class="flex size-full flex-col bg-surface-0 dark:bg-surface-900">
-      <slot />
-    </div>
+  <aside
+    class="min-w-[5rem] w-auto bg-white dark:bg-surface-900 items-center py-5 space-y-6 border-r border-surface-300 dark:border-surface-700"
+  >
+    <slot />
   </aside>
 </template>

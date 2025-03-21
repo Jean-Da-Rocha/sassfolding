@@ -1,11 +1,11 @@
 <script setup lang="ts">
 export type FlashMessageReturnType = Pick<App.Data.FlashMessageData, 'message' | 'severity'> & {
-  key: number;
+  key: `${string}-${string}-${string}-${string}-${string}`;
 };
 
 export type ValidationErrorReturnType = {
   error: string | string[];
-  key: number;
+  key: `${string}-${string}-${string}-${string}-${string}`;
 };
 
 function useFlashMessages(): FlashMessageReturnType[] {

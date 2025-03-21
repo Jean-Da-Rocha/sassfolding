@@ -2,13 +2,9 @@ import type { RouteName } from 'hybridly';
 
 export type NavigationType = {
   /**
-   * Heroicon displayed on the left of the sidebar link.
+   * Prime icon displayed on the left of the sidebar link.
    */
-  icon?: Component;
-  /**
-   * Initials of the navigation link title. For instance: 'companies' → 'C'.
-   */
-  initial?: string;
+  icon: string;
   /**
    * The name of the navigation link.
    */

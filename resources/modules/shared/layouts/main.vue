@@ -1,28 +1,30 @@
 <script setup lang="ts">
-const isSidebarForMobileDeviceOpened = ref<boolean>(false);
 const darkMode = useDark();
-
 useToggle(darkMode);
+
+const isSidebarOpen = ref<boolean>(false);
 </script>
 
 <template>
-  <SidebarTransitionAnimation v-model:is-sidebar-for-mobile-device-opened="isSidebarForMobileDeviceOpened">
-    <!-- Responsive sidebar for mobile devices -->
-    <Sidebar />
-  </SidebarTransitionAnimation>
+  <div class="flex h-screen">
+    <Sidebar
+      class="lg:translate-x-0 fixed inset-y-0 z-30 flex flex-col transform transition-transform duration-300 ease-in-out"
+      :class="[isSidebarOpen ? 'translate-x-0' : '-translate-x-full']"
+    />
 
-  <!-- Static sidebar for desktop devices -->
-  <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-    <Sidebar />
-  </div>
+    <div
+      v-if="isSidebarOpen"
+      class="fixed inset-0 bg-black/50 z-20 lg:hidden transition-opacity"
+      @click="isSidebarOpen = false"
+    />
 
-  <!-- Navbar visible only for mobile devices -->
-  <Navbar v-model:is-sidebar-for-mobile-device-opened="isSidebarForMobileDeviceOpened" />
+    <div class="flex flex-1 flex-col">
+      <Navbar @toggle-sidebar="isSidebarOpen = !isSidebarOpen" />
 
-  <main class="py-10 lg:pl-72">
-    <div class="px-4 sm:px-6 lg:px-8">
-      <AlertMessage />
-      <slot />
+      <main class="flex-1 py-10 sm:px-6 px-8 lg:pl-24">
+        <AlertMessage />
+        <slot />
+      </main>
     </div>
-  </main>
+  </div>
 </template>

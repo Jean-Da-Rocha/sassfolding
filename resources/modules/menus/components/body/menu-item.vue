@@ -9,21 +9,16 @@ const { current } = useRoute();
 <template>
   <li>
     <RouterLink
+      href="#"
+      class="relative flex flex-col items-center justify-center w-16 h-16 hover:text-primary-600 dark:hover:text-primary-300"
       :class="[
-        menuItem.routeName === current
-          ? 'bg-highlight hover:bg-highlight-emphasis dark:bg-primary dark:text-primary-contrast dark:hover:bg-primary-emphasis'
-          : 'text-surface-700 hover:bg-surface-100 dark:text-surface-0/80 dark:hover:bg-surface-700',
+        (menuItem.routeName && menuItem.routeName === current)
+          ? 'text-primary dark:text-primary-400'
+          : 'dark:text-surface-0',
       ]"
-      :href="menuItem.routeName ? route(menuItem.routeName) : '#'"
-      class="flex cursor-pointer items-center rounded-md p-3 transition-colors duration-200 "
     >
-      <PrimeVueAvatar v-if="menuItem.initial && !menuItem.icon" :label="menuItem.initial" shape="circle" size="normal" />
-      <span v-if="menuItem.icon" class="-mb-1 size-6 shrink-0">
-        <component :is="menuItem.icon" />
-      </span>
-      <span class="text-sm ml-2">
-        <slot />
-      </span>
+      <span class="pi !text-xl" :class="menuItem.icon" />
+      <span class="text-xs mt-3 text-center break-words px-2">{{ menuItem.navigationLinkName }}</span>
     </RouterLink>
   </li>
 </template>
