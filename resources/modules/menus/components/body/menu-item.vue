@@ -9,7 +9,7 @@ const { current } = useRoute();
 <template>
   <li>
     <RouterLink
-      href="#"
+      :href="menuItem.routeName ? route(menuItem.routeName) : '#'"
       class="relative flex flex-col items-center justify-center w-16 h-16 hover:text-primary-600 dark:hover:text-primary-300"
       :class="[
         (menuItem.routeName && menuItem.routeName === current)

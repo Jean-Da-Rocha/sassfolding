@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\UserController;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
@@ -25,4 +26,5 @@ Route::middleware([RedirectIfAuthenticated::class])->group(function () {
 Route::middleware([Authenticate::class, EnsureEmailIsVerified::class])->group(function () {
     Route::get('/', fn () => to_route('profile'));
     Route::get('profile', fn () => hybridly('users::profile'))->name('profile');
+    Route::resource('users', UserController::class)->only(['index']);
 });
