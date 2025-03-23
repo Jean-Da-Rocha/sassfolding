@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Responses;
 
-use App\Enums\FlashMessageEnum;
+use App\Enums\FlashMessage;
 use Illuminate\Http\JsonResponse;
 use Laravel\Fortify\Contracts\EmailVerificationNotificationSentResponse as EmailVerificationNotificationSentResponseContract;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ class EmailVerificationNotificationSentResponse implements EmailVerificationNoti
         return $request->wantsJson()
             ? new JsonResponse('', Response::HTTP_ACCEPTED)
             : back()->with(
-                FlashMessageEnum::Success->value,
+                FlashMessage::Success->value,
                 'A new verification link has been sent to the email address you provided during registration.'
             );
     }

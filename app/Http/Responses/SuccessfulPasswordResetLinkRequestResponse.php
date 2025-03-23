@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Responses;
 
-use App\Enums\FlashMessageEnum;
+use App\Enums\FlashMessage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseContract;
@@ -16,6 +16,6 @@ class SuccessfulPasswordResetLinkRequestResponse implements PasswordResetRespons
     {
         return $request->wantsJson()
             ? new JsonResponse(['message' => trans('passwords.sent')], Response::HTTP_OK)
-            : back()->with(FlashMessageEnum::Success->value, trans('passwords.sent'));
+            : back()->with(FlashMessage::Success->value, trans('passwords.sent'));
     }
 }

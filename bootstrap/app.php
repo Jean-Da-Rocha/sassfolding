@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Enums\FlashMessageEnum;
+use App\Enums\FlashMessage;
 use App\Exceptions\CannotCreateModelException;
 use App\Exceptions\CannotDeleteModelException;
 use App\Exceptions\CannotUpdateModelException;
@@ -22,6 +22,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(
             function (CannotCreateModelException|CannotDeleteModelException|CannotUpdateModelException $exception) {
-                return back()->with(FlashMessageEnum::Warning->value, $exception->getMessage());
+                return back()->with(FlashMessage::Warning->value, $exception->getMessage());
             });
     })->create();

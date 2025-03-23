@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Responses;
 
-use App\Enums\FlashMessageEnum;
+use App\Enums\FlashMessage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Contracts\ProfileInformationUpdatedResponse as ProfileInformationUpdatedResponseContract;
@@ -16,6 +16,6 @@ class ProfileInformationUpdatedResponse implements ProfileInformationUpdatedResp
     {
         return $request->wantsJson()
             ? new JsonResponse('', Response::HTTP_OK)
-            : back()->with(FlashMessageEnum::Success->value, 'Profile Information Updated Successfully');
+            : back()->with(FlashMessage::Success->value, 'Profile Information Updated Successfully');
     }
 }
