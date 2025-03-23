@@ -1,9 +1,10 @@
-import type * as _hybridly_core from '@hybridly/core';
+import type { NavigationResponse } from 'hybridly';
 
 export type TableActionType = {
-  execute: () => Promise<_hybridly_core.NavigationResponse>;
+  execute: () => Promise<NavigationResponse>;
   label: string;
-  metadata: App.Tables.Data.ActionData;
-  type: string;
+  metadata: Record<string, any>;
   name: string;
+  style?: App.Tables.Data.ButtonStyleData;
+  type: string;
 };

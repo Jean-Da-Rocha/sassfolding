@@ -7,9 +7,9 @@ const datatable = useTable(props, 'table');
 
 const confirm = useConfirm();
 
-function confirmAction(action: DatatableActionType): void {
+function confirmDestructiveAction(route: string): void {
   confirm.require({
-    accept: () => action.execute(),
+    accept: () => router.delete(route),
     acceptClass: 'p-button-sm',
     acceptProps: {
       label: 'Delete',
@@ -25,13 +25,21 @@ function confirmAction(action: DatatableActionType): void {
   });
 }
 
-provide('confirmAction', confirmAction);
+const slots = useSlots();
+
+function tableHasActions(): boolean {
+  return datatable.inlineActions.length > 0
+    || datatable.bulkActions.length > 0
+    || ['edit-button', 'show-button', 'delete-button'].some(slotName => Boolean(slots[slotName]));
+}
 </script>
 
 <template>
   <PrimeVueConfirmDialog class="w-[30rem]" />
-
   <TableLayout>
+    <template #create-button>
+      <slot name="create-button" />
+    </template>
     <TableHeader>
       <HeaderRow>
         <HeaderCell v-for="column in datatable.columns" :key="column.name">
@@ -44,13 +52,13 @@ provide('confirmAction', confirmAction);
               class="ml-2 flex-none text-surface-700 dark:text-surface-0"
               @click="column.toggleSort({ direction: column.isSorting('asc') ? 'desc' : 'asc' })"
             >
-              <i v-if="column.isSorting('asc')" class="pi pi-sort-up size-5" />
-              <i v-else-if="column.isSorting('desc')" class="pi pi-sort-down size-5" />
-              <i v-else class="pi pi-sort size-5" />
+              <i v-if="column.isSorting('asc')" class="pi pi-sort-up mt-1" />
+              <i v-else-if="column.isSorting('desc')" class="pi pi-sort-down mt-1" />
+              <i v-else class="pi pi-sort mt-1" />
             </span>
           </template>
         </HeaderCell>
-        <HeaderCellAction v-if="datatable.inlineActions.length > 0 || datatable.bulkActions.length > 0">
+        <HeaderCellAction v-if="tableHasActions()">
           Actions
         </HeaderCellAction>
       </HeaderRow>
@@ -61,8 +69,11 @@ provide('confirmAction', confirmAction);
         <BodyCell v-for="column in datatable.columns" :key="column.name">
           {{ value(column) }}
         </BodyCell>
-        <BodyCellAction v-if="actions.length > 0">
-          <CallToAction v-for="action in actions" :key="action.name" :action="action" />
+        <BodyCellAction v-if="tableHasActions()">
+          <slot name="edit-button" :record-id="key" />
+          <slot name="show-button" :record-id="key" />
+          <slot name="delete-button" :confirm-destructive-action="confirmDestructiveAction" :record-id="key" />
+          <InlineAction v-for="action in actions" :key="action.name" :action="action" />
         </BodyCellAction>
       </BodyRow>
     </TableBody>
