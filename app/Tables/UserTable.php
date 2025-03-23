@@ -17,11 +17,6 @@ final class UserTable extends Table
 
     protected string $model = User::class;
 
-    protected function defineActions(): array
-    {
-        return [];
-    }
-
     /** @return array<array-key, TextColumn> */
     protected function defineColumns(): array
     {

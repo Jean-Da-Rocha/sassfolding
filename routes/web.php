@@ -26,5 +26,5 @@ Route::middleware([RedirectIfAuthenticated::class])->group(function () {
 Route::middleware([Authenticate::class, EnsureEmailIsVerified::class])->group(function () {
     Route::get('/', fn () => to_route('profile'));
     Route::get('profile', fn () => hybridly('users::profile'))->name('profile');
-    Route::resource('users', UserController::class)->only(['index']);
+    Route::resource('users', UserController::class);
 });
