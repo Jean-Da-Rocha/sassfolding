@@ -6,6 +6,8 @@ namespace App\Tables;
 
 use App\Models\User;
 use App\Tables\Concerns\HasPerPageLimitation;
+use Hybridly\Refining\Filters\Filter;
+use Hybridly\Refining\Group;
 use Hybridly\Refining\Sorts\Sort;
 use Hybridly\Tables\Columns\TextColumn;
 use Hybridly\Tables\Table;
@@ -41,7 +43,7 @@ final class UserTable extends Table
         return User::query()->select(['id', 'email', 'email_verified_at', 'name', 'created_at']);
     }
 
-    /** @return array<array-key, Sort> */
+    /** @return array<array-key, Group|Sort> */
     protected function defineRefiners(): array
     {
         return [
@@ -50,6 +52,10 @@ final class UserTable extends Table
             Sort::make('email_verified_at'),
             Sort::make('name'),
             Sort::make('created_at'),
+            Group::make([
+                Filter::make(property: 'email', alias: 'search')->loose(),
+                Filter::make(property: 'name', alias: 'search')->loose(),
+            ])->booleanMode('or'),
         ];
     }
 }

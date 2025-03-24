@@ -6,6 +6,14 @@
     <template #content>
       <div class="px-4 sm:px-6 lg:px-8">
         <div class="flex items-center">
+          <div class="mr-auto">
+            <PrimeVueInputGroup>
+              <PrimeVueInputGroupAddon>
+                <i class="pi pi-search" />
+              </PrimeVueInputGroupAddon>
+              <slot name="search-bar" />
+            </PrimeVueInputGroup>
+          </div>
           <div class="ml-auto">
             <slot name="create-button" />
           </div>

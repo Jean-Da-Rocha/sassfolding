@@ -32,6 +32,10 @@ function tableHasActions(): boolean {
     || datatable.bulkActions.length > 0
     || ['edit-button', 'show-button', 'delete-button'].some(slotName => Boolean(slots[slotName]));
 }
+
+const search = datatable.bindFilter<string>('search', {
+  transformUrl: { query: { page: undefined } },
+});
 </script>
 
 <template>
@@ -39,6 +43,15 @@ function tableHasActions(): boolean {
   <TableLayout>
     <template #create-button>
       <slot name="create-button" />
+    </template>
+    <template #search-bar>
+      <PrimeVueInputText
+        v-if="datatable.filters.length > 0"
+        v-model="search"
+        type="text"
+        size="small"
+        placeholder="Search"
+      />
     </template>
     <TableHeader>
       <HeaderRow>
