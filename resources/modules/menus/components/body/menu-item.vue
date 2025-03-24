@@ -8,6 +8,8 @@ const { current } = useRoute();
 
 function handleNavigation(): Promise<NavigationResponse> {
   if (!props.menuItem.routeName) {
+    // Since Hybridly always prepend the base url to our navigation,
+    // we just reload the router with the current url and with state preservation.
     return router.reload();
   }
 
