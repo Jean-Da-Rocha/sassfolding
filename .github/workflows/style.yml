@@ -12,7 +12,10 @@ jobs:
 
     steps:
       - name: Run Laravel Pint
-        run: ./vendor/bin/pint --test
+        run: php ./vendor/bin/pint --test
+
+      - name: Run PHPStan
+        run: php ./vendor/bin/phpstan analyze --memory-limit=2G
 
       - name: Run ESLint
         run: pnpm eslint . --max-warnings=0
