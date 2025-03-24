@@ -24,7 +24,6 @@ class UpdateUserProfileInformationAction implements UpdatesUserProfileInformatio
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-
             'email' => [
                 'required',
                 'string',

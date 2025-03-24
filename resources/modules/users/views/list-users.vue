@@ -14,9 +14,6 @@ useHead({ title: 'Users Listing' });
     <template #edit-button="{ recordId }">
       <EditButtonAction label="Edit this user" :route="route('users.edit', { user: recordId })" />
     </template>
-    <template #show-button="{ recordId }">
-      <ShowButtonAction label="View user details" :route="route('users.show', { user: recordId })" />
-    </template>
     <template #delete-button="{ confirmDestructiveAction, recordId }">
       <DeleteButtonAction
         label="Delete this user"
