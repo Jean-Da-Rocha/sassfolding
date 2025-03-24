@@ -1,0 +1,21 @@
+name: Code Style
+
+on: [push, pull_request]
+
+jobs:
+  setup:
+    uses: ./.github/workflows/setup.yml
+
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run Laravel Pint
+        run: ./vendor/bin/pint --test
+
+      - name: Run ESLint
+        run: pnpm eslint . --max-warnings=0
+
+      - name: Run vue-tsc
+        run: pnpm vue-tsc --noEmit
