@@ -6,11 +6,13 @@ const props = defineProps<{ menuItem: NavigationType }>();
 
 const { current } = useRoute();
 
+/**
+ * Reload the current page with state preservation to avoid losing applied filters,
+ * sorts, etc., due to Hybridly prefixing the navigation URL with the app's base URL.
+ */
 function handleNavigation(): Promise<NavigationResponse> {
   if (!props.menuItem.routeName) {
-    // Since Hybridly always prepend the base url to our navigation,
-    // we just reload the router with the current url and with state preservation.
-    return router.reload();
+    return router.reload({ preserveState: true });
   }
 
   return router.get(route(props.menuItem.routeName));
