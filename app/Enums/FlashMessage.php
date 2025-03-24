@@ -7,7 +7,7 @@ namespace App\Enums;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-enum FlashMessageEnum: string
+enum FlashMessage: string
 {
     case Error = 'error';
     case Info = 'info';

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-const darkMode = useDark();
-useToggle(darkMode);
+useToggle(useDark());
 
 const isSidebarOpen = ref<boolean>(false);
 </script>
@@ -21,7 +20,7 @@ const isSidebarOpen = ref<boolean>(false);
     <div class="flex flex-1 flex-col">
       <Navbar @toggle-sidebar="isSidebarOpen = !isSidebarOpen" />
 
-      <main class="flex-1 py-10 sm:px-6 px-8 lg:pl-24">
+      <main class="flex-1 py-10 sm:px-6 px-8 lg:pl-28">
         <AlertMessage />
         <slot />
       </main>

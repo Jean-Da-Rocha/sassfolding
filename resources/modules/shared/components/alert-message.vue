@@ -3,11 +3,6 @@ export type FlashMessageReturnType = Pick<App.Data.FlashMessageData, 'message' |
   key: `${string}-${string}-${string}-${string}-${string}`;
 };
 
-export type ValidationErrorReturnType = {
-  error: string | string[];
-  key: `${string}-${string}-${string}-${string}-${string}`;
-};
-
 function useFlashMessages(): FlashMessageReturnType[] {
   const { flash } = useProperties();
 
@@ -18,17 +13,7 @@ function useFlashMessages(): FlashMessageReturnType[] {
   })) || [];
 }
 
-function useValidationErrors(): ValidationErrorReturnType[] {
-  const { errors } = useProperties();
-
-  return Object.values(errors).map((error: string[]) => ({
-    error,
-    key: crypto.randomUUID(),
-  }));
-}
-
 const flashMessages = computed<FlashMessageReturnType[]>(useFlashMessages);
-const validationErrors = computed<ValidationErrorReturnType[]>(useValidationErrors);
 </script>
 
 <template>
@@ -37,14 +22,4 @@ const validationErrors = computed<ValidationErrorReturnType[]>(useValidationErro
       {{ message }}
     </PrimeVueMessage>
   </div>
-
-  <PrimeVueMessage
-    v-for="{ error, key } in validationErrors" :key="key"
-    :life="5000"
-    :sticky="false"
-    class="mb-5"
-    severity="error"
-  >
-    {{ error }}
-  </PrimeVueMessage>
 </template>
