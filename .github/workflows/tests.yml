@@ -3,11 +3,7 @@ name: Feature & Unit Tests
 on: [push, pull_request]
 
 jobs:
-  setup:
-    uses: ./.github/workflows/setup.yml
-
   test:
-    needs: setup
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -22,16 +18,14 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-
     steps:
+      - name: Setup
+        uses: ./.github/workflows/setup.yml
       - name: Setup environment
         run: cp .env.example .env
-
       - name: Generate application key
         run: php artisan key:generate
-
       - name: Run migrations
         run: php artisan migrate --force
-
       - name: Run tests
         run: php artisan test

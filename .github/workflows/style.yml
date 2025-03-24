@@ -4,12 +4,11 @@ on: [push, pull_request]
 
 jobs:
   lint:
-    name: Run Laravel Pint
+    name: Run Laravel Pint # TODO: change name
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - name: Setup
-        uses: ./.github/workflows/setup
+        uses: ./.github/workflows/setup.yml
       - name: Run Laravel Pint
         run: php ./vendor/bin/pint --test
       - name: Run PHPStan
