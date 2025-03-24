@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{ cancelRoute?: string }>();
+defineProps<{ cancelRoute?: string; isFormProcessing: boolean }>();
 </script>
 
 <template>
@@ -12,6 +12,6 @@ defineProps<{ cancelRoute?: string }>();
     >
       <PrimeVueButton label="Cancel" size="small" type="button" severity="contrast" class="mr-3" />
     </RouterLink>
-    <PrimeVueButton label="Submit" size="small" type="submit" />
+    <PrimeVueButton label="Submit" size="small" type="submit" :disabled="isFormProcessing" />
   </div>
 </template>
