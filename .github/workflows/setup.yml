@@ -30,9 +30,6 @@ jobs:
       - name: Install PHP dependencies
         run: composer install --prefer-dist --no-progress --no-interaction
 
-      - name: Verify Pint installation
-        run: composer show laravel/pint
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:

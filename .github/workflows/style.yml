@@ -3,22 +3,18 @@ name: Code Style
 on: [push, pull_request]
 
 jobs:
-  setup:
-    uses: ./.github/workflows/setup.yml
-
   lint:
-    needs: setup
+    name: Run Laravel Pint
     runs-on: ubuntu-latest
-
     steps:
+      - uses: actions/checkout@v4
+      - name: Setup
+        uses: ./.github/workflows/setup
       - name: Run Laravel Pint
         run: php ./vendor/bin/pint --test
-
       - name: Run PHPStan
         run: php ./vendor/bin/phpstan analyze --memory-limit=2G
-
       - name: Run ESLint
         run: pnpm eslint . --max-warnings=0
-
       - name: Run vue-tsc
         run: pnpm vue-tsc --noEmit
