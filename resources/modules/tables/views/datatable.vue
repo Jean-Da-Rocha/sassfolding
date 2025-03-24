@@ -25,6 +25,10 @@ function confirmDestructiveAction(route: string): void {
   });
 }
 
+const search = datatable.bindFilter<string>('search', {
+  transformUrl: { query: { page: undefined } },
+});
+
 const slots = useSlots();
 
 function tableHasActions(): boolean {
@@ -32,10 +36,6 @@ function tableHasActions(): boolean {
     || datatable.bulkActions.length > 0
     || ['edit-button', 'show-button', 'delete-button'].some(slotName => Boolean(slots[slotName]));
 }
-
-const search = datatable.bindFilter<string>('search', {
-  transformUrl: { query: { page: undefined } },
-});
 </script>
 
 <template>
@@ -77,7 +77,10 @@ const search = datatable.bindFilter<string>('search', {
       </HeaderRow>
     </TableHeader>
     <TableBody>
-      <NoRecordsAvailable v-if="datatable.records.length === 0" :colspan="datatable.columns.length" />
+      <NoRecordsAvailable
+        v-if="datatable.records.length === 0"
+        :colspan="tableHasActions() ? datatable.columns.length + 1 : datatable.columns.length"
+      />
       <BodyRow v-for="{ key, value, actions } in datatable.records" :key="key">
         <BodyCell v-for="column in datatable.columns" :key="column.name">
           {{ value(column) }}

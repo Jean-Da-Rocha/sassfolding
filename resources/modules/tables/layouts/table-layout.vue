@@ -5,8 +5,8 @@
   <PrimeVueCard>
     <template #content>
       <div class="px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center">
-          <div class="mr-auto">
+        <div class="lg:flex lg:items-center">
+          <div class="lg:mr-auto">
             <PrimeVueInputGroup>
               <PrimeVueInputGroupAddon>
                 <i class="pi pi-search" />
@@ -14,13 +14,13 @@
               <slot name="search-bar" />
             </PrimeVueInputGroup>
           </div>
-          <div class="ml-auto">
+          <div class="mt-3 lg:ml-auto">
             <slot name="create-button" />
           </div>
         </div>
-        <div class="mt-5 border border-surface-300 dark:border-surface-700 sm:mx-0">
+        <div class="mt-5 border-r border-l border-b lg:border border-surface-300 dark:border-surface-700 sm:mx-0">
           <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-surface-300 dark:divide-surface-700">
+            <table class="w-full table-auto divide-y divide-surface-300 dark:divide-surface-700">
               <slot />
             </table>
           </div>
