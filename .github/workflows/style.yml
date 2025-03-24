@@ -4,11 +4,13 @@ on: [push, pull_request]
 
 jobs:
   lint:
-    name: Run Laravel Pint # TODO: change name
+    name: Run Laravel Pint
     runs-on: ubuntu-latest
+    needs: setup  # Utilise l'exécution du workflow setup.yml
     steps:
+      - uses: actions/checkout@v4
       - name: Setup
-        uses: ./.github/workflows/setup.yml
+        uses: ./.github/workflows/setup.yml  # Appelle setup.yml en tant que workflow
       - name: Run Laravel Pint
         run: php ./vendor/bin/pint --test
       - name: Run PHPStan

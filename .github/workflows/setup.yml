@@ -25,7 +25,6 @@ jobs:
           php-version: 8.4
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
-          tools: composer
 
       - name: Install PHP dependencies
         run: composer install --prefer-dist --no-progress --no-interaction
