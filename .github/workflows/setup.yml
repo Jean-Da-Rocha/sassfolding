@@ -34,11 +34,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'pnpm'
 
       - name: Install PNPM
         run: npm install -g pnpm
+
+      - name: Add PNPM to PATH
+        run: echo "$(pnpm root -g)/../bin" >> $GITHUB_PATH
 
       - name: Cache Node dependencies
         uses: actions/cache@v4
