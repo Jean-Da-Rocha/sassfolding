@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Environment
-        uses: ./.github/workflows/setup.yml
+        uses: ./.github/actions/setup
 
       - name: Run Laravel Pint
         run: php ./vendor/bin/pint --test
