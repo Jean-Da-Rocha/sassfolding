@@ -1,14 +1,7 @@
-name: Workflow Setup
+name: Setup Environment
 
 on:
   workflow_call:
-    outputs:
-      php-version:
-        description: "Version de PHP"
-        value: 8.4
-      node-version:
-        description: "Version de Node.js"
-        value: 22
 
 jobs:
   setup:
@@ -26,17 +19,16 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.4
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          extensions: mbstring, pdo, sqlite, pdo_sqlite, bcmath, intl, gd, fileinfo
           coverage: none
 
-      - name: Install PHP dependencies
+      - name: Install Composer dependencies
         run: composer install --prefer-dist --no-progress --no-interaction
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          registry-url: https://registry.npmjs.org/
           cache: 'pnpm'
 
       - name: Install Node dependencies
