@@ -1,0 +1,25 @@
+name: Code Style Checks
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Environment
+        uses: ./.github/workflows/setup.yml
+
+      - name: Run Laravel Pint
+        run: php ./vendor/bin/pint --test
+
+      - name: Run PHPStan
+        run: php ./vendor/bin/phpstan analyze --memory-limit=2G
+
+      - name: Run ESLint
+        run: pnpm eslint . --max-warnings=0
+
+      - name: Run vue-tsc
+        run: pnpm vue-tsc --noEmit
