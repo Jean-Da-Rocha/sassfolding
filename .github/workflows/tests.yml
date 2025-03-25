@@ -18,14 +18,23 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
+
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup
         uses: ./.github/workflows/setup.yml
+        with: {}
+
       - name: Setup environment
         run: cp .env.example .env
+
       - name: Generate application key
         run: php artisan key:generate
+
       - name: Run migrations
         run: php artisan migrate --force
+
       - name: Run tests
         run: php artisan test

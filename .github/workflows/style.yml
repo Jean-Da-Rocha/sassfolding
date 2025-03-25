@@ -4,18 +4,23 @@ on: [push, pull_request]
 
 jobs:
   lint:
-    name: Run Laravel Pint
+    name: Run Code Style Checks
     runs-on: ubuntu-latest
-    needs: setup  # Utilise l'exécution du workflow setup.yml
     steps:
-      - uses: actions/checkout@v4
+      - name: Call Setup Workflow
+        uses: actions/checkout@v4
       - name: Setup
-        uses: ./.github/workflows/setup.yml  # Appelle setup.yml en tant que workflow
+        uses: ./.github/workflows/setup.yml
+        with: {}
+
       - name: Run Laravel Pint
         run: php ./vendor/bin/pint --test
+
       - name: Run PHPStan
         run: php ./vendor/bin/phpstan analyze --memory-limit=2G
+
       - name: Run ESLint
         run: pnpm eslint . --max-warnings=0
+
       - name: Run vue-tsc
         run: pnpm vue-tsc --noEmit

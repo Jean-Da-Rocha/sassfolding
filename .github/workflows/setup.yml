@@ -2,14 +2,17 @@ name: Workflow Setup
 
 on:
   workflow_call:
+    outputs:
+      php-version:
+        description: "Version de PHP"
+        value: 8.4
+      node-version:
+        description: "Version de Node.js"
+        value: 22
 
 jobs:
   setup:
     runs-on: ubuntu-latest
-    outputs:
-      php-version: 8.4
-      node-version: 22
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
