@@ -18,7 +18,7 @@ runs:
         coverage: none
 
     - name: Copy .env.testing
-      run: cp .env.testing .env
+      run: cp .env.testing.example .env
       shell: bash
 
     - name: Install Composer dependencies
