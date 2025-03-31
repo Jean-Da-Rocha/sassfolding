@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:8.0
+        image: mysql:9.1
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: sassfolding_test
@@ -58,6 +58,9 @@ jobs:
 
       - name: Run PHPStan
         run: php ./vendor/bin/phpstan analyze --memory-limit=2G
+
+      - name: Start Vite
+        run: pnpm vite build
 
       - name: Run ESLint
         run: pnpm eslint . --max-warnings=0

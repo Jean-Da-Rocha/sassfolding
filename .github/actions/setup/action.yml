@@ -22,7 +22,7 @@ runs:
       shell: bash
 
     - name: Install Composer dependencies
-      run: composer install --prefer-dist --no-progress --no-interaction
+      run: composer install --quiet --prefer-dist --no-progress --no-interaction
       shell: bash
 
     - name: Setup Node
