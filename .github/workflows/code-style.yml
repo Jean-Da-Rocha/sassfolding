@@ -28,9 +28,6 @@ jobs:
       - name: Setup Environment
         uses: ./.github/actions/setup
 
-      - name: Wait for MySQL to be ready
-        run: sleep 15s
-
       - name: Run Laravel migrations
         run: php artisan migrate --force
         env:
@@ -41,8 +38,12 @@ jobs:
           DB_USERNAME: dummy_user
           DB_PASSWORD: dummy_password
 
+      - name: Generate application key
+        run: php artisan key:generate
+
       - name: Generate IDE Helper files
         run: |
+          mkdir -p helpers
           php artisan ide-helper:generate
           php artisan ide-helper:models -F helpers/_ide_helper_models.php -M
           php artisan ide-helper:meta
