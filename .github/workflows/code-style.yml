@@ -60,7 +60,7 @@ jobs:
         run: php ./vendor/bin/phpstan analyze --memory-limit=2G
 
       - name: Start Vite
-        run: pnpm vite build
+        run: pnpm vite build --logLevel error
 
       - name: Run ESLint
         run: pnpm eslint . --max-warnings=0
