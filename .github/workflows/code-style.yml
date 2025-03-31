@@ -12,6 +12,23 @@ jobs:
       - name: Setup Environment
         uses: ./.github/actions/setup
 
+      - name: Run Laravel migrations
+        run: php artisan migrate --force
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: sassfolding_test
+          DB_USERNAME: dummy_user
+          DB_PASSWORD: dummy_password
+
+      - name: Generate IDE Helper files
+        run: |
+          php artisan ide-helper:generate
+          php artisan ide-helper:models -F helpers/_ide_helper_models.php -M
+          php artisan ide-helper:meta
+        shell: bash
+
       - name: Run Laravel Pint
         run: php ./vendor/bin/pint --test
 
