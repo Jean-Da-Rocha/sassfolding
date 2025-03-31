@@ -38,9 +38,6 @@ jobs:
           DB_USERNAME: dummy_user
           DB_PASSWORD: dummy_password
 
-      - name: Generate application key
-        run: php artisan key:generate
-
       - name: Generate IDE Helper files
         run: |
           mkdir -p helpers
@@ -53,14 +50,8 @@ jobs:
       - name: Run Laravel Pint
         run: php ./vendor/bin/pint --test
 
-      - name: Clear cache
-        run: php artisan config:clear && php artisan cache:clear
-
       - name: Run PHPStan
         run: php ./vendor/bin/phpstan analyze --memory-limit=2G
-
-      - name: Start Vite
-        run: pnpm vite build --logLevel error
 
       - name: Run ESLint
         run: pnpm eslint . --max-warnings=0
