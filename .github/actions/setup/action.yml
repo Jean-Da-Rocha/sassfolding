@@ -1,6 +1,6 @@
 name: "Setup Environment"
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Checkout code
       uses: actions/checkout@v4
