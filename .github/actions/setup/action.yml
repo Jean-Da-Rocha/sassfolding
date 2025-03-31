@@ -1,0 +1,44 @@
+name: "Setup Environment"
+runs:
+  using: composite
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install PNPM
+      uses: pnpm/action-setup@v3
+      with:
+        version: 10
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.4
+        extensions: mbstring, pdo, sqlite, pdo_sqlite, bcmath, intl, gd, fileinfo
+        coverage: none
+
+    - name: Copy .env.testing.example
+      run: cp .env.testing.example .env
+      shell: bash
+
+    - name: Install Composer dependencies
+      run: composer install --quiet --prefer-dist --no-progress --no-interaction
+      shell: bash
+
+    - name: Generate application key
+      run: php artisan key:generate
+      shell: bash
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: 'pnpm'
+
+    - name: Install Node dependencies
+      run: pnpm install
+      shell: bash
+
+    - name: Start Vite
+      run: pnpm vite build --logLevel error
+      shell: bash

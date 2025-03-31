@@ -1,0 +1,60 @@
+name: Code Style Checks
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:9.1
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: sassfolding_test
+          MYSQL_USER: dummy_user
+          MYSQL_PASSWORD: dummy_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Environment
+        uses: ./.github/actions/setup
+
+      - name: Run Laravel migrations
+        run: php artisan migrate --force
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: sassfolding_test
+          DB_USERNAME: dummy_user
+          DB_PASSWORD: dummy_password
+
+      - name: Generate IDE Helper files
+        run: |
+          mkdir -p helpers
+          php artisan ide-helper:eloquent
+          php artisan ide-helper:generate
+          php artisan ide-helper:meta
+          php artisan ide-helper:models -M
+        shell: bash
+
+      - name: Run Laravel Pint
+        run: php ./vendor/bin/pint --test
+
+      - name: Run PHPStan
+        run: php ./vendor/bin/phpstan analyze --memory-limit=2G
+
+      - name: Run ESLint
+        run: pnpm eslint . --max-warnings=0
+
+      - name: Run vue-tsc
+        run: pnpm vue-tsc --noEmit
