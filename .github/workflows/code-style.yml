@@ -16,10 +16,10 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root --password=root"
+          --health-cmd="mysqladmin ping"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
+          --health-retries=3
 
     steps:
       - name: Checkout code
@@ -44,13 +44,17 @@ jobs:
       - name: Generate IDE Helper files
         run: |
           mkdir -p helpers
+          php artisan ide-helper:eloquent
           php artisan ide-helper:generate
-          php artisan ide-helper:models -F helpers/_ide_helper_models.php -M
           php artisan ide-helper:meta
+          php artisan ide-helper:models -M
         shell: bash
 
       - name: Run Laravel Pint
         run: php ./vendor/bin/pint --test
+
+      - name: Clear cache
+        run: php artisan config:clear && php artisan cache:clear
 
       - name: Run PHPStan
         run: php ./vendor/bin/phpstan analyze --memory-limit=2G
