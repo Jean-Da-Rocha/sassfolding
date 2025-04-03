@@ -17,8 +17,8 @@ runs:
         extensions: mbstring, pdo, sqlite, pdo_sqlite, bcmath, intl, gd, fileinfo
         coverage: none
 
-    - name: Copy .env.testing.example
-      run: cp .env.testing.example .env
+    - name: Copy .env.ci
+      run: cp .env.ci .env
       shell: bash
 
     - name: Install Composer dependencies
