@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y \
     git && \
     docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 RUN curl -fsSL https://deb.nodesource.com/setup_23.x | bash - && \
     apt-get install -y nodejs && \
     npm install -g npm@latest && \
@@ -19,15 +21,17 @@ RUN curl -fsSL https://deb.nodesource.com/setup_23.x | bash - && \
 RUN groupadd -g 1000 laravel && \
     useradd -u 1000 -ms /bin/bash -g laravel laravel
 
-USER laravel
-
 WORKDIR /var/www/html
 
-COPY php.ini /usr/local/etc/php/php.ini
+USER root
+
+COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
+COPY ./docker/scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+USER laravel
 
 COPY --chown=laravel:laravel . /var/www/html
 
-EXPOSE 9000
-EXPOSE 5173
-
-CMD ["sh", "-c", "php-fpm & pnpm run dev"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

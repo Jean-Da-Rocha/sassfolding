@@ -1,23 +1,24 @@
 services:
   hybridly:
     build:
-      context: ./docker/php
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./docker/php/Dockerfile
     container_name: hybridly
     restart: unless-stopped
     volumes:
       - .:/var/www/html
     depends_on:
-      - mysql
-      - redis
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
     networks:
       - laravel
     ports:
-      - "9000:9000"
-      - "5173:5173"
-
+      - "${FPM_PORT}:${FPM_PORT}"
+      - "${VITE_PORT}:${VITE_PORT}"
   nginx:
-    image: nginx:latest
+    image: nginx:${NGINX_VERSION}
     container_name: nginx
     restart: unless-stopped
     volumes:
@@ -32,23 +33,29 @@ services:
       - laravel
 
   mysql:
-    image: mysql:9.1
+    image: mysql:${MYSQL_VERSION}
     container_name: mysql
     restart: unless-stopped
     environment:
+      APP_NAME: ${APP_NAME}
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./docker/scripts/create-testing-database.sh:/docker-entrypoint-initdb.d/create-testing-database.sh
     ports:
-      - '3307:3306'
+      - "${FORWARD_DB_PORT}:${DB_PORT}"
     networks:
       - laravel
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+      retries: 3
+      timeout: 5s
 
   redis:
-    image: redis:latest
+    image: redis:${REDIS_VERSION}
     container_name: redis
     restart: unless-stopped
     networks:
