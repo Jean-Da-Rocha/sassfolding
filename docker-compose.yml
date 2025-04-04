@@ -1,26 +1,21 @@
 services:
   hybridly:
+    stop_signal: SIGKILL
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
     container_name: hybridly
-    restart: unless-stopped
     volumes:
       - .:/var/www/html
-    depends_on:
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_started
     networks:
       - laravel
     ports:
       - "${FPM_PORT}:${FPM_PORT}"
       - "${VITE_PORT}:${VITE_PORT}"
+
   nginx:
     image: nginx:${NGINX_VERSION}
     container_name: nginx
-    restart: unless-stopped
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
       - .:/var/www/html
@@ -35,7 +30,6 @@ services:
   mysql:
     image: mysql:${MYSQL_VERSION}
     container_name: mysql
-    restart: unless-stopped
     environment:
       APP_NAME: ${APP_NAME}
       MYSQL_ROOT_PASSWORD: root
@@ -49,15 +43,10 @@ services:
       - "${FORWARD_DB_PORT}:${DB_PORT}"
     networks:
       - laravel
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
-      retries: 3
-      timeout: 5s
 
   redis:
     image: redis:${REDIS_VERSION}
     container_name: redis
-    restart: unless-stopped
     networks:
       - laravel
 
