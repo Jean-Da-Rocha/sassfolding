@@ -25,7 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
-    protected $appends = ['name_initials'];
+    protected $appends = ['name_initial'];
 
     /**
      * The attributes that are mass assignable.
@@ -62,10 +62,8 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /** @return Attribute<string, null> */
-    protected function nameInitials(): Attribute
+    protected function nameInitial(): Attribute
     {
-        return Attribute::make(
-            get: fn () => str($this->name)->explode(' ')->map(fn (string $word) => ucfirst($word[0]))->join(' '),
-        );
+        return Attribute::make(get: fn () => substr($this->name, 0, 1));
     }
 }
