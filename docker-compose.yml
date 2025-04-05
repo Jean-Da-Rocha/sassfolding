@@ -11,7 +11,7 @@ services:
       - laravel
     ports:
       - "${FPM_PORT-9000}:${FPM_PORT:-9000}"
-      - "${VITE_PORT:-5173}:${VITE_PORT:-5173}"
+      - "${VITE_FORWARD_PORT:-5173}:${VITE_PORT:-5173}"
 
   nginx:
     image: nginx:${NGINX_VERSION:-latest}
@@ -42,7 +42,7 @@ services:
       - mysql-data:/var/lib/mysql
       - ./docker/scripts/create-testing-database.sh:/docker-entrypoint-initdb.d/create-testing-database.sh
     ports:
-      - "${FORWARD_DB_PORT:-3306}:${DB_PORT:-3306}"
+      - "${DB_FORWARD_PORT:-3306}:${DB_PORT:-3306}"
     networks:
       - laravel
 
