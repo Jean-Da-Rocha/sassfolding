@@ -68,7 +68,6 @@ purge:
 	docker volume prune --force
 	docker image prune --force
 
-
 .PHONY: composer
 composer:
 	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" bash -c "composer $(cmd)"
