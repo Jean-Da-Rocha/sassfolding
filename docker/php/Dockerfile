@@ -31,8 +31,10 @@ USER root
 
 COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
 COPY ./docker/scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/scripts/create-testing-database.sh /usr/local/bin/create-testing-database.sh
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/create-testing-database.sh
 
 USER laravel
 

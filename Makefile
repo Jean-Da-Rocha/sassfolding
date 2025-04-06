@@ -48,7 +48,7 @@ build:
 
 .PHONY: rebuild
 rebuild:
-	@docker compose build && @docker compose up -d
+	@docker compose down -v && docker compose build && docker compose up -d
 
 .PHONY: up
 up:
@@ -68,25 +68,34 @@ purge:
 	docker volume prune --force
 	docker image prune --force
 
+
 .PHONY: composer
 composer:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" composer $(if $(COMMAND),$(COMMAND),)
+	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" bash -c "composer $(cmd)"
+
+.PHONY: back
+back:
+	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly"
 
 .PHONY: artisan
 artisan:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" php artisan $(if $(COMMAND),$(COMMAND),)
+	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" bash -c "php artisan $(cmd)"
+
+.PHONY: artisan
+tinker:
+	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" php artisan tinker
 
 .PHONY: phpstan
 phpstan:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" vendor/bin/phpstan $(if $(COMMAND),$(COMMAND),analyse)
+	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" vendor/bin/phpstan analysze
 
 .PHONY: pint
 pint:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" ./vendor/bin/pint $(if $(COMMAND),$(COMMAND),)
+	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" ./vendor/bin/pint
 
 .PHONY: pnpm
 pnpm:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" pnpm $(if $(COMMAND),$(COMMAND), --version)
+	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" bash -c "pnpm $(or $(cmd), --version)"
 
 .PHONY: vue-tsc
 vue-tsc:
