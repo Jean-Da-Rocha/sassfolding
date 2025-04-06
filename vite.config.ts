@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 import hybridly from 'hybridly/vite';
 import { HeadlessUiResolver } from 'unplugin-vue-components/resolvers';
@@ -21,4 +22,10 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    https: {
+      cert: readFileSync('certs/sassfolding.test.crt'),
+      key: readFileSync('certs/sassfolding.test.key'),
+    },
+  },
 });

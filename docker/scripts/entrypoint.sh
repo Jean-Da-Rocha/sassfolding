@@ -1,18 +1,10 @@
 #!/usr/bin/env bash
 
-if [ ! -f .env ]; then
-    cp .env.example .env
+if ! grep -q "^APP_KEY=" .env || [ -z "$(grep '^APP_KEY=' .env | cut -d'=' -f2)" ]; then
     php artisan key:generate
 fi
 
-if [ ! -f .env.testing ]; then
-    # Load the .env.testing.example variables in a subshell not to interfere with the .env values.
-    (
-        export $(grep -v '^#' .env.testing.example | xargs)
-
-        # Replace interpolated env values.
-        envsubst < .env.testing.example > .env.testing
-    )
+if ! grep -q "^APP_KEY=" .env.testing || [ -z "$(grep '^APP_KEY=' .env.testing | cut -d'=' -f2)" ]; then
     php artisan key:generate --env=testing
 fi
 

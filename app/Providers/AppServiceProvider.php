@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Console\CliDumper;
 use Illuminate\Foundation\Http\HtmlDumper;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(Hybridly $hybridly): void
     {
+        URL::forceScheme('https');
+
         HtmlDumper::dontIncludeSource();
         CliDumper::dontIncludeSource();
         Validator::excludeUnvalidatedArrayKeys();

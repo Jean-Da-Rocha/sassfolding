@@ -18,6 +18,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/certs
 
 .hybridly
 _ide_helper*
