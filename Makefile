@@ -6,7 +6,7 @@ endif
 
 PROJECT_NAME_SLUG := $(shell echo $(PROJECT_NAME) | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -d -c 'a-z0-9-')
 
-install: setup-local-environment setup-testing-environment setup-dns update-certificates
+install: setup-local-environment setup-testing-environment update-certificates
 
 .PHONY: setup-local-environment
 setup-local-environment:
@@ -35,8 +35,6 @@ update-certificates:
 		127.0.0.1 0.0.0.0 > /dev/null 2>&1
 	@echo "✅ SSL certificates generated."
 
-
-# TODO: custom domain instead of .test?
 .PHONY: setup-dns
 setup-dns:
 	@echo "🌐 Configuring system DNS to route *.test to 127.0.0.1..."
@@ -77,6 +75,7 @@ restore-dns:
 	fi
 
 	@sudo systemctl restart docker
+	@sleep 2
 	@sudo systemctl restart systemd-resolved
 
 	@echo "✅ DNS restored with systemd-resolved (nameserver 127.0.0.53)"

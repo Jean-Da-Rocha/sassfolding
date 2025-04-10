@@ -25,13 +25,8 @@ entryPoints:
 
 tls:
   certificates:
-    - certFile: /etc/traefik/certs/sassfolding.cert
-      keyFile: /etc/traefik/certs/sassfolding.key
-  stores:
-    default:
-      defaultCertificate:
-        certFile: /etc/traefik/certs/sassfolding.cert
-        keyFile: /etc/traefik/certs/sassfolding.key
+      - certFile: /etc/traefik/certs/{{ env "COMPOSE_PROJECT_NAME" }}.cert
+        keyFile: /etc/traefik/certs/{{ env "COMPOSE_PROJECT_NAME" }}.key
 
 log:
   level: INFO

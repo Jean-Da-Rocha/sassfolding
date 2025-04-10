@@ -28,7 +28,7 @@ services:
       - laravel
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx.rule=Host(`${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.nginx.rule=Host(`app.${COMPOSE_PROJECT_NAME}.test`)"
       - "traefik.http.routers.nginx.entrypoints=https"
       - "traefik.http.routers.nginx.tls=true"
       - "traefik.http.services.nginx.loadbalancer.server.port=80"
@@ -49,8 +49,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./docker/traefik/config/traefik.yml:/etc/traefik/traefik.yml:ro
-      - ./docker/traefik/certs/sassfolding.cert:/etc/traefik/certs/sassfolding.cert:ro
-      - ./docker/traefik/certs/sassfolding.key:/etc/traefik/certs/sassfolding.key:ro
+      - ./docker/traefik/certs/${COMPOSE_PROJECT_NAME}.cert:/etc/traefik/certs/${COMPOSE_PROJECT_NAME}.cert:ro
+      - ./docker/traefik/certs/${COMPOSE_PROJECT_NAME}.key:/etc/traefik/certs/${COMPOSE_PROJECT_NAME}.key:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.${COMPOSE_PROJECT_NAME}.test`)"
