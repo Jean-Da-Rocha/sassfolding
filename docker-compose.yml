@@ -1,100 +1,100 @@
 services:
+  dnsmasq:
+    cap_add:
+      - NET_ADMIN
+    container_name: ${COMPOSE_PROJECT_NAME}-dnsmasq
+    image: dockurr/dnsmasq
+    networks:
+      - laravel
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    volumes:
+      - ./docker/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf:ro
+
   hybridly:
-    stop_signal: SIGKILL
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
     container_name: ${COMPOSE_PROJECT_NAME}-hybridly
-    volumes:
-      - .:/var/www/html
     networks:
       - laravel
     ports:
       - "${FPM_FORWARD_PORT}:${FPM_PORT}"
       - "${VITE_FORWARD_PORT}:${VITE_PORT}"
+    stop_signal: SIGKILL
+    volumes:
+      - .:/var/www/html
+
+  mysql:
+    container_name: ${COMPOSE_PROJECT_NAME}-mysql
+    environment:
+      DB_DATABASE_TESTING: ${COMPOSE_PROJECT_NAME}_testing
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_USER: ${DB_USERNAME}
+    image: mysql:${MYSQL_VERSION}
+    networks:
+      - laravel
+    ports:
+      - "${DB_FORWARD_PORT}:${DB_PORT}"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/scripts/create-testing-database.sh:/docker-entrypoint-initdb.d/create-testing-database.sh
 
   nginx:
-    image: nginx:${NGINX_VERSION}
     container_name: ${COMPOSE_PROJECT_NAME}-nginx
+    depends_on:
+      - hybridly
     environment:
-      FPM_PORT: ${FPM_PORT}
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      FPM_PORT: ${FPM_PORT}
+    image: nginx:${NGINX_VERSION}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.entrypoints=https"
+      - "traefik.http.routers.nginx.rule=Host(`app.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.nginx.tls=true"
+      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+    networks:
+      - laravel
     volumes:
       - ./docker/nginx/templates/hybridly.conf.template:/etc/nginx/templates/hybridly.conf.template:ro
       - .:/var/www/html
-    depends_on:
-      - hybridly
+
+  redis:
+    container_name: ${COMPOSE_PROJECT_NAME}-redis
+    image: redis:${REDIS_VERSION}
     networks:
       - laravel
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.nginx.rule=Host(`app.${COMPOSE_PROJECT_NAME}.test`)"
-      - "traefik.http.routers.nginx.entrypoints=https"
-      - "traefik.http.routers.nginx.tls=true"
-      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+    volumes:
+      - redis-data:/data
 
   traefik:
-    image: traefik:latest
-    stop_signal: SIGKILL
+    container_name: ${COMPOSE_PROJECT_NAME}-traefik
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
-    container_name: ${COMPOSE_PROJECT_NAME}-traefik
-    restart: on-failure
+    image: traefik:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=https"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.services.router.loadbalancer.server.port=8080"
     networks:
       - laravel
     ports:
       - "80:80"
       - "443:443"
       - "8080:8080"
+    restart: on-failure
+    stop_signal: SIGKILL
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./docker/traefik/config/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./docker/traefik/certs/${COMPOSE_PROJECT_NAME}.cert:/etc/traefik/certs/${COMPOSE_PROJECT_NAME}.cert:ro
       - ./docker/traefik/certs/${COMPOSE_PROJECT_NAME}.key:/etc/traefik/certs/${COMPOSE_PROJECT_NAME}.key:ro
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.${COMPOSE_PROJECT_NAME}.test`)"
-      - "traefik.http.routers.traefik.entrypoints=https"
-      - "traefik.http.routers.traefik.tls=true"
-      - "traefik.http.services.router.loadbalancer.server.port=8080"
-
-  dnsmasq:
-    image: dockurr/dnsmasq
-    container_name: ${COMPOSE_PROJECT_NAME}-dnsmasq
-    ports:
-      - "53:53/udp"
-      - "53:53/tcp"
-    networks:
-      - laravel
-    cap_add:
-      - NET_ADMIN
-    volumes:
-      - ./docker/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf:ro
-
-  mysql:
-    image: mysql:${MYSQL_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}-mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      DB_DATABASE_TESTING: ${COMPOSE_PROJECT_NAME}_testing
-    volumes:
-      - mysql-data:/var/lib/mysql
-      - ./docker/scripts/create-testing-database.sh:/docker-entrypoint-initdb.d/create-testing-database.sh
-    ports:
-      - "${DB_FORWARD_PORT}:${DB_PORT}"
-    networks:
-      - laravel
-
-  redis:
-    image: redis:${REDIS_VERSION}
-    container_name: ${COMPOSE_PROJECT_NAME}-redis
-    volumes:
-      - redis-data:/data
-    networks:
-      - laravel
 
 volumes:
   mysql-data:
