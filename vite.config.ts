@@ -8,7 +8,7 @@ import { defineConfig, loadEnv } from 'vite';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
   const composeProjectName = env.VITE_APP_NAME;
-  const certPath = `certs/${composeProjectName}.test`;
+  const certPath = `docker/traefik/certs/${composeProjectName}`;
 
   return {
     build: {
@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
     ],
     server: {
       https: {
-        cert: readFileSync(`${certPath}.crt`),
+        cert: readFileSync(`${certPath}.cert`),
         key: readFileSync(`${certPath}.key`),
       },
     },

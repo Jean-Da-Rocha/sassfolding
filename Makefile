@@ -6,7 +6,7 @@ endif
 
 PROJECT_NAME_SLUG := $(shell echo $(PROJECT_NAME) | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -d -c 'a-z0-9-')
 
-install: setup-local-environment setup-testing-environment update-certificates update-hosts
+install: setup-local-environment setup-testing-environment setup-dns update-certificates
 
 .PHONY: setup-local-environment
 setup-local-environment:
@@ -27,39 +27,83 @@ setup-testing-environment:
 .PHONY: update-certificates
 update-certificates:
 	@echo "🔐 Updating SSL certificates for ${PROJECT_NAME_SLUG}.test..."
-	@if [ ! -d "./certs" ]; then mkdir ./certs; fi
-	@rm -rf ./certs/*
-	@mkcert -key-file ./certs/${PROJECT_NAME_SLUG}.test.key -cert-file ./certs/${PROJECT_NAME_SLUG}.test.crt "*.${PROJECT_NAME_SLUG}.test" ${PROJECT_NAME_SLUG}.test 0.0.0.0 127.0.0.1 > /dev/null 2>&1
+	@mkcert \
+		-cert-file ./docker/traefik/certs/${PROJECT_NAME_SLUG}.cert \
+		-key-file ./docker/traefik/certs/${PROJECT_NAME_SLUG}.key \
+		"*.${PROJECT_NAME_SLUG}.test" \
+		"${PROJECT_NAME_SLUG}.test" \
+		127.0.0.1 0.0.0.0 > /dev/null 2>&1
 	@echo "✅ SSL certificates generated."
 
-.PHONY: setup_testing_environment
-update-hosts:
-	@echo "📝 Adding ${PROJECT_NAME_SLUG}.test to /etc/hosts if needed..."
-	@if ! grep -q "${PROJECT_NAME_SLUG}.test" /etc/hosts; then \
-		echo "127.0.0.1 ${PROJECT_NAME_SLUG}.test" | sudo tee -a /etc/hosts > /dev/null; \
-		echo "✅ Hosts file updated."; \
+
+# TODO: custom domain instead of .test?
+.PHONY: setup-dns
+setup-dns:
+	@echo "🌐 Configuring system DNS to route *.test to 127.0.0.1..."
+ifeq ($(shell uname),Darwin)
+	@sudo networksetup -setdnsservers Wi-Fi 127.0.0.1
+	@sudo mkdir -p /etc/resolver
+	@echo "nameserver 127.0.0.1" | sudo tee /etc/resolver/test > /dev/null
+	@echo "✅ MacOS DNS setup complete for *.test."
+else
+	@if ! grep -q '^nameserver 127.0.0.1$$' /etc/resolv.conf; then \
+		echo "🔧 Adding 127.0.0.1 to /etc/resolv.conf..."; \
+		sudo cp /etc/resolv.conf /etc/resolv.conf.bak; \
+		echo "nameserver 127.0.0.1" | sudo tee /etc/resolv.conf.new > /dev/null; \
+		cat /etc/resolv.conf.bak | grep -v '^nameserver 127.0.0.1$$' | sudo tee -a /etc/resolv.conf.new > /dev/null; \
+		sudo mv /etc/resolv.conf.new /etc/resolv.conf; \
+		echo "✅ Updated /etc/resolv.conf with 127.0.0.1 at the top."; \
 	else \
-		echo "ℹ️ Entry already exists."; \
+		echo "✅ 127.0.0.1 is already in /etc/resolv.conf. Skipping."; \
 	fi
+
+	@echo "🔧 Disabling systemd-resolved DNSStubListener to avoid conflicts..."
+	@sudo sed -i 's/^#DNSStubListener=yes/DNSStubListener=no/' /etc/systemd/resolved.conf || true
+	@sudo systemctl restart systemd-resolved
+	@echo "✅ DNSStubListener disabled and systemd-resolved restarted."
+endif
+
+.PHONY: restore-dns
+restore-dns:
+	@echo "🛠 Restoring system DNS with systemd-resolved..."
+
+	@echo "🔁 Re-enabling DNSStubListener..."
+	@sudo sed -i 's/^DNSStubListener=no/#DNSStubListener=yes/' /etc/systemd/resolved.conf || true
+
+	@echo "🔗 Restoring /etc/resolv.conf symlink..."
+	@if [ ! -L /etc/resolv.conf ]; then \
+		sudo rm -f /etc/resolv.conf; \
+		sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf; \
+	fi
+
+	@sudo systemctl restart docker
+	@sudo systemctl restart systemd-resolved
+
+	@echo "✅ DNS restored with systemd-resolved (nameserver 127.0.0.53)"
 
 .PHONY: build
 build:
+	@make restore-dns
 	@docker compose build
 
 .PHONY: rebuild
 rebuild:
-	@docker compose down -v && docker compose build && docker compose up -d
+	@make restore-dns
+	@docker compose down -v
+	@docker compose build
+	@make setup-dns
+	@docker compose up -d
 
 .PHONY: up
-up:
+start:
 	@docker compose up -d
 
 .PHONY: down
-down:
+stop:
 	@docker compose down
 
 .PHONY: restart
-restart: down up
+restart: stop start
 
 .PHONE: purge
 purge:
@@ -86,7 +130,7 @@ tinker:
 
 .PHONY: phpstan
 phpstan:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" vendor/bin/phpstan analysze
+	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" vendor/bin/phpstan analyze
 
 .PHONY: pint
 pint:

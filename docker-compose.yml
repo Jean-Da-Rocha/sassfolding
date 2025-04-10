@@ -17,19 +17,59 @@ services:
     image: nginx:${NGINX_VERSION}
     container_name: ${COMPOSE_PROJECT_NAME}-nginx
     environment:
-      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
       FPM_PORT: ${FPM_PORT}
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
     volumes:
-      - ./docker/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./docker/nginx/templates/hybridly.conf.template:/etc/nginx/templates/hybridly.conf.template:ro
       - .:/var/www/html
-      - ./certs:/etc/nginx/certs:ro
-    ports:
-      - '80:80'
-      - '443:443'
     depends_on:
       - hybridly
     networks:
       - laravel
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.rule=Host(`${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.nginx.entrypoints=https"
+      - "traefik.http.routers.nginx.tls=true"
+      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+
+  traefik:
+    image: traefik:latest
+    stop_signal: SIGKILL
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+    container_name: ${COMPOSE_PROJECT_NAME}-traefik
+    restart: on-failure
+    networks:
+      - laravel
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./docker/traefik/config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./docker/traefik/certs/sassfolding.cert:/etc/traefik/certs/sassfolding.cert:ro
+      - ./docker/traefik/certs/sassfolding.key:/etc/traefik/certs/sassfolding.key:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.traefik.entrypoints=https"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.services.router.loadbalancer.server.port=8080"
+
+  dnsmasq:
+    image: dockurr/dnsmasq
+    container_name: ${COMPOSE_PROJECT_NAME}-dnsmasq
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    networks:
+      - laravel
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./docker/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf:ro
 
   mysql:
     image: mysql:${MYSQL_VERSION}
