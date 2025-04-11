@@ -26,6 +26,23 @@ services:
     volumes:
       - .:/var/www/html
 
+  mail:
+    container_name: ${COMPOSE_PROJECT_NAME}-mail
+    image: axllent/mailpit:${MAILPIT_VERSION}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mail-${COMPOSE_PROJECT_NAME}.entrypoints=https
+      - traefik.http.routers.mail-${COMPOSE_PROJECT_NAME}.rule=Host(`mail.${COMPOSE_PROJECT_NAME}.test`)
+      - traefik.http.routers.mail-${COMPOSE_PROJECT_NAME}.tls=true
+      - traefik.http.services.mail-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${MAILPIT_FORWARD_DASHBOARD_PORT}
+    networks:
+      - laravel
+    ports:
+      - "${MAIL_FORWARD_PORT}:${MAIL_PORT}"
+    volumes:
+      - mail-data:/data
+
+
   mysql:
     container_name: ${COMPOSE_PROJECT_NAME}-mysql
     environment:
@@ -53,10 +70,10 @@ services:
     image: nginx:${NGINX_VERSION}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx.entrypoints=https"
-      - "traefik.http.routers.nginx.rule=Host(`app.${COMPOSE_PROJECT_NAME}.test`)"
-      - "traefik.http.routers.nginx.tls=true"
-      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+      - "traefik.http.routers.nginx-${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.nginx-${COMPOSE_PROJECT_NAME}.rule=Host(`app.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.nginx-${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.nginx-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80"
     networks:
       - laravel
     volumes:
@@ -88,7 +105,6 @@ services:
       - "80:80"
       - "443:443"
       - "8080:8080"
-    restart: on-failure
     stop_signal: SIGKILL
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -97,6 +113,8 @@ services:
       - ./docker/traefik/certs/${COMPOSE_PROJECT_NAME}.key:/etc/traefik/certs/${COMPOSE_PROJECT_NAME}.key:ro
 
 volumes:
+  mail-data:
+    name: ${COMPOSE_PROJECT_NAME}-mail-data
   mysql-data:
     name: ${COMPOSE_PROJECT_NAME}-mysql-data
   redis-data:
