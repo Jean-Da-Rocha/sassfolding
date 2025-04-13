@@ -105,12 +105,17 @@ stop:
 .PHONY: restart
 restart: stop start
 
-.PHONE: purge
+.PHONY: purge
 purge:
+	@docker compose down --remove-orphans --volumes
+	@docker network prune --force
+	@docker volume prune --force
+	@docker image prune --force
+
+.PHONY: obliterate
+obliterate:
 	docker compose down --remove-orphans --volumes
-	docker network prune --force
-	docker volume prune --force
-	docker image prune --force
+	docker system prune -a -f --volumes
 
 .PHONY: composer
 composer:

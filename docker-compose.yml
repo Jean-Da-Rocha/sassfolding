@@ -50,13 +50,17 @@ services:
       - mail-data:/data
 
   minio:
-    command: server /data/minio --address ":${MINIO_PORT}" --console-address ":${MINIO_DASHBOARD_PORT}"
     container_name: ${COMPOSE_PROJECT_NAME}-minio
     environment:
-      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
-      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
+      MINIO_API_PORT_NUMBER: ${MINIO_PORT}
       MINIO_BROWSER_REDIRECT_URL: https://minio.${COMPOSE_PROJECT_NAME}.test
-    image: minio/minio:${MINIO_VERSION}
+      MINIO_CONSOLE_PORT_NUMBER: ${MINIO_DASHBOARD_PORT}
+      MINIO_DEFAULT_BUCKETS: ${AWS_BUCKET}:private
+      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
+      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
+#      MINIO_SCHEME: https
+      MINIO_SERVER_URL: ${AWS_ENDPOINT}
+    image: bitnami/minio:${MINIO_VERSION}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.entrypoints=https"
@@ -72,7 +76,7 @@ services:
     networks:
       - laravel
     volumes:
-      - minio-data:/data/minio
+      - minio-data:/bitnami/minio/data
 
   mysql:
     container_name: ${COMPOSE_PROJECT_NAME}-mysql
