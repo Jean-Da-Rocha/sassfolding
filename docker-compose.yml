@@ -9,8 +9,8 @@ services:
     networks:
       - laravel
     ports:
-      - "53:53/udp"
-      - "53:53/tcp"
+      - "${DNSMASQ_UDP_FORWARD_PORT}:${DNSMASQ_UDP_PORT}/udp"
+      - "${DNSMASQ_TCP_FORWARD_PORT}:${DNSMASQ_TCP_PORT}/tcp"
     volumes:
       - ./docker/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
 
@@ -41,24 +41,23 @@ services:
       - traefik.http.routers.mail-${COMPOSE_PROJECT_NAME}.entrypoints=https
       - traefik.http.routers.mail-${COMPOSE_PROJECT_NAME}.rule=Host(`mail.${COMPOSE_PROJECT_NAME}.test`)
       - traefik.http.routers.mail-${COMPOSE_PROJECT_NAME}.tls=true
-      - traefik.http.services.mail-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${MAILPIT_FORWARD_DASHBOARD_PORT}
+      - traefik.http.services.mail-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${MAILPIT_DASHBOARD_PORT}
     networks:
       - laravel
     ports:
-      - "${MAIL_FORWARD_PORT}:${MAIL_PORT}"
+      - ${MAIL_FORWARD_PORT}:${MAIL_PORT}
     volumes:
       - mail-data:/data
 
   minio:
     container_name: ${COMPOSE_PROJECT_NAME}-minio
     environment:
-      MINIO_API_PORT_NUMBER: ${MINIO_PORT}
-      MINIO_BROWSER_REDIRECT_URL: https://minio.${COMPOSE_PROJECT_NAME}.test
-      MINIO_CONSOLE_PORT_NUMBER: ${MINIO_DASHBOARD_PORT}
-      MINIO_DEFAULT_BUCKETS: ${AWS_BUCKET}:private
+      MINIO_API_PORT_NUMBER: ${MINIO_API_PORT}
+      MINIO_BROWSER_REDIRECT_URL: ${MINIO_CONSOLE_URL}
+      MINIO_CONSOLE_PORT_NUMBER: ${MINIO_CONSOLE_PORT}
+      MINIO_DEFAULT_BUCKETS: ${AWS_BUCKET}:${AWS_BUCKET_POLICY:-private}
       MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
       MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
-#      MINIO_SCHEME: https
       MINIO_SERVER_URL: ${AWS_ENDPOINT}
     image: bitnami/minio:${MINIO_VERSION}
     labels:
@@ -67,12 +66,12 @@ services:
       - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.rule=Host(`storage.${COMPOSE_PROJECT_NAME}.test`)"
       - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.service=storage-${COMPOSE_PROJECT_NAME}"
       - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.services.storage-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${MINIO_PORT}"
+      - "traefik.http.services.storage-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${MINIO_API_PORT}"
       - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.entrypoints=https"
       - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.rule=Host(`minio.${COMPOSE_PROJECT_NAME}.test`)"
       - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.service=minio-${COMPOSE_PROJECT_NAME}"
       - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.services.minio-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${MINIO_DASHBOARD_PORT}"
+      - "traefik.http.services.minio-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${MINIO_CONSOLE_PORT}"
     networks:
       - laravel
     volumes:
@@ -108,7 +107,7 @@ services:
       - "traefik.http.routers.nginx-${COMPOSE_PROJECT_NAME}.entrypoints=https"
       - "traefik.http.routers.nginx-${COMPOSE_PROJECT_NAME}.rule=Host(`app.${COMPOSE_PROJECT_NAME}.test`)"
       - "traefik.http.routers.nginx-${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.services.nginx-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80"
+      - "traefik.http.services.nginx-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${NGINX_PORT}"
     networks:
       - laravel
     volumes:
@@ -133,13 +132,13 @@ services:
       - "traefik.http.routers.traefik.entrypoints=https"
       - "traefik.http.routers.traefik.rule=Host(`traefik.${COMPOSE_PROJECT_NAME}.test`)"
       - "traefik.http.routers.traefik.tls=true"
-      - "traefik.http.services.router.loadbalancer.server.port=8080"
+      - "traefik.http.services.router.loadbalancer.server.port=${TRAEFIK_DASHBOARD_PORT}"
     networks:
       - laravel
     ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
+      - "${NGINX_FORWARD_PORT}:${NGINX_PORT}"
+      - "${NGINX_SSL_FORWARD_PORT}:${NGINX_SSL_PORT}"
+      - "${TRAEFIK_DASHBOARD_FORWARD_PORT}:${TRAEFIK_DASHBOARD_PORT}"
     stop_signal: SIGKILL
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
