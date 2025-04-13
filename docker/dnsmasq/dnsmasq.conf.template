@@ -1,6 +1,9 @@
-address=/test/127.0.0.1
+address=/test/${TRAEFIK_IP_ADDRESS}
+
+no-hosts
 
 server=8.8.8.8
 server=8.8.4.4
 server=1.1.1.1
 server=1.0.0.1
+

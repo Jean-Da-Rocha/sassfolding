@@ -3,6 +3,8 @@ services:
     cap_add:
       - NET_ADMIN
     container_name: ${COMPOSE_PROJECT_NAME}-dnsmasq
+    depends_on:
+      - hybridly
     image: dockurr/dnsmasq
     networks:
       - laravel
@@ -10,7 +12,7 @@ services:
       - "53:53/udp"
       - "53:53/tcp"
     volumes:
-      - ./docker/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf:ro
+      - ./docker/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
 
   hybridly:
     build:
@@ -20,6 +22,8 @@ services:
     depends_on:
       - mysql
       - redis
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
     networks:
       - laravel
     ports:
@@ -51,16 +55,15 @@ services:
     environment:
       MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
       MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
-#      MINIO_SERVER_URL: https://s3.${COMPOSE_PROJECT_NAME}.test
       MINIO_BROWSER_REDIRECT_URL: https://minio.${COMPOSE_PROJECT_NAME}.test
     image: minio/minio:${MINIO_VERSION}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.s3-${COMPOSE_PROJECT_NAME}.entrypoints=https"
-      - "traefik.http.routers.s3-${COMPOSE_PROJECT_NAME}.rule=Host(`s3.${COMPOSE_PROJECT_NAME}.test`)"
-      - "traefik.http.routers.s3-${COMPOSE_PROJECT_NAME}.service=s3-${COMPOSE_PROJECT_NAME}"
-      - "traefik.http.routers.s3-${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.services.s3-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${MINIO_PORT}"
+      - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.rule=Host(`storage.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.service=storage-${COMPOSE_PROJECT_NAME}"
+      - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.storage-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${MINIO_PORT}"
       - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.entrypoints=https"
       - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.rule=Host(`minio.${COMPOSE_PROJECT_NAME}.test`)"
       - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.service=minio-${COMPOSE_PROJECT_NAME}"

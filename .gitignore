@@ -25,3 +25,4 @@ _ide_helper*
 .phpstorm.meta.php
 
 docker/traefik/certs
+docker/dnsmasq/dnsmasq.conf

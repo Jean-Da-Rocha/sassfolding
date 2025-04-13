@@ -34,6 +34,9 @@ update-certificates:
 		"${PROJECT_NAME_SLUG}.test" \
 		127.0.0.1 0.0.0.0 > /dev/null 2>&1
 	@echo "✅ SSL certificates generated."
+	@echo "🔍 Copying mkcert root CA..."
+	@cp "$$(mkcert -CAROOT)/rootCA.pem" ./docker/traefik/certs/${PROJECT_NAME_SLUG}-rootCA.pem
+	@echo "✅ mkcert root CA copied."
 
 .PHONY: setup-dns
 setup-dns:
@@ -74,8 +77,6 @@ restore-dns:
 		sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf; \
 	fi
 
-	@sudo systemctl restart docker
-	@sleep 2
 	@sudo systemctl restart systemd-resolved
 
 	@echo "✅ DNS restored with systemd-resolved (nameserver 127.0.0.53)"
@@ -87,8 +88,8 @@ build:
 
 .PHONY: rebuild
 rebuild:
-	@make restore-dns
 	@docker compose down -v
+	@make restore-dns
 	@docker compose build
 	@make setup-dns
 	@docker compose up -d
@@ -99,7 +100,7 @@ start:
 
 .PHONY: down
 stop:
-	@docker compose down
+	@docker compose down --remove-orphans
 
 .PHONY: restart
 restart: stop start
