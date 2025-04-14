@@ -26,4 +26,3 @@ _ide_helper*
 
 docker/traefik/certs
 docker/ssl
-docker/dnsmasq/dnsmasq.conf

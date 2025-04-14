@@ -1,3 +1,6 @@
+DNS_DOMAIN=test
+DNSMASQ_IP_ADDRESS=172.18.0.10
+
 PROJECT_NAME := $(shell grep '^COMPOSE_PROJECT_NAME=' .env | cut -d'=' -f2)
 
 ifeq ($(PROJECT_NAME),)
@@ -38,48 +41,51 @@ update-certificates:
 	@cp "$$(mkcert -CAROOT)/rootCA.pem" ./docker/ssl/rootCA.pem
 	@echo "✅ mkcert root CA copied."
 
-.PHONY: setup-dns
 setup-dns:
-	@echo "🌐 Configuring system DNS to route *.test to 127.0.0.1..."
+	@echo "🌐 Setting up DNS for *.$(DNS_DOMAIN)..."
 ifeq ($(shell uname),Darwin)
-	@sudo networksetup -setdnsservers Wi-Fi 127.0.0.1
-	@sudo mkdir -p /etc/resolver
-	@echo "nameserver 127.0.0.1" | sudo tee /etc/resolver/test > /dev/null
-	@echo "✅ MacOS DNS setup complete for *.test."
-else
-	@if ! grep -q '^nameserver 127.0.0.1$$' /etc/resolv.conf; then \
-		echo "🔧 Adding 127.0.0.1 to /etc/resolv.conf..."; \
-		sudo cp /etc/resolv.conf /etc/resolv.conf.bak; \
-		echo "nameserver 127.0.0.1" | sudo tee /etc/resolv.conf.new > /dev/null; \
-		cat /etc/resolv.conf.bak | grep -v '^nameserver 127.0.0.1$$' | sudo tee -a /etc/resolv.conf.new > /dev/null; \
-		sudo mv /etc/resolv.conf.new /etc/resolv.conf; \
-		echo "✅ Updated /etc/resolv.conf with 127.0.0.1 at the top."; \
+	@echo "🔧 macOS: Configuring DNS resolver for *.$(DNS_DOMAIN)..."
+	@if [ ! -f /etc/resolver/$(DNS_DOMAIN) ]; then \
+		echo "🔧 Adding DNS resolver configuration for *.$(DNS_DOMAIN)..."; \
+		sudo mkdir -p /etc/resolver; \
+		echo "nameserver $(DNSMASQ_IP_ADDRESS)" | sudo tee /etc/resolver/$(DNS_DOMAIN) > /dev/null; \
+		echo "✅ macOS DNS resolver added for *.$(DNS_DOMAIN)"; \
 	else \
-		echo "✅ 127.0.0.1 is already in /etc/resolv.conf. Skipping."; \
+		echo "⚠️ DNS resolver for $(DNS_DOMAIN) already exists. Skipping..."; \
 	fi
-
-	@echo "🔧 Disabling systemd-resolved DNSStubListener to avoid conflicts..."
-	@sudo sed -i 's/^#DNSStubListener=yes/DNSStubListener=no/' /etc/systemd/resolved.conf || true
-	@sudo systemctl restart systemd-resolved
-	@echo "✅ DNSStubListener disabled and systemd-resolved restarted."
+else
+	@echo "🔧 Linux: Configuring DNS resolver for *.$(DNS_DOMAIN)..."
+	@if [ ! -d /etc/systemd/resolved.conf.d ]; then \
+		sudo mkdir -p /etc/systemd/resolved.conf.d; \
+		echo "🛠️ Created /etc/systemd/resolved.conf.d directory."; \
+	fi
+	@echo "[Resolve]" | sudo tee /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf > /dev/null
+	@echo "DNS=$(DNSMASQ_IP_ADDRESS)" | sudo tee -a /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf > /dev/null
+	@echo "Domains=$(DNS_DOMAIN)" | sudo tee -a /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf > /dev/null
+	@if systemctl is-active --quiet systemd-resolved; then \
+		sudo systemctl restart systemd-resolved; \
+		echo "✅ Linux systemd-resolved DNS config added for *.$(DNS_DOMAIN)"; \
+	else \
+		echo "⚠️ systemd-resolved is not running. Please start it manually."; \
+	fi
 endif
 
-.PHONY: restore-dns
 restore-dns:
-	@echo "🛠 Restoring system DNS with systemd-resolved..."
-
-	@echo "🔁 Re-enabling DNSStubListener..."
-	@sudo sed -i 's/^DNSStubListener=no/#DNSStubListener=yes/' /etc/systemd/resolved.conf || true
-
-	@echo "🔗 Restoring /etc/resolv.conf symlink..."
-	@if [ ! -L /etc/resolv.conf ]; then \
-		sudo rm -f /etc/resolv.conf; \
-		sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf; \
+	@echo "🧹 Restoring default DNS..."
+ifeq ($(shell uname),Darwin)
+	@echo "🔧 macOS: Restoring default DNS resolver for *.$(DNS_DOMAIN)..."
+	@sudo rm -f /etc/resolver/$(DNS_DOMAIN)
+	@echo "✅ Removed macOS DNS resolver for *.$(DNS_DOMAIN)"
+else
+	@echo "🔧 Linux: Restoring default DNS resolver for *.$(DNS_DOMAIN)..."
+	@if [ -f /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf ]; then \
+		sudo rm /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf; \
+		sudo systemctl restart systemd-resolved; \
+		echo "✅ Removed Linux systemd-resolved config for *.$(DNS_DOMAIN)"; \
+	else \
+		echo "ℹ️ No systemd-resolved DNS override to remove."; \
 	fi
-
-	@sudo systemctl restart systemd-resolved
-
-	@echo "✅ DNS restored with systemd-resolved (nameserver 127.0.0.53)"
+endif
 
 .PHONY: build
 build:
