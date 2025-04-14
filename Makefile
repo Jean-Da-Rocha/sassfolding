@@ -35,7 +35,7 @@ update-certificates:
 		127.0.0.1 0.0.0.0 > /dev/null 2>&1
 	@echo "✅ SSL certificates generated."
 	@echo "🔍 Copying mkcert root CA..."
-	@cp "$$(mkcert -CAROOT)/rootCA.pem" ./docker/traefik/certs/${PROJECT_NAME_SLUG}-rootCA.pem
+	@cp "$$(mkcert -CAROOT)/rootCA.pem" ./docker/ssl/rootCA.pem
 	@echo "✅ mkcert root CA copied."
 
 .PHONY: setup-dns
@@ -112,8 +112,8 @@ purge:
 	@docker volume prune --force
 	@docker image prune --force
 
-.PHONY: obliterate
-obliterate:
+.PHONY: destroy
+destroy:
 	docker compose down --remove-orphans --volumes
 	docker system prune -a -f --volumes
 

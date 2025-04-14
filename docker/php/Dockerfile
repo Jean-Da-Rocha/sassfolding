@@ -1,42 +1,47 @@
 FROM php:8.4-fpm
 
 RUN apt-get update && apt-get install -y \
-    unzip \
     curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    libzip-dev \
-    zip \
     default-mysql-client \
     gettext-base \
-    git && \
-    docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+    git \
+    gnupg \
+    libonig-dev \
+    libpng-dev \
+    libxml2-dev \
+    libzip-dev \
+    unzip \
+    zip \
+    && docker-php-ext-install bcmath exif gd mbstring pcntl pdo_mysql zip \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN pecl install redis && docker-php-ext-enable redis
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN curl -fsSL https://deb.nodesource.com/setup_23.x | bash - && \
-    apt-get install -y nodejs && \
-    npm install -g npm@latest && \
-    npm install -g pnpm
+RUN curl -fsSL https://deb.nodesource.com/setup_23.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm@latest \
+    && npm install -g pnpm \
+    && npm cache clean --force \
+    && pnpm store prune \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN groupadd -g 1000 laravel && \
-    useradd -u 1000 -ms /bin/bash -g laravel laravel
+RUN groupadd -g 1000 laravel && useradd -u 1000 -ms /bin/bash -g laravel laravel
 
 WORKDIR /var/www/html
 
 USER root
 
 COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
-COPY ./docker/scripts/create-testing-database.sh /usr/local/bin/create-testing-database.sh
 COPY ./docker/scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/ssl/rootCA.pem /usr/local/share/ca-certificates/rootCA.crt
 
-RUN chmod +x /usr/local/bin/create-testing-database.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
-
-COPY ./docker/traefik/certs/sassfolding-rootCA.pem /usr/local/share/ca-certificates/rootCA.crt
 RUN update-ca-certificates
 
 USER laravel

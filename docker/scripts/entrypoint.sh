@@ -4,7 +4,7 @@ export TRAEFIK_IP_ADDRESS=$(getent hosts "${COMPOSE_PROJECT_NAME}-traefik" | awk
 
 if [ -n "$TRAEFIK_IP_ADDRESS" ]; then
     sed -i "s|^TRAEFIK_IP_ADDRESS=.*|TRAEFIK_IP_ADDRESS=$TRAEFIK_IP_ADDRESS|" .env
-    envsubst < docker/dnsmasq/dnsmasq.conf.template > docker/dnsmasq/dnsmasq.conf
+    envsubst < docker/dnsmasq/templates/dnsmasq.conf.template > docker/dnsmasq/dnsmasq.conf
 fi
 
 if ! grep -q "^APP_KEY=" .env || [ -z "$(grep '^APP_KEY=' .env | cut -d'=' -f2)" ]; then
