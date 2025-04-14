@@ -23,8 +23,8 @@ services:
     depends_on:
       - mysql
       - redis
-    environment:
-      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+    extra_hosts:
+      - host.docker.internal:host-gateway
     networks:
       - laravel
     ports:

@@ -13,11 +13,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     zip \
     && docker-php-ext-install bcmath exif gd mbstring pcntl pdo_mysql zip \
-    && apt-get -y autoremove \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN pecl install redis && docker-php-ext-enable redis
+    && pecl install redis xdebug-3.4.2 \
+    && docker-php-ext-enable redis xdebug
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
