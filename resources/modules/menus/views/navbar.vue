@@ -26,7 +26,7 @@ const toggleProfileOverlay = (event: Event) => profileOverlay.value?.toggle(even
         class="h-8 w-8 bg-primary rounded-full text-surface-0 flex items-center justify-center hover:cursor-pointer"
         @click="toggleProfileOverlay"
       >
-        {{ user?.name_initials }}
+        {{ user?.name_initial }}
       </span>
     </div>
 

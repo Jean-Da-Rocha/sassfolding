@@ -1,0 +1,164 @@
+services:
+  dnsmasq:
+    cap_add:
+      - NET_ADMIN
+    container_name: ${COMPOSE_PROJECT_NAME}-dnsmasq
+    depends_on:
+      - hybridly
+    image: dockurr/dnsmasq
+    networks:
+      laravel:
+        ipv4_address: 172.18.0.10
+    ports:
+      - "${DNSMASQ_UDP_FORWARD_PORT}:53/udp"
+      - "${DNSMASQ_TCP_FORWARD_PORT}:53/tcp"
+    volumes:
+      - ./docker/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf:ro
+
+  hybridly:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    container_name: ${COMPOSE_PROJECT_NAME}-hybridly
+    depends_on:
+      - mysql
+      - redis
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - laravel
+    ports:
+      - "${FPM_FORWARD_PORT}:9000"
+      - "${VITE_FORWARD_PORT}:5173"
+    stop_signal: SIGKILL
+    volumes:
+      - .:/var/www/html
+
+  mail:
+    container_name: ${COMPOSE_PROJECT_NAME}-mail
+    image: axllent/mailpit:${MAILPIT_VERSION}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mail-${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.mail-${COMPOSE_PROJECT_NAME}.rule=Host(`mail.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.mail-${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.mail-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8025"
+    networks:
+      - laravel
+    ports:
+      - ${MAIL_FORWARD_PORT}:1025
+    volumes:
+      - mail-data:/data
+
+  minio:
+    container_name: ${COMPOSE_PROJECT_NAME}-minio
+    environment:
+      MINIO_API_PORT_NUMBER: ${MINIO_API_PORT}
+      MINIO_BROWSER_REDIRECT_URL: ${MINIO_CONSOLE_URL}
+      MINIO_CONSOLE_PORT_NUMBER: ${MINIO_CONSOLE_PORT}
+      MINIO_DEFAULT_BUCKETS: ${AWS_BUCKET}:${AWS_BUCKET_POLICY:-private}
+      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
+      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
+      MINIO_SERVER_URL: ${AWS_ENDPOINT}
+    image: bitnami/minio:${MINIO_VERSION}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.rule=Host(`storage.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.service=storage-${COMPOSE_PROJECT_NAME}"
+      - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.storage-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${MINIO_API_PORT}"
+      - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.rule=Host(`minio.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.service=minio-${COMPOSE_PROJECT_NAME}"
+      - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.minio-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${MINIO_CONSOLE_PORT}"
+    networks:
+      - laravel
+    volumes:
+      - minio-data:/bitnami/minio/data
+
+  mysql:
+    container_name: ${COMPOSE_PROJECT_NAME}-mysql
+    environment:
+      DB_DATABASE_TESTING: ${COMPOSE_PROJECT_NAME}_testing
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_USER: ${DB_USERNAME}
+    image: mysql:${MYSQL_VERSION}
+    networks:
+      - laravel
+    ports:
+      - "${DB_FORWARD_PORT}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/scripts/create-testing-database.sh:/docker-entrypoint-initdb.d/create-testing-database.sh
+
+  nginx:
+    container_name: ${COMPOSE_PROJECT_NAME}-nginx
+    depends_on:
+      - hybridly
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+    image: nginx:${NGINX_VERSION}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx-${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.nginx-${COMPOSE_PROJECT_NAME}.rule=Host(`app.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.nginx-${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.nginx-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80"
+    networks:
+      - laravel
+    volumes:
+      - ./docker/nginx/templates/hybridly.conf.template:/etc/nginx/templates/hybridly.conf.template:ro
+      - .:/var/www/html
+
+  redis:
+    container_name: ${COMPOSE_PROJECT_NAME}-redis
+    image: redis:${REDIS_VERSION}
+    networks:
+      - laravel
+    volumes:
+      - redis-data:/data
+
+  traefik:
+    container_name: ${COMPOSE_PROJECT_NAME}-traefik
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+    image: traefik:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=https"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.services.router.loadbalancer.server.port=8080"
+    networks:
+      laravel:
+        ipv4_address: 172.18.0.20
+    ports:
+      - "${NGINX_FORWARD_PORT}:80"
+      - "${NGINX_SSL_FORWARD_PORT}:443"
+    stop_signal: SIGKILL
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./docker/traefik/config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./docker/traefik/certs:/etc/traefik/certs:ro
+
+volumes:
+  mail-data:
+    name: ${COMPOSE_PROJECT_NAME}-mail-data
+  minio-data:
+    name: ${COMPOSE_PROJECT_NAME}-minio-data
+  mysql-data:
+    name: ${COMPOSE_PROJECT_NAME}-mysql-data
+  redis-data:
+    name: ${COMPOSE_PROJECT_NAME}-redis-data
+
+networks:
+  laravel:
+    name: project.${COMPOSE_PROJECT_NAME}
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.18.0.0/16"

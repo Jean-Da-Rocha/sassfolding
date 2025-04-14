@@ -18,7 +18,11 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/certs
 
 .hybridly
 _ide_helper*
 .phpstorm.meta.php
+
+docker/traefik/certs
+docker/ssl
