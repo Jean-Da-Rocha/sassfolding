@@ -15,6 +15,18 @@ services:
     volumes:
       - ./docker/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf:ro
 
+  horizon:
+    image: ${COMPOSE_PROJECT_NAME}-hybridly
+    command: ["php", "/var/www/html/artisan", "horizon"]
+    container_name: ${COMPOSE_PROJECT_NAME}-horizon
+    depends_on:
+      - hybridly
+    networks:
+      - laravel
+    stop_signal: SIGTERM
+    volumes:
+      - .:/var/www/html
+
   hybridly:
     build:
       context: .
@@ -23,6 +35,7 @@ services:
     depends_on:
       - mysql
       - redis
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]
     extra_hosts:
       - host.docker.internal:host-gateway
     networks:
@@ -63,11 +76,13 @@ services:
     image: bitnami/minio:${MINIO_VERSION}
     labels:
       - "traefik.enable=true"
+      # MinIO Api / Storage
       - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.entrypoints=https"
       - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.rule=Host(`storage.${COMPOSE_PROJECT_NAME}.test`)"
       - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.service=storage-${COMPOSE_PROJECT_NAME}"
       - "traefik.http.routers.storage-${COMPOSE_PROJECT_NAME}.tls=true"
       - "traefik.http.services.storage-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=${MINIO_API_PORT}"
+      # MinIO Console / Dashboard
       - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.entrypoints=https"
       - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.rule=Host(`minio.${COMPOSE_PROJECT_NAME}.test`)"
       - "traefik.http.routers.minio-${COMPOSE_PROJECT_NAME}.service=minio-${COMPOSE_PROJECT_NAME}"
@@ -104,10 +119,16 @@ services:
     image: nginx:${NGINX_VERSION}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx-${COMPOSE_PROJECT_NAME}.entrypoints=https"
-      - "traefik.http.routers.nginx-${COMPOSE_PROJECT_NAME}.rule=Host(`app.${COMPOSE_PROJECT_NAME}.test`)"
-      - "traefik.http.routers.nginx-${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.services.nginx-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80"
+
+      # App router
+      - "traefik.http.routers.app-${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.app-${COMPOSE_PROJECT_NAME}.rule=Host(`app.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.app-${COMPOSE_PROJECT_NAME}.tls=true"
+
+      # Horizon router
+      - "traefik.http.routers.horizon-${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.horizon-${COMPOSE_PROJECT_NAME}.rule=Host(`horizon.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.horizon-${COMPOSE_PROJECT_NAME}.tls=true"
     networks:
       - laravel
     volumes:

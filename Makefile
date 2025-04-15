@@ -37,13 +37,25 @@ destroy:
 	docker compose down --remove-orphans --volumes
 	docker system prune -a -f --volumes
 
-.PHONY: down
-stop:
-	@docker compose down --remove-orphans
-
 .PHONY: eslint
 eslint:
 	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" pnpm run lint:fix
+
+.PHONY: horizon-continue
+horizon-continue:
+	@docker exec -it "$(PROJECT_NAME_SLUG)-horizon" php artisan horizon:continue
+
+.PHONY: horizon-pause
+horizon-pause:
+	@docker exec -it "$(PROJECT_NAME_SLUG)-horizon" php artisan horizon:pause
+
+.PHONY: horizon-start
+horizon-start:
+	@docker exec -it "$(PROJECT_NAME_SLUG)-horizon" php artisan horizon
+
+.PHONY: horizon-stop
+horizon-stop:
+	@docker exec -it "$(PROJECT_NAME_SLUG)-horizon" php artisan horizon:terminate
 
 .PHONY: install
 install: setup-local-environment setup-testing-environment update-certificates
@@ -69,7 +81,7 @@ purge:
 
 .PHONY: rebuild
 rebuild:
-	@docker compose down -v
+	@docker compose down -v --remove-orphans
 	@make restore-dns
 	@docker compose build
 	@make setup-dns
@@ -145,6 +157,10 @@ setup-testing-environment:
 .PHONY: start
 start:
 	@docker compose up -d
+
+.PHONY: down
+stop:
+	@docker compose down --remove-orphans
 
 .PHONY: taze
 taze:

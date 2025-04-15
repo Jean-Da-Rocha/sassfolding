@@ -44,5 +44,3 @@ RUN update-ca-certificates
 USER laravel
 
 COPY --chown=laravel:laravel . /var/www/html
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
