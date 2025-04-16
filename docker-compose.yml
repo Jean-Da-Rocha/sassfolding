@@ -13,23 +13,21 @@ services:
     volumes:
       - ./docker/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf:ro
 
-  horizon:
-    image: ${COMPOSE_PROJECT_NAME}-hybridly
-    init: true
-    command: ["php", "/var/www/html/artisan", "horizon"]
-    container_name: ${COMPOSE_PROJECT_NAME}-horizon
-    networks:
-      - laravel
-    volumes:
-      - .:/var/www/html
+#  horizon:
+#    image: ${COMPOSE_PROJECT_NAME}-hybridly
+#    init: true
+#    command: ["php", "/var/www/html/artisan", "horizon"]
+#    container_name: ${COMPOSE_PROJECT_NAME}-horizon
+#    networks:
+#      - laravel
+#    volumes:
+#      - .:/var/www/html
 
   hybridly:
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
     container_name: ${COMPOSE_PROJECT_NAME}-hybridly
-    entrypoint: ["/usr/local/bin/hybridly-entrypoint.sh"]
-#    init: true
     extra_hosts:
       - host.docker.internal:host-gateway
     networks:
