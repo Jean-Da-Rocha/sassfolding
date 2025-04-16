@@ -53,8 +53,8 @@ horizon-pause:
 horizon-start:
 	@docker exec -it "$(PROJECT_NAME_SLUG)-horizon" php artisan horizon
 
-.PHONY: horizon-stop
-horizon-stop:
+.PHONY: horizon-terminate
+horizon-terminate:
 	@docker exec -it "$(PROJECT_NAME_SLUG)-horizon" php artisan horizon:terminate
 
 .PHONY: install

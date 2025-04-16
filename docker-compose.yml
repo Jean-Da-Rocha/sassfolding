@@ -17,11 +17,8 @@ services:
     image: ${COMPOSE_PROJECT_NAME}-hybridly
     command: ["php", "/var/www/html/artisan", "horizon"]
     container_name: ${COMPOSE_PROJECT_NAME}-horizon
-    depends_on:
-      - hybridly
     networks:
       - laravel
-    stop_signal: SIGTERM
     volumes:
       - .:/var/www/html
 
@@ -33,13 +30,13 @@ services:
     depends_on:
       - mysql
       - redis
-    entrypoint: ["/usr/local/bin/entrypoint.sh"]
+    entrypoint: ["/usr/local/bin/hybridly-entrypoint.sh"]
     extra_hosts:
       - host.docker.internal:host-gateway
     networks:
       - laravel
     ports:
-      - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+      - '${VITE_PORT}:${VITE_PORT}'
     volumes:
       - .:/var/www/html
 

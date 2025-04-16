@@ -35,10 +35,10 @@ WORKDIR /var/www/html
 USER root
 
 COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
-COPY ./docker/scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/scripts/hybridly-entrypoint.sh /usr/local/bin/hybridly-entrypoint.sh
 COPY ./docker/ssl/rootCA.pem /usr/local/share/ca-certificates/rootCA.crt
 
-RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/hybridly-entrypoint.sh
 RUN update-ca-certificates
 
 USER laravel
