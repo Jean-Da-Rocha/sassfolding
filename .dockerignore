@@ -1,0 +1,32 @@
+# Cache / Dependencies / Logs
+composer.phar
+bootstrap/cache/*.php
+node_modules
+storage/*.key
+storage/*.log
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+vendor
+.phpunit.result.cache
+.pnpm-store
+.pnpm-debug.log
+
+# Configs / Scripts
+Dockerfile
+Makefile
+docker-compose.yml
+
+## Env files
+.env
+.env.*
+
+# Code Editors / IDE
+.idea
+.phpstorm.meta.php
+.vscode
+_ide_helper.php
+_ide_helper_models.php
+*.sublime*
+
