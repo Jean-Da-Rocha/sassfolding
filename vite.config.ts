@@ -34,8 +34,14 @@ export default defineConfig(({ mode }) => {
         key: readFileSync(`${certPath}.key`),
       },
       watch: {
-        // Ignore certain directories which slows down Vite and leads to max file watch error.
-        ignored: ['**/node_modules/**', '**/storage/**', '**/vendor/**'],
+        // Ignore directories that slow down Vite and cause 'file watchers limit' errors.
+        ignored: [
+          '**/bootstrap/**',
+          '**/database/**',
+          '**/storage/**',
+          '**/tests/**',
+          '**/vendor/**',
+        ],
       },
     },
   };

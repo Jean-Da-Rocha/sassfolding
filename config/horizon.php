@@ -5,6 +5,35 @@ declare(strict_types=1);
 use Illuminate\Support\Str;
 
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Horizon URI Patterns
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the allowed URI patterns that Horizon will respond to.
+    | These patterns are used to restrict access only to specific endpoints,
+    | ensuring your Horizon dashboard and API remain protected and scoped.
+    |
+    */
+    'uri_patterns' => [
+        'batches',
+        'batches/*',
+        'jobs/completed',
+        'jobs/failed',
+        'jobs/failed/*',
+        'jobs/pending',
+        'jobs/silenced',
+        'dashboard',
+        'masters',
+        'metrics/jobs',
+        'metrics/jobs/*',
+        'metrics/queues',
+        'metrics/queues/*',
+        'monitoring',
+        'monitoring/*',
+        'stats',
+        'workload',
+    ],
 
     /*
     |--------------------------------------------------------------------------

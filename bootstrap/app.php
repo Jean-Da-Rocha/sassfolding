@@ -7,6 +7,7 @@ use App\Exceptions\CannotCreateModelException;
 use App\Exceptions\CannotDeleteModelException;
 use App\Exceptions\CannotUpdateModelException;
 use App\Http\Middleware\HandleHybridRequests;
+use App\Http\Middleware\HorizonMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -17,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->appendToGroup('web', [HandleHybridRequests::class]);
+        $middleware->appendToGroup('web', [HandleHybridRequests::class, HorizonMiddleware::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(

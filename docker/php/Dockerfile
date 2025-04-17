@@ -38,7 +38,8 @@ USER root
 RUN mkdir -p /var/log/supervisor && chown laravel:laravel /var/log/supervisor
 
 COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
-COPY ./docker/php/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY ./docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 COPY ./docker/ssl/rootCA.pem /usr/local/share/ca-certificates/rootCA.crt
 
 RUN update-ca-certificates
