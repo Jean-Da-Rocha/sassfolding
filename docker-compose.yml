@@ -31,6 +31,8 @@ services:
       context: .
       dockerfile: ./docker/php/Dockerfile
     container_name: ${COMPOSE_PROJECT_NAME}-hybridly
+    environment:
+      PHP_IDE_CONFIG: serverName=${COMPOSE_PROJECT_NAME}
     extra_hosts:
       - host.docker.internal:host-gateway
     networks:
