@@ -28,111 +28,90 @@ HYBRIDLY_EXEC ?= $(DOCKER_COMPOSE) exec -it hybridly
 HYBRIDLY_RUNNER ?= $(DOCKER_COMPOSE) run --rm --no-deps hybridly
 
 .PHONY: artisan
-artisan:
+artisan: ## Run artisan commands using make artisan cmd="" syntax.
 	$(HYBRIDLY_EXEC) php artisan $(cmd)
 
 .PHONY: build
-build: restore-dns
-	$(DOCKER) compose build
+build: ## Build the docker images for the project.
+	@$(MAKE) restore-dns
+	$(DOCKER_COMPOSE) build
 
 .PHONY: composer
-composer:
+composer: ## Run composer commands using make composer cmd="" syntax.
 	$(HYBRIDLY_EXEC) composer $(cmd)
 
 .PHONY: destroy
-destroy:
+destroy: ## Tear down the project, removing volumes and pruning Docker system.
 	$(DOCKER_COMPOSE) down --remove-orphans --volumes
 	$(DOCKER) system prune --all --force --volumes
 
 .PHONY: eslint
-eslint:
+eslint: ## Run ESLint with automatic fixing.
 	$(HYBRIDLY_EXEC) pnpm run lint:fix
 
 .PHONY: help
 help:
-	@echo "$(CYAN)Available make commands:$(RESET)"
-	@echo -"$(GREEN)artisan cmd=\"your artisan command\":$(RESET) Run artisan commands."
-	@echo -"$(GREEN)build:$(RESET) Build the docker images for the project."
-	@echo -"$(GREEN)composer cmd=\"your composer command\":$(RESET) Run composer commands."
-	@echo -"$(GREEN)destroy:$(RESET) Tear down the project, removing volumes and pruning Docker system."
-	@echo -"$(GREEN)eslint:$(RESET) Run ESLint with automatic fixing."
-	@echo -"$(GREEN)horizon-continue:$(RESET) Continue a paused Horizon queue."
-	@echo -"$(GREEN)horizon-pause:$(RESET) Pause the Horizon queue."
-	@echo -"$(GREEN)horizon-start:$(RESET) Start the Horizon queue."
-	@echo -"$(GREEN)horizon-terminate:$(RESET) Terminate the Horizon queue."
-	@echo -"$(GREEN)install:$(RESET) Install dependencies and set up the local and testing environments."
-	@echo -"$(GREEN)install-all-deps:$(RESET) Install both composer and pnpm dependencies."
-	@echo -"$(GREEN)install-composer-deps:$(RESET) Install composer dependencies."
-	@echo -"$(GREEN)install-pnpm-deps:$(RESET) Install pnpm dependencies."
-	@echo -"$(GREEN)phpstan:$(RESET) Run static analysis with PHPStan."
-	@echo -"$(GREEN)pint:$(RESET) Run PHP Pint to fix coding style issues."
-	@echo -"$(GREEN)pnpm cmd=\"your pnpm command\":$(RESET) Run pnpm commands."
-	@echo -"$(GREEN)purge:$(RESET) Purge unused Docker containers, images, networks, and volumes."
-	@echo -"$(GREEN)rebuild:$(RESET) Rebuild and restart the entire project from scratch."
-	@echo -"$(GREEN)restart:$(RESET) Restart the project by stopping and starting all containers."
-	@echo -"$(GREEN)restore-dns:$(RESET) Restore the default DNS settings for the project."
-	@echo -"$(GREEN)setup-dns:$(RESET) Set up DNS resolver for the project domain."
-	@echo -"$(GREEN)setup-local-environment:$(RESET) Set up the local environment from the .env.example file."
-	@echo -"$(GREEN)setup-testing-environment:$(RESET) Set up the testing environment from the .env.testing.example file."
-	@echo -"$(GREEN)start:$(RESET) Start the Docker containers for the project."
-	@echo -"$(GREEN)stop:$(RESET) Stop the Docker containers for the project."
-	@echo -"$(GREEN)taze:$(RESET) Run pnpx taze to check for outdated dependencies."
-	@echo -"$(GREEN)taze-major:$(RESET) Run pnpx taze with major version updates only."
-	@echo -"$(GREEN)tinker:$(RESET) Open a tinker session."
-	@echo -"$(GREEN)update-certificates:$(RESET) Generate and update SSL certificates for the project."
-	@echo -"$(GREEN)vue-tsc:$(RESET) Run TypeScript type checking for Vue files."
+	@echo 'Available make commands:'
+	@grep -E '^[a-zA-Z_0-9%-]+:.*?## .*$$' Makefile | awk 'BEGIN {FS = ":.*?## "}; {printf "    -${CYAN}%-25s${RESET}: %s\n", $$1, $$2}'
+	@echo
 
 .PHONY: horizon-continue
-horizon-continue:
+horizon-continue: ## Continue a paused Horizon queue.
 	$(HORIZON_EXEC) php artisan horizon:continue
 
 .PHONY: horizon-pause
-horizon-pause:
+horizon-pause: ## Pause the Horizon queue.
 	$(HORIZON_EXEC) php artisan horizon:pause
 
 .PHONY: horizon-start
-horizon-start:
-	$(HORIZON_EXEC) php artisan horizon
+horizon-start: ## Start the Horizon queue.
+	$(HORIZON_EXEC) php artisan horizon:start
 
 .PHONY: horizon-terminate
-horizon-terminate:
+horizon-terminate: ## Terminate the Horizon queue.
 	$(HORIZON_EXEC) php artisan horizon:terminate
 
 .PHONY: install
-install: install-all-deps setup-local-environment setup-testing-environment update-certificates
+install: ## Install dependencies and set up the local and testing environments.
+	@$(MAKE) install-all-deps
+	@$(MAKE) setup-local-environment
+	@$(MAKE) setup-testing-environment
+	@$(MAKE) update-certificates
 
 .PHONY: install-all-deps
-install-all-deps: install-composer-deps install-pnpm-deps
+install-all-deps: ## Install both composer and pnpm dependencies.
+	@$(MAKE) install-composer-deps
+	@$(MAKE) install-pnpm-deps
 
 .PHONY: install-composer-deps
-install-composer-deps:
+install-composer-deps: ## Install composer dependencies.
 	$(HYBRIDLY_RUNNER) composer install --prefer-dist --no-interaction --no-progress
 
 .PHONY: install-pnpm-deps
-install-pnpm-deps:
+install-pnpm-deps: ## Install pnpm dependencies.
 	$(HYBRIDLY_RUNNER) pnpm install --frozen-lockfile --force
 
 .PHONY: phpstan
-phpstan:
+phpstan: ## Run static analysis with PHPStan.
 	$(HYBRIDLY_EXEC) vendor/bin/phpstan analyze
 
 .PHONY: pint
-pint:
+pint: ## Run Laravel Pint to fix coding style issues.
 	$(HYBRIDLY_EXEC) vendor/bin/pint
 
 .PHONY: pnpm
-pnpm:
+pnpm: ## Run pnpm commands using the make pnpm cmd="" syntax.
 	$(HYBRIDLY_EXEC) pnpm $(or $(cmd), --version)
 
 .PHONY: purge
-purge:
+purge: ## Purge all Docker containers, images, networks, and volumes.
 	$(DOCKER) compose down --remove-orphans --volumes
 	$(DOCKER) network prune --force
 	$(DOCKER) volume prune --force
 	$(DOCKER) image prune --force
 
 .PHONY: rebuild
-rebuild:
+rebuild: ## Rebuild and restart docker containers for this project.
 	$(DOCKER) compose down --remove-orphans --volumes
 	@$(MAKE) restore-dns
 	$(DOCKER) compose build
@@ -140,10 +119,12 @@ rebuild:
 	$(DOCKER) compose up --detach
 
 .PHONY: restart
-restart: stop start
+restart: ## Restart the project by stopping and starting all containers.
+	@$(MAKE) stop
+	@$(MAKE) start
 
 .PHONY: restore-dns
-restore-dns:
+restore-dns: ## Restore the default DNS settings.
 	@echo "$(CYAN)[INFO]: Restoring default DNS...$(RESET)"
 ifeq ($(shell uname),Darwin)
 	@echo "$(CYAN)[INFO]: macOS: Restoring default DNS resolver for *.$(DNS_DOMAIN)...$(RESET)"
@@ -161,7 +142,7 @@ else
 endif
 
 .PHONY: setup-dns
-setup-dns:
+setup-dns: ## Set up DNS resolver for the provided top level domain (TLD).
 	@echo "$(CYAN)[INFO]: Setting up DNS for *.$(DNS_DOMAIN)...$(RESET)"
 ifeq ($(shell uname),Darwin)
 	@echo "$(CYAN)[INFO]: macOS: Configuring DNS resolver for *.$(DNS_DOMAIN)...$(RESET)"
@@ -201,35 +182,34 @@ define setup_environment
 endef
 
 .PHONY: setup-local-environment
-setup-local-environment:
+setup-local-environment: ## Set up the local environment from the .env.example file.
 	$(call setup_environment,local,.env,)
 
 .PHONY: setup-testing-environment
-setup-testing-environment:
+setup-testing-environment: ## Set up the testing environment from the .env.testing.example file.
 	$(call setup_environment,testing,.env.testing,--env=testing)
 
 .PHONY: start
-start:
+start: ## Start the Docker containers for the project.
 	$(DOCKER_COMPOSE) up --detach --remove-orphans
 
 .PHONY: stop
-stop:
+stop: ## Stop the Docker containers for the project.
 	$(DOCKER_COMPOSE) down --remove-orphans
 
 .PHONY: taze
-taze:
+taze: ## Run pnpx taze to check for outdated dependencies.
 	$(HYBRIDLY_EXEC) pnpx taze
 
 .PHONY: taze-major
-taze-major:
+taze-major: ## Run pnpx taze with major version updates only.
 	$(HYBRIDLY_EXEC) pnpx taze major
 
 .PHONY: tinker
-tinker:
+tinker: ## Open a Laravel Tinker session.
 	$(HYBRIDLY_EXEC) php artisan tinker
 
-.PHONY: update-certificates
-update-certificates:
+update-certificates: ## Generate and update SSL certificates for the project.
 	@echo "$(CYAN)[INFO]: Updating SSL certificates for $(PROJECT_NAME_SLUG).test...$(RESET)"
 	@mkcert \
 		-cert-file ./docker/traefik/certs/$(PROJECT_NAME_SLUG).cert \
@@ -243,5 +223,5 @@ update-certificates:
 	@echo "$(GREEN)[SUCCESS]: mkcert root CA copied.$(RESET)"
 
 .PHONY: vue-tsc
-vue-tsc:
+vue-tsc: ## Run TypeScript type checking for Vue files.
 	$(HYBRIDLY_EXEC) pnpm run vue-tsc
