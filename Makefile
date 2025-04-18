@@ -4,11 +4,12 @@ RED    := \033[0;31m
 RESET  := \033[0m
 YELLOW := \033[0;33m
 
+ifndef VERBOSE
+	MAKEFLAGS += --no-print-directory
+endif
+
 DNS_DOMAIN=test
 DNSMASQ_IP_ADDRESS=172.18.0.10
-
-DOCKER ?= docker
-DOCKER_COMPOSE ?= $(DOCKER) compose
 
 ifneq ("$(wildcard .env)","")
   PROJECT_NAME := $(shell grep '^COMPOSE_PROJECT_NAME=' .env | cut -d'=' -f2)
@@ -20,94 +21,110 @@ endif
 
 PROJECT_NAME_SLUG := $(shell echo $(PROJECT_NAME) | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -d -c 'a-z0-9-')
 
-.PHONY: artisan
-artisan:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" bash -c "php artisan $(cmd)"
+DOCKER ?= @docker
+DOCKER_COMPOSE ?= $(DOCKER) compose
+HORIZON_EXEC ?= $(DOCKER_COMPOSE) exec -it horizon
+HYBRIDLY_EXEC ?= $(DOCKER_COMPOSE) exec -it hybridly
+HYBRIDLY_RUNNER ?= $(DOCKER_COMPOSE) run --rm --no-deps hybridly
 
-.PHONY: back
-back:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly"
+.PHONY: artisan
+artisan: ## Run artisan commands using make artisan cmd="" syntax.
+	$(HYBRIDLY_EXEC) php artisan $(cmd)
 
 .PHONY: build
-build:
-	@make restore-dns
-	@docker compose build
+build: ## Build the docker images for the project.
+	@$(MAKE) restore-dns
+	$(DOCKER_COMPOSE) build
 
 .PHONY: composer
-composer:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" bash -c "composer $(cmd)"
+composer: ## Run composer commands using make composer cmd="" syntax.
+	$(HYBRIDLY_EXEC) composer $(cmd)
 
 .PHONY: destroy
-destroy:
-	@docker compose down --remove-orphans --volumes
-	@docker system prune -a -f --volumes
+destroy: ## Tear down the project, removing volumes and pruning Docker system.
+	$(DOCKER_COMPOSE) down --remove-orphans --volumes
+	$(DOCKER) system prune --all --force --volumes
 
 .PHONY: eslint
-eslint:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" pnpm run lint:fix
+eslint: ## Run ESLint with automatic fixing.
+	$(HYBRIDLY_EXEC) pnpm run lint:fix
+
+.PHONY: help
+help:
+	@echo 'Available make commands:'
+	@grep -E '^[a-zA-Z_0-9%-]+:.*?## .*$$' Makefile | awk 'BEGIN {FS = ":.*?## "}; {printf "    -${CYAN}%-25s${RESET}: %s\n", $$1, $$2}'
+	@echo
 
 .PHONY: horizon-continue
-horizon-continue:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-horizon" php artisan horizon:continue
+horizon-continue: ## Continue a paused Horizon queue.
+	$(HORIZON_EXEC) php artisan horizon:continue
 
 .PHONY: horizon-pause
-horizon-pause:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-horizon" php artisan horizon:pause
+horizon-pause: ## Pause the Horizon queue.
+	$(HORIZON_EXEC) php artisan horizon:pause
 
 .PHONY: horizon-start
-horizon-start:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-horizon" php artisan horizon
+horizon-start: ## Start the Horizon queue.
+	$(HORIZON_EXEC) php artisan horizon:start
 
 .PHONY: horizon-terminate
-horizon-terminate:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-horizon" php artisan horizon:terminate
+horizon-terminate: ## Terminate the Horizon queue.
+	$(HORIZON_EXEC) php artisan horizon:terminate
 
 .PHONY: install
-install: install-all-deps setup-local-environment setup-testing-environment update-certificates
+install: ## Install dependencies and set up the local and testing environments.
+	@$(MAKE) install-all-deps
+	@$(MAKE) setup-local-environment
+	@$(MAKE) setup-testing-environment
+	@$(MAKE) update-certificates
 
 .PHONY: install-all-deps
-install-all-deps: install-composer-deps install-pnpm-deps
+install-all-deps: ## Install both composer and pnpm dependencies.
+	@$(MAKE) install-composer-deps
+	@$(MAKE) install-pnpm-deps
 
 .PHONY: install-composer-deps
-install-composer-deps:
-	@docker compose run --rm --no-deps hybridly composer install --prefer-dist --no-interaction --no-progress
+install-composer-deps: ## Install composer dependencies.
+	$(HYBRIDLY_RUNNER) composer install --prefer-dist --no-interaction --no-progress
 
 .PHONY: install-pnpm-deps
-install-pnpm-deps:
-	@docker compose run --rm --no-deps hybridly pnpm install --frozen-lockfile --force
+install-pnpm-deps: ## Install pnpm dependencies.
+	$(HYBRIDLY_RUNNER) pnpm install --frozen-lockfile --force
 
 .PHONY: phpstan
-phpstan:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" vendor/bin/phpstan analyze
+phpstan: ## Run static analysis with PHPStan.
+	$(HYBRIDLY_EXEC) vendor/bin/phpstan analyze
 
 .PHONY: pint
-pint:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" vendor/bin/pint
+pint: ## Run Laravel Pint to fix coding style issues.
+	$(HYBRIDLY_EXEC) vendor/bin/pint
 
 .PHONY: pnpm
-pnpm:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" bash -c "pnpm $(or $(cmd), --version)"
+pnpm: ## Run pnpm commands using the make pnpm cmd="" syntax.
+	$(HYBRIDLY_EXEC) pnpm $(or $(cmd), --version)
 
 .PHONY: purge
-purge:
-	@docker compose down --remove-orphans --volumes
-	@docker network prune --force
-	@docker volume prune --force
-	@docker image prune --force
+purge: ## Purge all Docker containers, images, networks, and volumes.
+	$(DOCKER) compose down --remove-orphans --volumes
+	$(DOCKER) network prune --force
+	$(DOCKER) volume prune --force
+	$(DOCKER) image prune --force
 
 .PHONY: rebuild
-rebuild:
-	@docker compose down -v --remove-orphans
-	@make restore-dns
-	@docker compose build
-	@make setup-dns
-	@docker compose up -d
+rebuild: ## Rebuild and restart docker containers for this project.
+	$(DOCKER) compose down --remove-orphans --volumes
+	@$(MAKE) restore-dns
+	$(DOCKER) compose build
+	@$(MAKE) setup-dns
+	$(DOCKER) compose up --detach
 
 .PHONY: restart
-restart: stop start
+restart: ## Restart the project by stopping and starting all containers.
+	@$(MAKE) stop
+	@$(MAKE) start
 
 .PHONY: restore-dns
-restore-dns:
+restore-dns: ## Restore the default DNS settings.
 	@echo "$(CYAN)[INFO]: Restoring default DNS...$(RESET)"
 ifeq ($(shell uname),Darwin)
 	@echo "$(CYAN)[INFO]: macOS: Restoring default DNS resolver for *.$(DNS_DOMAIN)...$(RESET)"
@@ -125,7 +142,7 @@ else
 endif
 
 .PHONY: setup-dns
-setup-dns:
+setup-dns: ## Set up DNS resolver for the provided top level domain (TLD).
 	@echo "$(CYAN)[INFO]: Setting up DNS for *.$(DNS_DOMAIN)...$(RESET)"
 ifeq ($(shell uname),Darwin)
 	@echo "$(CYAN)[INFO]: macOS: Configuring DNS resolver for *.$(DNS_DOMAIN)...$(RESET)"
@@ -154,48 +171,45 @@ else
 	fi
 endif
 
+define setup_environment
+	@echo "$(CYAN)[INFO]: Setting up the $(1) environment...$(RESET)"
+	@if [ ! -f $(2) ]; then cp $(2).example $(2); fi
+	@COMPOSE_PROJECT_NAME=$(PROJECT_NAME_SLUG) envsubst < $(2).example > $(2)
+	@sed -i "s|^COMPOSE_PROJECT_NAME=.*|COMPOSE_PROJECT_NAME=$(PROJECT_NAME_SLUG)|" $(2)
+	@echo "$(CYAN)[INFO]: Generating APP_KEY for $(1) environments...$(RESET)"
+	$(HYBRIDLY_RUNNER) php artisan key:generate $(3)
+	@echo "$(GREEN)[SUCCESS]: $(1) environment ready.$(RESET)"
+endef
+
 .PHONY: setup-local-environment
-setup-local-environment:
-	@echo "$(CYAN)[INFO]: Setting up the local environment...$(RESET)"
-	@if [ ! -f .env ]; then cp .env.example .env; fi
-	@COMPOSE_PROJECT_NAME=$(PROJECT_NAME_SLUG) envsubst < .env.example > .env
-	@sed -i "s|^COMPOSE_PROJECT_NAME=.*|COMPOSE_PROJECT_NAME=$(PROJECT_NAME_SLUG)|" .env
-	@echo "$(CYAN)[INFO]: Generating APP_KEY for local environments...$(RESET)"
-	@docker compose run --rm --no-deps hybridly php artisan key:generate
-	@echo "$(GREEN)[SUCCESS]: Local environment ready.$(RESET)"
+setup-local-environment: ## Set up the local environment from the .env.example file.
+	$(call setup_environment,local,.env,)
 
 .PHONY: setup-testing-environment
-setup-testing-environment:
-	@echo "$(CYAN)[INFO]: Setting up the testing environment...$(RESET)"
-	@if [ ! -f .env.testing ]; then cp .env.testing.example .env.testing; fi
-	@COMPOSE_PROJECT_NAME=$(PROJECT_NAME_SLUG) envsubst < .env.testing.example > .env.testing
-	@sed -i "s|^COMPOSE_PROJECT_NAME=.*|COMPOSE_PROJECT_NAME=$(PROJECT_NAME_SLUG)|" .env.testing
-	@echo "$(CYAN)[INFO]: Generating APP_KEY for testing environments...$(RESET)"
-	@docker compose run --rm --no-deps hybridly php artisan key:generate --env=testing
-	@echo "$(GREEN)[SUCCESS]: Testing environment ready.$(RESET)"
+setup-testing-environment: ## Set up the testing environment from the .env.testing.example file.
+	$(call setup_environment,testing,.env.testing,--env=testing)
 
 .PHONY: start
-start:
-	@docker compose up -d
+start: ## Start the Docker containers for the project.
+	$(DOCKER_COMPOSE) up --detach --remove-orphans
 
 .PHONY: stop
-stop:
+stop: ## Stop the Docker containers for the project.
 	$(DOCKER_COMPOSE) down --remove-orphans
 
 .PHONY: taze
-taze:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" pnpx taze
+taze: ## Run pnpx taze to check for outdated dependencies.
+	$(HYBRIDLY_EXEC) pnpx taze
 
 .PHONY: taze-major
-taze-major:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" pnpx taze major
+taze-major: ## Run pnpx taze with major version updates only.
+	$(HYBRIDLY_EXEC) pnpx taze major
 
 .PHONY: tinker
-tinker:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" php artisan tinker
+tinker: ## Open a Laravel Tinker session.
+	$(HYBRIDLY_EXEC) php artisan tinker
 
-.PHONY: update-certificates
-update-certificates:
+update-certificates: ## Generate and update SSL certificates for the project.
 	@echo "$(CYAN)[INFO]: Updating SSL certificates for $(PROJECT_NAME_SLUG).test...$(RESET)"
 	@mkcert \
 		-cert-file ./docker/traefik/certs/$(PROJECT_NAME_SLUG).cert \
@@ -209,5 +223,5 @@ update-certificates:
 	@echo "$(GREEN)[SUCCESS]: mkcert root CA copied.$(RESET)"
 
 .PHONY: vue-tsc
-vue-tsc:
-	@docker exec -it "$(PROJECT_NAME_SLUG)-hybridly" pnpm run vue-tsc
+vue-tsc: ## Run TypeScript type checking for Vue files.
+	$(HYBRIDLY_EXEC) pnpm run vue-tsc
