@@ -4,6 +4,10 @@ RED    := \033[0;31m
 RESET  := \033[0m
 YELLOW := \033[0;33m
 
+ifndef VERBOSE
+	MAKEFLAGS += --no-print-directory
+endif
+
 DNS_DOMAIN=test
 DNSMASQ_IP_ADDRESS=172.18.0.10
 
@@ -96,10 +100,10 @@ purge:
 .PHONY: rebuild
 rebuild:
 	$(DOCKER) compose down --remove-orphans --volumes
-	$(MAKE) restore-dns
+	@$(MAKE) restore-dns
 	$(DOCKER) compose build
-	$(MAKE) setup-dns
-	$(DOCKER) compose up --detached
+	@$(MAKE) setup-dns
+	$(DOCKER) compose up --detach
 
 .PHONY: restart
 restart: stop start
@@ -172,7 +176,7 @@ setup-testing-environment:
 
 .PHONY: start
 start:
-	$(DOCKER_COMPOSE) up --detached --remove-orphans
+	$(DOCKER_COMPOSE) up --detach --remove-orphans
 
 .PHONY: stop
 stop:
