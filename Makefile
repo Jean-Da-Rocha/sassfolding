@@ -48,6 +48,40 @@ destroy:
 eslint:
 	$(HYBRIDLY_EXEC) pnpm run lint:fix
 
+.PHONY: help
+help:
+	@echo "$(CYAN)Available make commands:$(RESET)"
+	@echo -"$(GREEN)artisan cmd=\"your artisan command\":$(RESET) Run artisan commands."
+	@echo -"$(GREEN)build:$(RESET) Build the docker images for the project."
+	@echo -"$(GREEN)composer cmd=\"your composer command\":$(RESET) Run composer commands."
+	@echo -"$(GREEN)destroy:$(RESET) Tear down the project, removing volumes and pruning Docker system."
+	@echo -"$(GREEN)eslint:$(RESET) Run ESLint with automatic fixing."
+	@echo -"$(GREEN)horizon-continue:$(RESET) Continue a paused Horizon queue."
+	@echo -"$(GREEN)horizon-pause:$(RESET) Pause the Horizon queue."
+	@echo -"$(GREEN)horizon-start:$(RESET) Start the Horizon queue."
+	@echo -"$(GREEN)horizon-terminate:$(RESET) Terminate the Horizon queue."
+	@echo -"$(GREEN)install:$(RESET) Install dependencies and set up the local and testing environments."
+	@echo -"$(GREEN)install-all-deps:$(RESET) Install both composer and pnpm dependencies."
+	@echo -"$(GREEN)install-composer-deps:$(RESET) Install composer dependencies."
+	@echo -"$(GREEN)install-pnpm-deps:$(RESET) Install pnpm dependencies."
+	@echo -"$(GREEN)phpstan:$(RESET) Run static analysis with PHPStan."
+	@echo -"$(GREEN)pint:$(RESET) Run PHP Pint to fix coding style issues."
+	@echo -"$(GREEN)pnpm cmd=\"your pnpm command\":$(RESET) Run pnpm commands."
+	@echo -"$(GREEN)purge:$(RESET) Purge unused Docker containers, images, networks, and volumes."
+	@echo -"$(GREEN)rebuild:$(RESET) Rebuild and restart the entire project from scratch."
+	@echo -"$(GREEN)restart:$(RESET) Restart the project by stopping and starting all containers."
+	@echo -"$(GREEN)restore-dns:$(RESET) Restore the default DNS settings for the project."
+	@echo -"$(GREEN)setup-dns:$(RESET) Set up DNS resolver for the project domain."
+	@echo -"$(GREEN)setup-local-environment:$(RESET) Set up the local environment from the .env.example file."
+	@echo -"$(GREEN)setup-testing-environment:$(RESET) Set up the testing environment from the .env.testing.example file."
+	@echo -"$(GREEN)start:$(RESET) Start the Docker containers for the project."
+	@echo -"$(GREEN)stop:$(RESET) Stop the Docker containers for the project."
+	@echo -"$(GREEN)taze:$(RESET) Run pnpx taze to check for outdated dependencies."
+	@echo -"$(GREEN)taze-major:$(RESET) Run pnpx taze with major version updates only."
+	@echo -"$(GREEN)tinker:$(RESET) Open a tinker session."
+	@echo -"$(GREEN)update-certificates:$(RESET) Generate and update SSL certificates for the project."
+	@echo -"$(GREEN)vue-tsc:$(RESET) Run TypeScript type checking for Vue files."
+
 .PHONY: horizon-continue
 horizon-continue:
 	$(HORIZON_EXEC) php artisan horizon:continue
