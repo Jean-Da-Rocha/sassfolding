@@ -1,11 +1,14 @@
-GREEN  := \033[0;32m
 CYAN   := \033[0;36m
-YELLOW := \033[0;33m
+GREEN  := \033[0;32m
 RED    := \033[0;31m
 RESET  := \033[0m
+YELLOW := \033[0;33m
 
 DNS_DOMAIN=test
 DNSMASQ_IP_ADDRESS=172.18.0.10
+
+DOCKER ?= docker
+DOCKER_COMPOSE ?= $(DOCKER) compose
 
 ifneq ("$(wildcard .env)","")
   PROJECT_NAME := $(shell grep '^COMPOSE_PROJECT_NAME=' .env | cut -d'=' -f2)
@@ -175,9 +178,9 @@ setup-testing-environment:
 start:
 	@docker compose up -d
 
-.PHONY: down
+.PHONY: stop
 stop:
-	@docker compose down --remove-orphans
+	$(DOCKER_COMPOSE) down --remove-orphans
 
 .PHONY: taze
 taze:
