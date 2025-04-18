@@ -23,6 +23,7 @@ yarn-error.log
 .hybridly
 _ide_helper*
 .phpstorm.meta.php
+.pnpm-store
 
 docker/traefik/certs
 docker/ssl

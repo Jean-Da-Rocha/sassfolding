@@ -6,6 +6,7 @@ use App\Enums\FlashMessage;
 use App\Exceptions\CannotCreateModelException;
 use App\Exceptions\CannotDeleteModelException;
 use App\Exceptions\CannotUpdateModelException;
+use App\Http\Middleware\EnsureValidHorizonUri;
 use App\Http\Middleware\HandleHybridRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -17,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->appendToGroup('web', [HandleHybridRequests::class]);
+        $middleware->appendToGroup('web', [HandleHybridRequests::class, EnsureValidHorizonUri::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(

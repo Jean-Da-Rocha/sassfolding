@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libxml2-dev \
     libzip-dev \
+    supervisor \
     unzip \
     zip \
     && docker-php-ext-install bcmath exif gd mbstring pcntl pdo_mysql zip \
@@ -34,15 +35,17 @@ WORKDIR /var/www/html
 
 USER root
 
+RUN mkdir -p /var/log/supervisor && chown laravel:laravel /var/log/supervisor
+
 COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
-COPY ./docker/scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 COPY ./docker/ssl/rootCA.pem /usr/local/share/ca-certificates/rootCA.crt
 
-RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN update-ca-certificates
 
 USER laravel
 
 COPY --chown=laravel:laravel . /var/www/html
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

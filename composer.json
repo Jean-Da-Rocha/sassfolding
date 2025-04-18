@@ -13,6 +13,7 @@
     "hybridly/laravel": "^0.7.7",
     "laravel/fortify": "^1.21",
     "laravel/framework": "^11.0",
+    "laravel/horizon": "^5.31",
     "laravel/tinker": "^2.9",
     "league/flysystem-aws-s3-v3": "^3.29",
     "spatie/laravel-data": "^4.5"
@@ -44,8 +45,7 @@
   "scripts": {
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-      "@php artisan package:discover --ansi",
-      "@autocomplete"
+      "@php artisan package:discover --ansi"
     ],
     "post-update-cmd": [
       "@php artisan vendor:publish --tag=laravel-assets --ansi --force"

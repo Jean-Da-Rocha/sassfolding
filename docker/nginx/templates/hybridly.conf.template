@@ -1,7 +1,7 @@
 server {
     listen 80;
     index index.php index.html;
-    server_name app.${COMPOSE_PROJECT_NAME}.test;
+    server_name app.${COMPOSE_PROJECT_NAME}.test horizon.${COMPOSE_PROJECT_NAME}.test;
 
     root /var/www/html/public;
 
