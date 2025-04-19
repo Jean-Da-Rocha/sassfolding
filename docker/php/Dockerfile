@@ -2,8 +2,6 @@ FROM php:8.4-fpm
 
 RUN apt-get update && apt-get install -y \
     curl \
-    default-mysql-client \
-    gettext-base \
     git \
     gnupg \
     libonig-dev \
@@ -11,8 +9,6 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libzip-dev \
     supervisor \
-    unzip \
-    zip \
     && docker-php-ext-install bcmath exif gd mbstring pcntl pdo_mysql zip \
     && pecl install redis xdebug-3.4.2 \
     && docker-php-ext-enable redis xdebug
