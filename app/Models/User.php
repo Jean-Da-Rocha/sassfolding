@@ -64,6 +64,6 @@ class User extends Authenticatable implements MustVerifyEmail
     /** @return Attribute<string, null> */
     protected function nameInitial(): Attribute
     {
-        return Attribute::make(get: fn () => substr($this->name, 0, 1));
+        return Attribute::make(get: fn () => ucfirst(substr($this->name, 0, 1)));
     }
 }
