@@ -91,6 +91,7 @@ services:
     environment:
       DB_DATABASE_TESTING: ${COMPOSE_PROJECT_NAME}_testing
       MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_INITDB_SKIP_TZINFO: 1
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
       MYSQL_USER: ${DB_USERNAME}
@@ -105,8 +106,6 @@ services:
 
   nginx:
     container_name: ${COMPOSE_PROJECT_NAME}-nginx
-    depends_on:
-      - hybridly
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
     image: nginx:${NGINX_VERSION}
