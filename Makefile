@@ -1,3 +1,6 @@
+# Empty by default. Set a value if you don't want to use the working directory as project name.
+OVERRIDE_PROJECT_NAME ?=
+
 CYAN   := \033[0;36m
 GREEN  := \033[0;32m
 RED    := \033[0;31m
@@ -16,8 +19,10 @@ ifneq ("$(wildcard .env)","")
 endif
 
 ifeq ($(PROJECT_NAME),)
-  PROJECT_NAME := $(shell read -p "Enter the project name: " PROJECT_NAME && echo $$PROJECT_NAME)
+  PROJECT_NAME := $(shell basename $(PWD))
 endif
+
+PROJECT_NAME := $(if $(OVERRIDE_PROJECT_NAME), $(OVERRIDE_PROJECT_NAME), $(PROJECT_NAME))
 
 PROJECT_NAME_SLUG := $(shell echo $(PROJECT_NAME) | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -d -c 'a-z0-9-')
 
@@ -32,17 +37,15 @@ artisan: ## Run artisan commands using make artisan cmd="" syntax.
 	$(HYBRIDLY_EXEC) php artisan $(cmd)
 
 .PHONY: build
-build: ## Build the docker images for the project.
-	@$(MAKE) restore-dns
-	$(DOCKER_COMPOSE) build
+build: ## Build the docker images for the project, optionally without cache using 'make build keep-cache=0' syntax.
+	$(DOCKER_COMPOSE) build $(if $(filter 0, $(keep-cache)), --no-cache)
 
 .PHONY: composer
-composer: ## Run composer commands using make composer cmd="" syntax.
+composer: ## Run composer commands using the 'make composer cmd=""' syntax.
 	$(HYBRIDLY_EXEC) composer $(cmd)
 
 .PHONY: destroy
 destroy: ## Tear down the project, removing volumes and pruning Docker system.
-	$(DOCKER_COMPOSE) down --remove-orphans --volumes
 	$(DOCKER) system prune --all --force --volumes
 
 .PHONY: eslint
@@ -73,10 +76,16 @@ horizon-terminate: ## Terminate the Horizon queue.
 
 .PHONY: install
 install: ## Install dependencies and set up the local and testing environments.
-	@$(MAKE) install-all-deps
+	@$(MAKE) restore-dns
 	@$(MAKE) setup-local-environment
 	@$(MAKE) setup-testing-environment
+	@$(MAKE) build keep-cache=0
+	@$(MAKE) install-all-deps
+	@echo "$(CYAN)[INFO]: Generating APP_KEY for local and testing environments...$(RESET)"
+	@$(HYBRIDLY_RUNNER) php artisan key:generate && php artisan key:generate --env=testing
 	@$(MAKE) update-certificates
+	@$(MAKE) setup-dns
+	@$(MAKE) restart
 
 .PHONY: install-all-deps
 install-all-deps: ## Install both composer and pnpm dependencies.
@@ -100,23 +109,23 @@ pint: ## Run Laravel Pint to fix coding style issues.
 	$(HYBRIDLY_EXEC) vendor/bin/pint
 
 .PHONY: pnpm
-pnpm: ## Run pnpm commands using the make pnpm cmd="" syntax.
+pnpm: ## Run pnpm commands using the 'make pnpm cmd=""' syntax.
 	$(HYBRIDLY_EXEC) pnpm $(or $(cmd), --version)
 
 .PHONY: purge
 purge: ## Purge all Docker containers, images, networks, and volumes.
-	$(DOCKER) compose down --remove-orphans --volumes
+	@$(MAKE) stop keep-volumes=0
 	$(DOCKER) network prune --force
 	$(DOCKER) volume prune --force
 	$(DOCKER) image prune --force
 
 .PHONY: rebuild
-rebuild: ## Rebuild and restart docker containers for this project.
-	$(DOCKER) compose down --remove-orphans --volumes
+rebuild: ## Rebuild and restart docker containers for this project, optionally removing volumes and not using cache using 'make rebuild keep-cache=0 keep-volumes=0' syntax.
+	@$(MAKE) stop $(if $(keep-volumes), keep-volumes=$(keep-volumes))
 	@$(MAKE) restore-dns
-	$(DOCKER) compose build
+	@$(MAKE) build $(if $(keep-cache), keep-cache=$(keep-cache))
 	@$(MAKE) setup-dns
-	$(DOCKER) compose up --detach
+	@$(MAKE) start
 
 .PHONY: restart
 restart: ## Restart the project by stopping and starting all containers.
@@ -128,8 +137,12 @@ restore-dns: ## Restore the default DNS settings.
 	@echo "$(CYAN)[INFO]: Restoring default DNS...$(RESET)"
 ifeq ($(shell uname),Darwin)
 	@echo "$(CYAN)[INFO]: macOS: Restoring default DNS resolver for *.$(DNS_DOMAIN)...$(RESET)"
-	@sudo rm -f /etc/resolver/$(DNS_DOMAIN)
-	@echo "$(GREEN)[SUCCESS]: Removed macOS DNS resolver for *.$(DNS_DOMAIN).$(RESET)"
+	@if [ -f /etc/resolver/$(DNS_DOMAIN) ]; then \
+		sudo rm -f /etc/resolver/$(DNS_DOMAIN); \
+		echo "$(GREEN)[SUCCESS]: Removed macOS DNS resolver for *.$(DNS_DOMAIN).$(RESET)"; \
+	else \
+		echo "$(YELLOW)[WARNING]: No macOS DNS resolver for *.$(DNS_DOMAIN) to remove.$(RESET)"; \
+	fi
 else
 	@echo "$(CYAN)[INFO]: Linux: Restoring default DNS resolver for *.$(DNS_DOMAIN)...$(RESET)"
 	@if [ -f /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf ]; then \
@@ -176,26 +189,24 @@ define setup_environment
 	@if [ ! -f $(2) ]; then cp $(2).example $(2); fi
 	@COMPOSE_PROJECT_NAME=$(PROJECT_NAME_SLUG) envsubst < $(2).example > $(2)
 	@sed -i "s|^COMPOSE_PROJECT_NAME=.*|COMPOSE_PROJECT_NAME=$(PROJECT_NAME_SLUG)|" $(2)
-	@echo "$(CYAN)[INFO]: Generating APP_KEY for $(1) environments...$(RESET)"
-	$(HYBRIDLY_RUNNER) php artisan key:generate $(3)
 	@echo "$(GREEN)[SUCCESS]: $(1) environment ready.$(RESET)"
 endef
 
 .PHONY: setup-local-environment
 setup-local-environment: ## Set up the local environment from the .env.example file.
-	$(call setup_environment,local,.env,)
+	$(call setup_environment,local,.env)
 
 .PHONY: setup-testing-environment
 setup-testing-environment: ## Set up the testing environment from the .env.testing.example file.
-	$(call setup_environment,testing,.env.testing,--env=testing)
+	$(call setup_environment,testing,.env.testing)
 
 .PHONY: start
 start: ## Start the Docker containers for the project.
 	$(DOCKER_COMPOSE) up --detach --remove-orphans
 
 .PHONY: stop
-stop: ## Stop the Docker containers for the project.
-	$(DOCKER_COMPOSE) down --remove-orphans
+stop: ## Stop the Docker containers for the project, optionally removing volumes using 'make stop keep-volumes=0' syntax.
+	$(DOCKER_COMPOSE) down --remove-orphans $(if $(filter 0, $(keep-volumes)), --volumes)
 
 .PHONY: taze
 taze: ## Run pnpx taze to check for outdated dependencies.

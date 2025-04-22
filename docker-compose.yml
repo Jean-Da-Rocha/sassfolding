@@ -14,12 +14,10 @@ services:
       - ./docker/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf:ro
 
   horizon:
-    build:
-      context: .
-      dockerfile: ./docker/php/Dockerfile
     container_name: ${COMPOSE_PROJECT_NAME}-horizon
     command: ["php", "/var/www/html/artisan", "horizon"]
     init: true
+    image: ${COMPOSE_PROJECT_NAME}-hybridly
     networks:
       - laravel
     stop_signal: SIGTERM
@@ -28,10 +26,21 @@ services:
 
   hybridly:
     build:
+      args:
+        COMPOSER_VERSION: ${COMPOSER_VERSION}
+        GID: ${GID}
+        GROUP_NAME: ${GROUP_NAME}
+        NODE_VERSION: ${NODE_VERSION}
+        PHP_VERSION: ${PHP_VERSION}
+        PNPM_VERSION: ${PNPM_VERSION}
+        UID: ${UID}
+        USER_NAME: ${USER_NAME}
+        XDEBUG_VERSION: ${XDEBUG_VERSION}
       context: .
       dockerfile: ./docker/php/Dockerfile
     container_name: ${COMPOSE_PROJECT_NAME}-hybridly
     environment:
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: 0
       PHP_IDE_CONFIG: serverName=${COMPOSE_PROJECT_NAME}
     extra_hosts:
       - host.docker.internal:host-gateway
@@ -112,6 +121,8 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-nginx
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+    depends_on:
+      - hybridly
     image: nginx:${NGINX_VERSION}
     labels:
       - "traefik.enable=true"
@@ -134,6 +145,8 @@ services:
     image: redis:${REDIS_VERSION}
     networks:
       - laravel
+    ports:
+      - '${REDIS_FORWARD_PORT}:6379'
     volumes:
       - redis-data:/data
 
