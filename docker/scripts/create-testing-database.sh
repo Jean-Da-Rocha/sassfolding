@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Temporary mysql config file to avoid the warning: "Using a password on the command line interface can be insecure."
+# We can also dynamically use env variables which would not be understood in a .cnf file.
 
 TEMPORARY_MYSQL_CONFIG=$(mktemp)
 

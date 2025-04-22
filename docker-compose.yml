@@ -87,6 +87,11 @@ services:
       - minio-data:/bitnami/minio/data
 
   mysql:
+    build:
+      args:
+        MYSQL_VERSION: ${MYSQL_VERSION}
+      context: .
+      dockerfile: ./docker/mysql/Dockerfile
     container_name: ${COMPOSE_PROJECT_NAME}-mysql
     environment:
       DB_DATABASE_TESTING: ${COMPOSE_PROJECT_NAME}_testing
@@ -95,7 +100,6 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
       MYSQL_USER: ${DB_USERNAME}
-    image: mysql:${MYSQL_VERSION}
     networks:
       - laravel
     ports:
