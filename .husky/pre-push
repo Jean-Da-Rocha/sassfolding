@@ -1,2 +1,2 @@
-# Verify whether your branch name passes the regex validation.
-pnpx validate-branch-name
+
+#pnpx validate-branch-name
