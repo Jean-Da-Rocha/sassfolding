@@ -1,1 +1,5 @@
-#pnpm --no-install lint-staged
+#!/usr/bin/env bash
+
+COMPOSE_PROJECT_NAME=$(awk -F '=' '/^COMPOSE_PROJECT_NAME=/ {print $2}' .env)
+
+docker exec "${COMPOSE_PROJECT_NAME}-hybridly" bash -c "pnpm --no-install lint-staged"

@@ -43,6 +43,7 @@
     "typescript": "^5.8.2",
     "unplugin-icons": "^22.1.0",
     "unplugin-vue-components": "^28.4.1",
+    "validate-branch-name": "^1.3.2",
     "vite": "^6.2.6",
     "vue": "^3.5.13",
     "vue-tsc": "^2.2.8"
@@ -54,7 +55,11 @@
   },
   "lint-staged": {
     "**/*.{vue,ts}": "eslint --fix",
-    "**/*.{php}": "vendor/bin/pint"
+    "**/*.php": "vendor/bin/pint"
   },
-  "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f"
+  "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f",
+  "validate-branch-name": {
+    "pattern": "^(feature|test|build|release|bugfix|hotfix|merge|experimental|bump)(/[A-Z]+\\-\\d+)?/[a-z]+(-[a-z]+)*(?:-\\d+)?$",
+    "errorMsg": "Incorrect branch name, please refer to the regex documentation -> https://extendsclass.com/regex/bb50817"
+  }
 }
