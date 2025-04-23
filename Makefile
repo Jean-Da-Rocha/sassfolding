@@ -209,12 +209,20 @@ stop: ## Stop the Docker containers for the project, optionally removing volumes
 	$(DOCKER_COMPOSE) down --remove-orphans $(if $(filter 0, $(keep-volumes)), --volumes)
 
 .PHONY: taze
-taze: ## Run pnpx taze to check for outdated dependencies.
+taze: ## Run pnpx taze to check for outdated minor dependencies.
 	$(HYBRIDLY_EXEC) pnpx taze
 
 .PHONY: taze-major
-taze-major: ## Run pnpx taze with major version updates only.
+taze-major: ## Run pnpx taze to check major version updates only.
 	$(HYBRIDLY_EXEC) pnpx taze major
+
+.PHONY: taze-major-write
+taze-major-write: ## Write major version updates to package.json and install them.
+	$(HYBRIDLY_EXEC) pnpx taze major -w && $(MAKE) pnpm cmd="install"
+
+.PHONY: taze-write
+taze-write: ## Write minor version updates to package.json and install them.
+	$(HYBRIDLY_EXEC) pnpx taze -w && $(MAKE) pnpm cmd="install"
 
 .PHONY: tinker
 tinker: ## Open a Laravel Tinker session.
