@@ -1,6 +1,7 @@
 {
   "type": "module",
   "private": true,
+  "packageManager": "pnpm@10.9.0",
   "scripts": {
     "build": "vite build",
     "dev": "vite --host 0.0.0.0",
@@ -18,7 +19,7 @@
     "@primevue/auto-import-resolver": "^4.3.3",
     "primeicons": "^7.0.0",
     "primevue": "^4.3.3",
-    "tailwindcss-primeui": "^0.5.1"
+    "tailwindcss-primeui": "^0.6.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.12.0",
@@ -27,10 +28,10 @@
     "@iconify-json/heroicons": "^1.2.2",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/postcss": "^4.1.4",
-    "@types/node": "^20.17.30",
-    "@unhead/vue": "^1.11.20",
+    "@types/node": "^22.14.1",
+    "@unhead/vue": "^2.0.8",
     "@vue/runtime-core": "^3.5.13",
-    "@vueuse/core": "^12.8.2",
+    "@vueuse/core": "^13.1.0",
     "axios": "^1.8.4",
     "eslint": "^9.25.1",
     "eslint-plugin-tailwindcss": "^3.18.0",
@@ -39,7 +40,7 @@
     "lint-staged": "^15.5.1",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.4",
-    "taze": "^18.7.1",
+    "taze": "^19.0.4",
     "typescript": "^5.8.3",
     "unplugin-icons": "^22.1.0",
     "unplugin-vue-components": "^28.5.0",
@@ -57,7 +58,6 @@
     "**/*.{vue,ts}": "eslint --fix",
     "**/*.php": "vendor/bin/pint"
   },
-  "packageManager": "pnpm@10.9.0",
   "validate-branch-name": {
     "pattern": "^(feature|test|build|release|bugfix|hotfix|merge|experimental|bump)(/[A-Z]+\\-\\d+)?/[a-z]+(-[a-z]+)*(?:-\\d+)?$",
     "errorMsg": "Incorrect branch name, please refer to the regex documentation -> https://extendsclass.com/regex/bb50817"
