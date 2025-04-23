@@ -15,38 +15,38 @@
     ]
   },
   "dependencies": {
-    "@primevue/auto-import-resolver": "^4.3.1",
+    "@primevue/auto-import-resolver": "^4.3.3",
     "primeicons": "^7.0.0",
-    "primevue": "^4.3.1",
+    "primevue": "^4.3.3",
     "tailwindcss-primeui": "^0.5.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.4.0",
-    "@commitlint/cli": "^19.7.1",
-    "@commitlint/config-conventional": "^19.7.1",
+    "@antfu/eslint-config": "^4.12.0",
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
     "@iconify-json/heroicons": "^1.2.2",
     "@tailwindcss/forms": "^0.5.10",
-    "@tailwindcss/postcss": "^4.0.9",
-    "@types/node": "^20.17.23",
+    "@tailwindcss/postcss": "^4.1.4",
+    "@types/node": "^20.17.30",
     "@unhead/vue": "^1.11.20",
     "@vue/runtime-core": "^3.5.13",
-    "@vueuse/core": "^12.7.0",
-    "axios": "^1.8.2",
-    "eslint": "^9.21.0",
+    "@vueuse/core": "^12.8.2",
+    "axios": "^1.8.4",
+    "eslint": "^9.25.1",
     "eslint-plugin-tailwindcss": "^3.18.0",
     "husky": "^9.1.7",
     "hybridly": "^0.7.19",
-    "lint-staged": "^15.4.3",
+    "lint-staged": "^15.5.1",
     "postcss": "^8.5.3",
-    "tailwindcss": "^4.0.9",
-    "taze": "^18.6.0",
-    "typescript": "^5.8.2",
+    "tailwindcss": "^4.1.4",
+    "taze": "^18.7.1",
+    "typescript": "^5.8.3",
     "unplugin-icons": "^22.1.0",
-    "unplugin-vue-components": "^28.4.1",
+    "unplugin-vue-components": "^28.5.0",
     "validate-branch-name": "^1.3.2",
-    "vite": "^6.2.6",
+    "vite": "^6.3.2",
     "vue": "^3.5.13",
-    "vue-tsc": "^2.2.8"
+    "vue-tsc": "^2.2.10"
   },
   "postcss": {
     "plugins": {
@@ -57,7 +57,7 @@
     "**/*.{vue,ts}": "eslint --fix",
     "**/*.php": "vendor/bin/pint"
   },
-  "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f",
+  "packageManager": "pnpm@10.9.0",
   "validate-branch-name": {
     "pattern": "^(feature|test|build|release|bugfix|hotfix|merge|experimental|bump)(/[A-Z]+\\-\\d+)?/[a-z]+(-[a-z]+)*(?:-\\d+)?$",
     "errorMsg": "Incorrect branch name, please refer to the regex documentation -> https://extendsclass.com/regex/bb50817"
