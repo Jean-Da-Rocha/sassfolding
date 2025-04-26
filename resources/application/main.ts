@@ -7,7 +7,6 @@ import FocusTrap from 'primevue/focustrap';
 import Tooltip from 'primevue/tooltip';
 
 import { initializeHybridly } from 'virtual:hybridly/config';
-import 'primeicons/primeicons.css';
 import './tailwind.css';
 
 initializeHybridly({
@@ -19,7 +18,7 @@ initializeHybridly({
     });
 
     vue.use(head)
-      .use(PrimeVue, { theme: 'none' })
+      .use(PrimeVue, { unstyled: true })
       .use(ConfirmationService)
       .directive('focustrap', FocusTrap)
       .directive('tooltip', Tooltip);
