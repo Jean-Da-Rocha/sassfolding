@@ -48,7 +48,7 @@ function tableHasActions(): boolean {
       <PrimeVueInputText
         v-if="datatable.filters.length > 0"
         v-model="search"
-        type="text"
+        type="search"
         size="small"
         placeholder="Search"
       />
