@@ -244,3 +244,7 @@ update-certificates: ## Generate and update SSL certificates for the project.
 .PHONY: vue-tsc
 vue-tsc: ## Run TypeScript type checking for Vue files.
 	$(HYBRIDLY_EXEC) pnpm run vue-tsc
+
+.PHONY: volt-add
+volt-add:
+	$(HYBRIDLY_EXEC) pnpx volt-vue add $(MAKECMDGOALS) --outdir "./resources/modules/shared/components"
