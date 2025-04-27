@@ -13,31 +13,31 @@ const theme = ref<PaginatorPassThroughOptions>({
   <Paginator unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
     <template #container="{ page, pageCount, pageLinks, changePageCallback, firstPageCallback, lastPageCallback, prevPageCallback, nextPageCallback }">
       <div class="flex flex-wrap gap-2 items-center justify-center">
-        <SecondaryButton text rounded :disabled="page === 0" @click="firstPageCallback">
+        <PrimeVueSecondaryButton text rounded :disabled="page === 0" @click="firstPageCallback">
           <template #icon>
             <HeroiconsChevronDoubleLeft />
           </template>
-        </SecondaryButton>
-        <SecondaryButton text rounded :disabled="page === 0" @click="prevPageCallback">
+        </PrimeVueSecondaryButton>
+        <PrimeVueSecondaryButton text rounded :disabled="page === 0" @click="prevPageCallback">
           <template #icon>
             <HeroiconsChevronLeft />
           </template>
-        </SecondaryButton>
+        </PrimeVueSecondaryButton>
         <div class="items-center justify-center gap-2 hidden sm:flex">
-          <SecondaryButton v-for="pageLink of pageLinks" :key="pageLink" :text="page + 1 !== pageLink" rounded class="shrink-0 min-w-10 h-10" :class="[{ 'bg-highlight!': page + 1 === pageLink }]" @click="() => changePageCallback(pageLink - 1)">
+          <PrimeVueSecondaryButton v-for="pageLink of pageLinks" :key="pageLink" :text="page + 1 !== pageLink" rounded class="shrink-0 min-w-10 h-10" :class="[{ 'bg-highlight!': page + 1 === pageLink }]" @click="() => changePageCallback(pageLink - 1)">
             {{ pageLink }}
-          </SecondaryButton>
+          </PrimeVueSecondaryButton>
         </div>
-        <SecondaryButton text rounded :disabled="page === pageCount! - 1" @click="nextPageCallback">
+        <PrimeVueSecondaryButton text rounded :disabled="page === pageCount! - 1" @click="nextPageCallback">
           <template #icon>
             <HeroiconsChevronRight />
           </template>
-        </SecondaryButton>
-        <SecondaryButton text rounded :disabled="page === pageCount! - 1" @click="lastPageCallback">
+        </PrimeVueSecondaryButton>
+        <PrimeVueSecondaryButton text rounded :disabled="page === pageCount! - 1" @click="lastPageCallback">
           <template #icon>
             <HeroiconsChevronDoubleRight />
           </template>
-        </SecondaryButton>
+        </PrimeVueSecondaryButton>
       </div>
     </template>
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">

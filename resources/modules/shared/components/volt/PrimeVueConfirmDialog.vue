@@ -23,19 +23,19 @@ const theme = ref<ConfirmDialogPassThroughOptions>({
     <template #container="{ message, acceptCallback, rejectCallback }">
       <div class="flex items-center justify-between shrink-0 p-5">
         <span class="font-semibold text-xl">{{ message.header }}</span>
-        <SecondaryButton variant="text" rounded autofocus @click="rejectCallback">
+        <PrimeVueSecondaryButton variant="text" rounded autofocus @click="rejectCallback">
           <template #icon>
             <HeroiconsXMark />
           </template>
-        </SecondaryButton>
+        </PrimeVueSecondaryButton>
       </div>
       <div class="overflow-y-auto pt-0 px-5 pb-5 flex items-center gap-4">
         <HeroiconsExclamationTriangle class="size-6" />
         {{ message.message }}
       </div>
       <div class="pt-0 px-5 pb-5 flex justify-end gap-2">
-        <SecondaryButton :label="message.rejectProps.label" size="small" @click="rejectCallback" />
-        <Button :label="message.acceptProps.label" size="small" @click="acceptCallback" />
+        <PrimeVueSecondaryButton :label="message.rejectProps.label" size="small" @click="rejectCallback" />
+        <PrimeVueDangerButton :label="message.acceptProps.label" size="small" @click="acceptCallback" />
       </div>
     </template>
   </ConfirmDialog>
