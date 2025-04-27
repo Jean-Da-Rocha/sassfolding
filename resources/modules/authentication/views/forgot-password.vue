@@ -36,7 +36,7 @@ useHead({ title: 'Forgot Password' });
             </div>
           </div>
           <div>
-            <PrimeVueButton :disabled="form.processing" label="Email Password Reset Link" type="submit" />
+            <PrimeVuePrimaryButton :disabled="form.processing" label="Email Password Reset Link" type="submit" />
           </div>
         </form>
       </PrimeVueFluid>

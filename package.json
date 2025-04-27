@@ -16,8 +16,6 @@
     ]
   },
   "dependencies": {
-    "@primevue/auto-import-resolver": "^4.3.3",
-    "@primevue/icons": "^4.3.3",
     "primevue": "^4.3.3",
     "tailwind-merge": "^3.2.0",
     "tailwindcss-primeui": "^0.6.1"
@@ -26,6 +24,8 @@
     "@antfu/eslint-config": "^4.12.0",
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
+    "@iconify-json/heroicons": "^1.2.2",
+    "@primevue/auto-import-resolver": "^4.3.3",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/postcss": "^4.1.4",
     "@types/node": "^22.14.1",
@@ -42,6 +42,7 @@
     "tailwindcss": "^4.1.4",
     "taze": "^19.0.4",
     "typescript": "^5.8.3",
+    "unplugin-icons": "^22.1.0",
     "validate-branch-name": "^1.3.2",
     "vite": "^6.3.2",
     "vue": "^3.5.13",

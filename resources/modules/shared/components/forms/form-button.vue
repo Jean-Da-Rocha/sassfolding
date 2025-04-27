@@ -10,7 +10,7 @@ defineProps<{ cancelRoute?: string; isFormProcessing: boolean }>();
       :href="cancelRoute"
       class="inline-flex items-center"
     >
-      <PrimeVueButton label="Cancel" size="small" type="button" severity="contrast" class="mr-3" />
+      <PrimeVueContrastButton label="Cancel" size="small" type="button" class="mr-3" />
     </RouterLink>
     <PrimeVueButton label="Submit" size="small" type="submit" :disabled="isFormProcessing" />
   </div>

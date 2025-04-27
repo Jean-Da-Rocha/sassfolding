@@ -51,6 +51,7 @@ function tableHasActions(): boolean {
         type="search"
         size="small"
         placeholder="Search"
+        fluid
       />
     </template>
     <TableHeader>
@@ -65,9 +66,9 @@ function tableHasActions(): boolean {
               class="ml-2 flex-none text-surface-700 dark:text-surface-0"
               @click="column.toggleSort({ direction: column.isSorting('asc') ? 'desc' : 'asc' })"
             >
-              <i v-if="column.isSorting('asc')" class="pi pi-sort-up mt-1" />
-              <i v-else-if="column.isSorting('desc')" class="pi pi-sort-down mt-1" />
-              <i v-else class="pi pi-sort mt-1" />
+              <HeroiconsChevronUp v-if="column.isSorting('asc')" />
+              <HeroiconsChevronDown v-else-if="column.isSorting('desc')" />
+              <HeroiconsChevronUpDown v-else />
             </span>
           </template>
         </HeaderCell>

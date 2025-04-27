@@ -65,7 +65,7 @@ useHead({ title: 'Sign In' });
             </RouterLink>
           </div>
           <div>
-            <PrimeVueButton :disabled="form.processing" label="Sign In" type="submit" />
+            <PrimeVuePrimaryButton :disabled="form.processing" label="Sign In" type="submit" />
           </div>
         </form>
       </PrimeVueFluid>

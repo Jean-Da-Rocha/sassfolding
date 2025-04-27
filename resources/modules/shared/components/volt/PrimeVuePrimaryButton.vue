@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import type { ButtonPassThroughOptions, ButtonProps } from 'primevue/button';
-import Button from 'primevue/button';
-import { ref } from 'vue';
-import { ptViewMerge } from './utils';
 
 type Props = {} & /* @vue-ignore */ ButtonProps;
+
 defineProps<Props>();
 
 const theme = ref<ButtonPassThroughOptions>({

@@ -19,7 +19,7 @@ useHead({ title: 'Verify Email' });
       <PrimeVueFluid>
         <form class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
           <div>
-            <PrimeVueButton :disabled="form.processing" label="Resend Verification Email" type="submit" />
+            <PrimeVuePrimaryButton :disabled="form.processing" label="Resend Verification Email" type="submit" />
           </div>
         </form>
       </PrimeVueFluid>

@@ -8,7 +8,8 @@ useToggle(darkMode);
     <div class="text-center">
       <PrimeVueToggleSwitch v-model="darkMode">
         <template #handle="{ checked }">
-          <i class="!text-xs pi" :class="[{ 'pi-moon': checked, 'pi-sun': !checked }]" />
+          <HeroiconsMoon v-if="checked" />
+          <HeroiconsSun v-else />
         </template>
       </PrimeVueToggleSwitch>
     </div>

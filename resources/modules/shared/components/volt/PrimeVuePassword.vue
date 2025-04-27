@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import type { PasswordPassThroughOptions, PasswordProps } from 'primevue/password';
-import EyeIcon from '@primevue/icons/eye';
-import EyeSlashIcon from '@primevue/icons/eyeslash';
 import Password from 'primevue/password';
 import { ptViewMerge } from './utils';
 
@@ -58,10 +56,10 @@ const theme = ref<PasswordPassThroughOptions>({
     }"
   >
     <template #maskicon="{ toggleCallback }">
-      <EyeSlashIcon class="end-3 text-surface-500 dark:text-surface-400 absolute top-1/2 -mt-2 w-4 h-4" @click="toggleCallback" />
+      <HeroiconsEyeSlash class="end-3 text-surface-500 dark:text-surface-400 absolute top-1/2 -mt-2 w-4 h-4 cursor-pointer" @click="toggleCallback" />
     </template>
     <template #unmaskicon="{ toggleCallback }">
-      <EyeIcon class="end-3 text-surface-500 dark:text-surface-400 absolute top-1/2 -mt-2 w-4 h-4" @click="toggleCallback" />
+      <HeroiconsEye class="end-3 text-surface-500 dark:text-surface-400 absolute top-1/2 -mt-2 w-4 h-4 cursor-pointer" @click="toggleCallback" />
     </template>
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />

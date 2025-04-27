@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import process from 'node:process';
+import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 import hybridly from 'hybridly/vite';
+import IconsResolver from 'unplugin-icons/resolver';
 import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
@@ -19,6 +21,13 @@ export default defineConfig(({ mode }) => {
         },
         vueComponents: {
           dirs: ['resources/modules/**'],
+          resolvers: [
+            IconsResolver({
+              enabledCollections: ['heroicons'],
+              prefix: false,
+            }),
+            PrimeVueResolver(),
+          ],
         },
       }),
     ],

@@ -82,7 +82,7 @@ useHead({ title: 'Sign Up' });
             </div>
           </div>
           <div>
-            <PrimeVueButton :disabled="form.processing" label="Register" type="submit" />
+            <PrimeVuePrimaryButton :disabled="form.processing" label="Register" type="submit" />
           </div>
         </form>
       </PrimeVueFluid>

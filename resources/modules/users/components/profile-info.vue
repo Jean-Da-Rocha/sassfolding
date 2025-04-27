@@ -27,18 +27,15 @@ const form = useForm<{ email: string; name: string }>({
         <template #content>
           <form class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
             <div>
-              <label
-                class="mb-2 block text-sm font-medium"
-                for="email"
-              >
+              <label class="mb-2 block text-sm font-medium" for="email">
                 Email
               </label>
               <PrimeVueInputText
                 id="email"
                 v-model="form.fields.email"
                 :invalid="form.errors.hasOwnProperty('email')"
-                autofocus
-                class="w-full"
+                :autofocus="true"
+                fluid
                 type="text"
               />
               <div v-if="form.errors.email" class="mt-2 text-red-500">
@@ -46,18 +43,15 @@ const form = useForm<{ email: string; name: string }>({
               </div>
             </div>
             <div>
-              <label
-                class="mb-2 block text-sm font-medium"
-                for="name"
-              >
+              <label class="mb-2 block text-sm font-medium" for="name">
                 Name
               </label>
               <PrimeVueInputText
                 id="name"
                 v-model="form.fields.name"
                 :invalid="form.errors.hasOwnProperty('name')"
-                autofocus
-                class="w-full"
+                :autofocus="true"
+                fluid
                 type="text"
               />
               <div v-if="form.errors.name" class="mt-2 text-red-500">
@@ -65,7 +59,7 @@ const form = useForm<{ email: string; name: string }>({
               </div>
             </div>
             <div class="text-right">
-              <PrimeVueButton :disabled="form.processing" label="Submit" size="small" type="submit" />
+              <PrimeVuePrimaryButton :disabled="form.processing" label="Submit" size="small" type="submit" />
             </div>
           </form>
         </template>
