@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { ButtonPassThroughOptions, ButtonProps } from 'primevue/button';
-
 type Props = {} & /* @vue-ignore */ ButtonProps;
 
 defineProps<Props>();
@@ -46,13 +44,7 @@ const theme = ref<ButtonPassThroughOptions>({
 </script>
 
 <template>
-  <Button
-    unstyled
-    :pt="theme"
-    :pt-options="{
-      mergeProps: ptViewMerge,
-    }"
-  >
+  <Button unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />
     </template>

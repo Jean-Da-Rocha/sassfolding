@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import type { MessagePassThroughOptions, MessageProps } from 'primevue/message';
-import Message from 'primevue/message';
-import { ref } from 'vue';
-import { ptViewMerge } from './utils';
-
 type Props = {} & /* @vue-ignore */ MessageProps;
+
 defineProps<Props>();
 
 const theme = ref<MessagePassThroughOptions>({
@@ -62,13 +58,7 @@ const theme = ref<MessagePassThroughOptions>({
 </script>
 
 <template>
-  <Message
-    unstyled
-    :pt="theme"
-    :pt-options="{
-      mergeProps: ptViewMerge,
-    }"
-  >
+  <Message unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
     <template #closeicon>
       <HeroiconsXMark />
     </template>

@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import type { InputTextPassThroughOptions, InputTextProps } from 'primevue/inputtext';
-import InputText from 'primevue/inputtext';
-import { ref } from 'vue';
-import { ptViewMerge } from './utils';
-
 type Props = {} & /* @vue-ignore */ InputTextProps;
+
 defineProps<Props>();
 
 const theme = ref<InputTextPassThroughOptions>({
@@ -28,11 +24,5 @@ const theme = ref<InputTextPassThroughOptions>({
 </script>
 
 <template>
-  <InputText
-    unstyled
-    :pt="theme"
-    :pt-options="{
-      mergeProps: ptViewMerge,
-    }"
-  />
+  <InputText unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" />
 </template>

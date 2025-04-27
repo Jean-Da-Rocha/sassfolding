@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import type { PaginatorPassThroughOptions, PaginatorProps } from 'primevue/paginator';
-import Paginator from 'primevue/paginator';
-import SecondaryButton from './PrimeVueSecondaryButton.vue';
-import { ptViewMerge } from './utils';
-
 type Props = {} & /* @vue-ignore */ PaginatorProps;
+
 defineProps<Props>();
 
 const theme = ref<PaginatorPassThroughOptions>({
@@ -14,13 +10,7 @@ const theme = ref<PaginatorPassThroughOptions>({
 </script>
 
 <template>
-  <Paginator
-    unstyled
-    :pt="theme"
-    :pt-options="{
-      mergeProps: ptViewMerge,
-    }"
-  >
+  <Paginator unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
     <template #container="{ page, pageCount, pageLinks, changePageCallback, firstPageCallback, lastPageCallback, prevPageCallback, nextPageCallback }">
       <div class="flex flex-wrap gap-2 items-center justify-center">
         <SecondaryButton text rounded :disabled="page === 0" @click="firstPageCallback">

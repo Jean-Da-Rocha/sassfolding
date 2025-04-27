@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import type { CheckboxPassThroughOptions, CheckboxProps } from 'primevue/checkbox';
-import Checkbox from 'primevue/checkbox';
-import { ref } from 'vue';
-import { ptViewMerge } from './utils';
-
 type Props = {} & /* @vue-ignore */ CheckboxProps;
+
 defineProps<Props>();
 
 const theme = ref<CheckboxPassThroughOptions>({
@@ -35,13 +31,7 @@ const theme = ref<CheckboxPassThroughOptions>({
 </script>
 
 <template>
-  <Checkbox
-    unstyled
-    :pt="theme"
-    :pt-options="{
-      mergeProps: ptViewMerge,
-    }"
-  >
+  <Checkbox unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
     <template #icon="{ checked, indeterminate, dataP }">
       <HeroiconsCheck v-if="checked" :class="theme.icon" :data-p="dataP" />
       <HeroiconsMinus v-else-if="indeterminate" :class="theme.icon" :data-p="dataP" />

@@ -1,12 +1,6 @@
 <script setup lang="ts">
-import type { ConfirmDialogPassThroughOptions, ConfirmDialogProps } from 'primevue/confirmdialog';
-import ConfirmDialog from 'primevue/confirmdialog';
-import { ref } from 'vue';
-import Button from './PrimeVuePrimaryButton.vue';
-import SecondaryButton from './PrimeVueSecondaryButton.vue';
-import { ptViewMerge } from './utils';
-
 type Props = {} & /* @vue-ignore */ ConfirmDialogProps;
+
 defineProps<Props>();
 
 const theme = ref<ConfirmDialogPassThroughOptions>({
@@ -25,13 +19,7 @@ const theme = ref<ConfirmDialogPassThroughOptions>({
 </script>
 
 <template>
-  <ConfirmDialog
-    unstyled
-    :pt="theme"
-    :pt-options="{
-      mergeProps: ptViewMerge,
-    }"
-  >
+  <ConfirmDialog unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
     <template #container="{ message, acceptCallback, rejectCallback }">
       <div class="flex items-center justify-between shrink-0 p-5">
         <span class="font-semibold text-xl">{{ message.header }}</span>

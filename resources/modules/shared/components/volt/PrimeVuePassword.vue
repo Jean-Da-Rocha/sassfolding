@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import type { PasswordPassThroughOptions, PasswordProps } from 'primevue/password';
-import Password from 'primevue/password';
-import { ptViewMerge } from './utils';
-
 type Props = {} & /* @vue-ignore */ PasswordProps;
+
 defineProps<Props>();
 
 const theme = ref<PasswordPassThroughOptions>({
@@ -48,13 +45,7 @@ const theme = ref<PasswordPassThroughOptions>({
 </script>
 
 <template>
-  <Password
-    unstyled
-    :pt="theme"
-    :pt-options="{
-      mergeProps: ptViewMerge,
-    }"
-  >
+  <Password unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
     <template #maskicon="{ toggleCallback }">
       <HeroiconsEyeSlash class="end-3 text-surface-500 dark:text-surface-400 absolute top-1/2 -mt-2 w-4 h-4 cursor-pointer" @click="toggleCallback" />
     </template>

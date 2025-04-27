@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import type { PopoverPassThroughOptions, PopoverProps } from 'primevue/popover';
-import Popover from 'primevue/popover';
-import { ref } from 'vue';
-import { ptViewMerge } from './utils';
+type Props = {} & /* @vue-ignore */ PopoverProps;
 
-type Props = {} /* @vue-ignore */ & PopoverProps;
 defineProps<Props>();
 
 const theme = ref<PopoverPassThroughOptions>({
@@ -28,23 +24,17 @@ const theme = ref<PopoverPassThroughOptions>({
   },
 });
 
-const el = ref();
+const popoverInstance = useTemplateRef<InstanceType<typeof Popover>>('popoverInstance');
+
 defineExpose({
-  hide: () => el.value.toggle(),
-  show: (event, target) => el.value.show(event, target),
-  toggle: (event, target) => el.value.toggle(event, target),
+  hide: () => popoverInstance.value?.toggle(),
+  show: (event: Event, target?: HTMLElement) => popoverInstance.value?.show(event, target),
+  toggle: (event: Event, target?: HTMLElement) => popoverInstance.value?.toggle(event, target),
 });
 </script>
 
 <template>
-  <Popover
-    ref="el"
-    unstyled
-    :pt="theme"
-    :pt-options="{
-      mergeProps: ptViewMerge,
-    }"
-  >
+  <Popover ref="popoverInstance" unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />
     </template>

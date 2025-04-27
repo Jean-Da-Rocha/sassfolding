@@ -18,6 +18,63 @@ export default defineConfig(({ mode }) => {
       hybridly({
         autoImports: {
           dirs: ['resources/modules/**'],
+          imports: [
+            {
+              from: 'primevue/button',
+              imports: ['ButtonPassThroughOptions', 'ButtonProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/card',
+              imports: ['CardPassThroughOptions', 'CardProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/checkbox',
+              imports: ['CheckboxPassThroughOptions', 'CheckboxProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/confirmdialog',
+              imports: ['ConfirmDialogPassThroughOptions', 'ConfirmDialogProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/fluid',
+              imports: ['FluidProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/inputtext',
+              imports: ['InputTextPassThroughOptions', 'InputTextProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/message',
+              imports: ['MessagePassThroughOptions', 'MessageProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/paginator',
+              imports: ['PaginatorPassThroughOptions', 'PaginatorProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/paginator',
+              imports: ['PasswordPassThroughOptions', 'PasswordProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/popover',
+              imports: ['Popover', 'PopoverPassThroughOptions', 'PopoverProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/toggleswitch',
+              imports: ['ToggleSwitchPassThroughOptions', 'ToggleSwitchProps'],
+              type: true,
+            },
+          ],
         },
         vueComponents: {
           dirs: ['resources/modules/**'],

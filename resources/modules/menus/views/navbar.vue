@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type Popover from 'primevue/popover';
-
 const emit = defineEmits<{
   (event: 'toggleSidebar'): void;
 }>();
@@ -23,7 +21,7 @@ const toggleProfileOverlay = (event: Event) => profileOverlay.value?.toggle(even
       <HeroiconsInbox class="text-surface-700 size-6 dark:text-surface-0 hover:cursor-pointer hover:text-primary" />
       <HeroiconsBell class="text-surface-700 size-6 dark:text-surface-0 hover:cursor-pointer hover:text-primary" />
       <span
-        class="h-8 w-8 bg-primary rounded-full text-surface-0 flex items-center justify-center hover:cursor-pointer"
+        class="h-8 w-8 bg-primary rounded-full text-surface-0 dark:text-surface-700 flex items-center justify-center hover:cursor-pointer"
         @click="toggleProfileOverlay"
       >
         {{ user?.name_initial }}

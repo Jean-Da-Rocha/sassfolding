@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import type { ToggleSwitchPassThroughOptions, ToggleSwitchProps } from 'primevue/toggleswitch';
-import ToggleSwitch from 'primevue/toggleswitch';
-import { ref } from 'vue';
-import { ptViewMerge } from './utils';
-
 type Props = {} & /* @vue-ignore */ ToggleSwitchProps;
+
 defineProps<Props>();
 
 const theme = ref<ToggleSwitchPassThroughOptions>({
@@ -31,13 +27,7 @@ const theme = ref<ToggleSwitchPassThroughOptions>({
 </script>
 
 <template>
-  <ToggleSwitch
-    unstyled
-    :pt="theme"
-    :pt-options="{
-      mergeProps: ptViewMerge,
-    }"
-  >
+  <ToggleSwitch unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />
     </template>
