@@ -35,8 +35,9 @@ const form = useForm<{ email: string; name: string }>({
                 v-model="form.fields.email"
                 :invalid="form.errors.hasOwnProperty('email')"
                 :autofocus="true"
-                fluid
                 type="text"
+                fluid
+                size="small"
               />
               <div v-if="form.errors.email" class="mt-2 text-red-500">
                 {{ form.errors.email }}
@@ -51,15 +52,22 @@ const form = useForm<{ email: string; name: string }>({
                 v-model="form.fields.name"
                 :invalid="form.errors.hasOwnProperty('name')"
                 :autofocus="true"
-                fluid
                 type="text"
+                fluid
+                size="small"
               />
               <div v-if="form.errors.name" class="mt-2 text-red-500">
                 {{ form.errors.name }}
               </div>
             </div>
-            <div class="text-right">
-              <PrimeVuePrimaryButton :disabled="form.processing" label="Submit" size="small" type="submit" />
+            <div class="md:text-right mt-6">
+              <PrimeVuePrimaryButton
+                label="Submit"
+                size="small"
+                type="submit"
+                :disabled="form.processing"
+                class="w-full md:w-auto"
+              />
             </div>
           </form>
         </template>

@@ -11,7 +11,7 @@
               <slot name="search-bar" />
             </div>
           </div>
-          <div class="mt-3 lg:ml-auto">
+          <div class="lg:ml-auto lg:mt-0 mt-3">
             <slot name="create-button" />
           </div>
         </div>

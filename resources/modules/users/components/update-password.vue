@@ -34,8 +34,9 @@ const form = useForm<{ current_password: string; password: string; password_conf
                 :feedback="false"
                 :invalid="form.errors.hasOwnProperty('password')"
                 for="current_password"
-                fluid
                 toggle-mask
+                fluid
+                size="small"
               />
               <div v-if="form.errors.current_password" class="mt-2 text-red-500">
                 {{ form.errors.current_password }}
@@ -51,8 +52,9 @@ const form = useForm<{ current_password: string; password: string; password_conf
                 :feedback="false"
                 :invalid="form.errors.hasOwnProperty('password')"
                 for="password"
-                fluid
                 toggle-mask
+                fluid
+                size="small"
               />
               <div v-if="form.errors.password" class="mt-2 text-red-500">
                 {{ form.errors.password }}
@@ -70,16 +72,24 @@ const form = useForm<{ current_password: string; password: string; password_conf
                 v-model="form.fields.password_confirmation"
                 :feedback="false"
                 :invalid="form.errors.hasOwnProperty('password')"
+                :autocomplete="false"
                 for="password_confirmation"
-                fluid
                 toggle-mask
+                fluid
+                size="small"
               />
               <div v-if="form.errors.password_confirmation" class="mt-2 text-red-500">
                 {{ form.errors.password_confirmation }}
               </div>
             </div>
-            <div class="text-right">
-              <PrimeVuePrimaryButton :disabled="form.processing" label="Submit" size="small" type="submit" />
+            <div class="md:text-right mt-6">
+              <PrimeVuePrimaryButton
+                label="Submit"
+                size="small"
+                type="submit"
+                :disabled="form.processing"
+                class="w-full md:w-auto"
+              />
             </div>
           </form>
         </template>
