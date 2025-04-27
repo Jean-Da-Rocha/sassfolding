@@ -247,4 +247,4 @@ vue-tsc: ## Run TypeScript type checking for Vue files.
 
 .PHONY: volt-add
 volt-add: ## Install VoltUI component using the 'make volt-add component=InputText' syntax.
-	$(HYBRIDLY_EXEC) pnpx volt-vue add $(component) --outdir "./resources/modules/shared/components"
+	$(HYBRIDLY_EXEC) pnpx volt-vue add $(component) --outdir "./resources/modules/shared/components" --no-deps
