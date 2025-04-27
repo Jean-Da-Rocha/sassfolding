@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import type { CheckboxPassThroughOptions, CheckboxProps } from 'primevue/checkbox';
-import CheckIcon from '@primevue/icons/check';
-import MinusIcon from '@primevue/icons/minus';
 import Checkbox from 'primevue/checkbox';
 import { ref } from 'vue';
 import { ptViewMerge } from './utils';
@@ -45,8 +43,8 @@ const theme = ref<CheckboxPassThroughOptions>({
     }"
   >
     <template #icon="{ checked, indeterminate, dataP }">
-      <CheckIcon v-if="checked" :class="theme.icon" :data-p="dataP" />
-      <MinusIcon v-else-if="indeterminate" :class="theme.icon" :data-p="dataP" />
+      <HeroiconsCheck v-if="checked" :class="theme.icon" :data-p="dataP" />
+      <HeroiconsMinus v-else-if="indeterminate" :class="theme.icon" :data-p="dataP" />
     </template>
   </Checkbox>
 </template>

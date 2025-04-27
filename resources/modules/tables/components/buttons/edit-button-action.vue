@@ -4,12 +4,7 @@ defineProps<{ label: string; route: string }>();
 
 <template>
   <RouterLink as="button" :href="route" class="inline-flex items-center" method="get">
-    <PrimeVueContrastButton
-      icon="pi"
-      rounded
-      size="small"
-      type="button"
-    >
+    <PrimeVueContrastButton icon="pi" rounded size="small" type="button">
       <HeroiconsPencil />
     </PrimeVueContrastButton>
   </RouterLink>
