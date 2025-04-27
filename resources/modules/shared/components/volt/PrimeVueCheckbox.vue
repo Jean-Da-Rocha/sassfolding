@@ -32,9 +32,9 @@ const theme = ref<CheckboxPassThroughOptions>({
 
 <template>
   <Checkbox unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
-    <template #icon="{ checked, indeterminate, dataP }">
-      <HeroiconsCheck v-if="checked" :class="theme.icon" :data-p="dataP" />
-      <HeroiconsMinus v-else-if="indeterminate" :class="theme.icon" :data-p="dataP" />
+    <template #icon="{ checked, indeterminate }">
+      <HeroiconsCheck v-if="checked" />
+      <HeroiconsMinus v-else-if="indeterminate" />
     </template>
   </Checkbox>
 </template>

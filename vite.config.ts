@@ -60,7 +60,7 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
-              from: 'primevue/paginator',
+              from: 'primevue/password',
               imports: ['PasswordPassThroughOptions', 'PasswordProps'],
               type: true,
             },

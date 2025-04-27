@@ -9,6 +9,7 @@ const theme = ref<ConfirmDialogPassThroughOptions>({
         border border-surface-200 dark:border-surface-700
         bg-surface-0 dark:bg-surface-900
         text-surface-700 dark:text-surface-0 shadow-lg`,
+  /* @ts-expect-error used by PrimeVue even if the 'transition' key does not exist */
   transition: {
     enterActiveClass: 'transition-all duration-150 ease-[cubic-bezier(0,0,0.2,1)]',
     enterFromClass: 'opacity-0 scale-75',
