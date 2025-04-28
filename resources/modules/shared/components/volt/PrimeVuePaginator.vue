@@ -3,6 +3,14 @@ type Props = {} & /* @vue-ignore */ PaginatorProps;
 
 defineProps<Props>();
 
+const perPageOptions = ref<{ name: string; value: number }[]>([
+  { name: '5', value: 5 },
+  { name: '10', value: 10 },
+  { name: '25', value: 25 },
+  { name: '50', value: 50 },
+  { name: '100', value: 100 },
+]);
+
 const theme = ref<PaginatorPassThroughOptions>({
   root: `flex items-center justify-center flex-wrap py-2 px-4 rounded-md gap-1
         bg-surface-0 dark:bg-surface-900 text-surface-700 dark:text-surface-0`,
@@ -11,7 +19,20 @@ const theme = ref<PaginatorPassThroughOptions>({
 
 <template>
   <Paginator unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
-    <template #container="{ page, pageCount, pageLinks, changePageCallback, firstPageCallback, lastPageCallback, prevPageCallback, nextPageCallback }">
+    <template
+      #container="{
+        changePageCallback,
+        firstPageCallback,
+        lastPageCallback,
+        nextPageCallback,
+        page,
+        pageCount,
+        pageLinks,
+        prevPageCallback,
+        rows,
+        rowChangeCallback,
+      }"
+    >
       <div class="flex flex-wrap gap-2 items-center justify-center">
         <PrimeVueSecondaryButton text rounded :disabled="page === 0" @click="firstPageCallback">
           <template #icon>
@@ -38,6 +59,17 @@ const theme = ref<PaginatorPassThroughOptions>({
             <HeroiconsChevronDoubleRight />
           </template>
         </PrimeVueSecondaryButton>
+      </div>
+      <div class="flex gap-2 items-center">
+        <PrimeVueSelect
+          :model-value="rows"
+          :options="perPageOptions"
+          option-label="name"
+          option-value="value"
+          pt:label="pe-2"
+          pt:dropdown="w-8"
+          @change="(event) => rowChangeCallback(event.value)"
+        />
       </div>
     </template>
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">

@@ -5,8 +5,6 @@ import { breakpointsTailwind } from '@vueuse/core';
 
 defineProps<{ paginator: Paginator }>();
 
-const perPageOptions = [5, 10, 25, 50, 100];
-
 const breakpoints = useBreakpoints(breakpointsTailwind);
 
 // https://tailwind.primevue.org/paginator/#template
@@ -58,7 +56,6 @@ function changePage(pageState: PageState): void {
   <PrimeVuePaginator
     :always-show="true"
     :rows="paginator.meta.per_page"
-    :rows-per-page-options="perPageOptions"
     :template="paginatorResponsiveTemplate"
     :total-records="paginator.meta.total"
     class="mt-5"
