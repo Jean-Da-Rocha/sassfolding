@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type { NavigationType } from '@/modules/menus/types/navigation-type';
-import type { NavigationResponse } from 'hybridly';
-
-const props = defineProps<{ menuItem: NavigationType }>();
+const props = defineProps<{ menuItem: AppNavigationType }>();
 
 const { current } = useRoute();
 
@@ -32,7 +29,7 @@ function handleNavigation(): Promise<NavigationResponse> {
       as="button"
       @click.prevent="handleNavigation"
     >
-      <span class="pi !text-xl" :class="menuItem.icon" />
+      <component :is="menuItem.icon" class="size-6" />
       <span class="text-xs mt-3 text-center break-words px-2">{{ menuItem.navigationLinkName }}</span>
     </RouterLink>
   </li>

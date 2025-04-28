@@ -7,14 +7,11 @@
       <div class="px-4 sm:px-6 lg:px-8">
         <div class="lg:flex lg:items-center">
           <div class="lg:mr-auto">
-            <PrimeVueInputGroup>
-              <PrimeVueInputGroupAddon>
-                <i class="pi pi-search" />
-              </PrimeVueInputGroupAddon>
+            <div class="flex items-stretch flex-auto">
               <slot name="search-bar" />
-            </PrimeVueInputGroup>
+            </div>
           </div>
-          <div class="mt-3 lg:ml-auto">
+          <div class="lg:ml-auto lg:mt-0 mt-3">
             <slot name="create-button" />
           </div>
         </div>

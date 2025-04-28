@@ -48,9 +48,10 @@ function tableHasActions(): boolean {
       <PrimeVueInputText
         v-if="datatable.filters.length > 0"
         v-model="search"
-        type="text"
+        type="search"
         size="small"
         placeholder="Search"
+        fluid
       />
     </template>
     <TableHeader>
@@ -65,9 +66,9 @@ function tableHasActions(): boolean {
               class="ml-2 flex-none text-surface-700 dark:text-surface-0"
               @click="column.toggleSort({ direction: column.isSorting('asc') ? 'desc' : 'asc' })"
             >
-              <i v-if="column.isSorting('asc')" class="pi pi-sort-up mt-1" />
-              <i v-else-if="column.isSorting('desc')" class="pi pi-sort-down mt-1" />
-              <i v-else class="pi pi-sort mt-1" />
+              <HeroiconsChevronUp v-if="column.isSorting('asc')" />
+              <HeroiconsChevronDown v-else-if="column.isSorting('desc')" />
+              <HeroiconsChevronUpDown v-else />
             </span>
           </template>
         </HeaderCell>
@@ -81,7 +82,7 @@ function tableHasActions(): boolean {
         v-if="datatable.records.length === 0"
         :colspan="tableHasActions() ? datatable.columns.length + 1 : datatable.columns.length"
       />
-      <BodyRow v-for="{ key, value, actions } in datatable.records" :key="key">
+      <BodyRow v-for="{ key, value } in datatable.records" :key="key">
         <BodyCell v-for="column in datatable.columns" :key="column.name">
           {{ value(column) }}
         </BodyCell>
@@ -89,7 +90,6 @@ function tableHasActions(): boolean {
           <slot name="edit-button" :record-id="key" />
           <slot name="show-button" :record-id="key" />
           <slot name="delete-button" :confirm-destructive-action="confirmDestructiveAction" :record-id="key" />
-          <InlineAction v-for="action in actions" :key="action.name" :action="action" />
         </BodyCellAction>
       </BodyRow>
     </TableBody>

@@ -3,12 +3,7 @@ defineProps<{ label: string }>();
 </script>
 
 <template>
-  <PrimeVueButton
-    v-tooltip.top="label"
-    icon="pi pi-trash"
-    rounded
-    severity="danger"
-    size="small"
-    type="button"
-  />
+  <PrimeVueDangerButton rounded size="small" type="button" icon="pi">
+    <HeroiconsTrash />
+  </PrimeVueDangerButton>
 </template>

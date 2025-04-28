@@ -15,101 +15,78 @@ useHead({ title: 'Sign Up' });
 </script>
 
 <template layout="shared::guest">
-  <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
+  <PrimeVueCard class="mx-auto w-full max-w-[600px]">
     <template #content>
-      <form v-focustrap class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
-        <div>
-          <label
-            class="mb-2 block text-sm font-medium"
-            for="name"
-          >
-            Name
-          </label>
-          <PrimeVueInputText
-            id="name"
-            v-model="form.fields.name"
-            :invalid="form.errors.hasOwnProperty('email')"
-            autofocus
-            class="w-full"
-            type="text"
-          />
-          <div v-if="form.errors.name" class="mt-2 text-red-500">
-            {{ form.errors.name }}
+      <PrimeVueFluid>
+        <form v-focustrap class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
+          <div>
+            <label class="mb-2 block text-sm font-medium" for="name">
+              Name
+            </label>
+            <PrimeVueInputText
+              id="name"
+              v-model="form.fields.name"
+              :invalid="form.errors.hasOwnProperty('email')"
+              :autofocus="true"
+              type="text"
+            />
+            <div v-if="form.errors.name" class="mt-2 text-red-500">
+              {{ form.errors.name }}
+            </div>
           </div>
-        </div>
-        <div>
-          <label
-            class="mb-2 block text-sm font-medium"
-            for="email"
-          >
-            Email
-          </label>
-          <PrimeVueInputText
-            id="email"
-            v-model="form.fields.email"
-            :invalid="form.errors.hasOwnProperty('email')"
-            autofocus
-            class="w-full"
-            type="text"
-          />
-          <div v-if="form.errors.email" class="mt-2 text-red-500">
-            {{ form.errors.email }}
+          <div>
+            <label class="mb-2 block text-sm font-medium" for="email">
+              Email
+            </label>
+            <PrimeVueInputText
+              id="email"
+              v-model="form.fields.email"
+              :invalid="form.errors.hasOwnProperty('email')"
+              :autofocus="true"
+              type="text"
+            />
+            <div v-if="form.errors.email" class="mt-2 text-red-500">
+              {{ form.errors.email }}
+            </div>
           </div>
-        </div>
-        <div>
-          <label
-            class="mb-2 block text-sm font-medium"
-            for="password"
-          >
-            Password
-          </label>
-          <PrimeVuePassword
-            id="password"
-            v-model="form.fields.password"
-            :feedback="false"
-            :input-props="{ autocomplete: 'false' }"
-            :invalid="form.errors.hasOwnProperty('password')"
-            class="w-full"
-            for="password"
-            input-class="w-full"
-            toggle-mask
-          />
-          <div v-if="form.errors.password" class="mt-2 text-red-500">
-            {{ form.errors.password }}
+          <div>
+            <label class="mb-2 block text-sm font-medium" for="password">
+              Password
+            </label>
+            <PrimeVuePassword
+              id="password"
+              v-model="form.fields.password"
+              :feedback="false"
+              :invalid="form.errors.hasOwnProperty('password')"
+              for="password"
+              toggle-mask
+            />
+            <div v-if="form.errors.password" class="mt-2 text-red-500">
+              {{ form.errors.password }}
+            </div>
           </div>
-        </div>
-        <div>
-          <label
-            class="mb-2 block text-sm font-medium"
-            for="password_confirmation"
-          >
-            Confirm Password
-          </label>
-          <PrimeVuePassword
-            id="password_confirmation"
-            v-model="form.fields.password_confirmation"
-            :feedback="false"
-            :input-props="{ autocomplete: 'false' }"
-            :invalid="form.errors.hasOwnProperty('password_confirmation')"
-            class="w-full"
-            for="password_confirmation"
-            input-class="w-full"
-            toggle-mask
-          />
-          <div v-if="form.errors.password_confirmation" class="mt-2 text-red-500">
-            {{ form.errors.password_confirmation }}
+          <div>
+            <label class="mb-2 block text-sm font-medium" for="password_confirmation">
+              Confirm Password
+            </label>
+            <PrimeVuePassword
+              id="password_confirmation"
+              v-model="form.fields.password_confirmation"
+              :feedback="false"
+              :invalid="form.errors.hasOwnProperty('password_confirmation')"
+              for="password_confirmation"
+              toggle-mask
+            />
+            <div v-if="form.errors.password_confirmation" class="mt-2 text-red-500">
+              {{ form.errors.password_confirmation }}
+            </div>
           </div>
-        </div>
-        <div>
-          <PrimeVueButton
-            :disabled="form.processing"
-            class="w-full"
-            label="Register"
-            type="submit"
-          />
-        </div>
-      </form>
-      <div class="text-center mt-8">
+          <div>
+            <PrimeVuePrimaryButton :disabled="form.processing" label="Register" type="submit" />
+          </div>
+        </form>
+      </PrimeVueFluid>
+      <div class="text-center">
         Already have an account?
         <RouterLink :href="route('login')" class="text-primary-500 hover:text-primary-700">
           Sign In
