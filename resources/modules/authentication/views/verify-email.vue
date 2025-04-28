@@ -24,7 +24,7 @@ useHead({ title: 'Verify Email' });
         </form>
       </PrimeVueFluid>
       <div class="text-center">
-        <RouterLink :href="route('logout')" method="post" class="text-primary-500 hover:text-primary-700">
+        <RouterLink class="text-primary-500 hover:text-primary-700" :href="route('logout')" method="post">
           Sign Out
         </RouterLink>
       </div>

@@ -39,7 +39,7 @@ const theme = ref<ButtonPassThroughOptions>({
 </script>
 
 <template>
-  <Button unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+  <Button :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" unstyled>
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />
     </template>

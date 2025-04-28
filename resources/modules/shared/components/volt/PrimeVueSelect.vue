@@ -72,7 +72,7 @@ const theme = ref<SelectPassThroughOptions>({
 </script>
 
 <template>
-  <Select unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+  <Select :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" unstyled>
     <template #dropdownicon>
       <HeroiconsChevronDown />
     </template>

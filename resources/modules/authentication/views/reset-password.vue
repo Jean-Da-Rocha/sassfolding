@@ -30,8 +30,8 @@ useHead({ title: 'Reset Password' });
             <PrimeVueInputText
               id="email"
               v-model="form.fields.email"
-              :invalid="form.errors.hasOwnProperty('email')"
               :autofocus="true"
+              :invalid="form.errors.hasOwnProperty('email')"
               type="text"
             />
             <div v-if="form.errors.email" class="mt-2 text-red-500">
@@ -46,8 +46,8 @@ useHead({ title: 'Reset Password' });
               id="password"
               v-model="form.fields.password"
               :feedback="false"
-              :invalid="form.errors.hasOwnProperty('password')"
               for="password"
+              :invalid="form.errors.hasOwnProperty('password')"
               toggle-mask
             />
             <div v-if="form.errors.password" class="mt-2 text-red-500">
@@ -62,8 +62,8 @@ useHead({ title: 'Reset Password' });
               id="password_confirmation"
               v-model="form.fields.password_confirmation"
               :feedback="false"
-              :invalid="form.errors.hasOwnProperty('password_confirmation')"
               for="password_confirmation"
+              :invalid="form.errors.hasOwnProperty('password_confirmation')"
               toggle-mask
             />
             <div v-if="form.errors.password_confirmation" class="mt-2 text-red-500">

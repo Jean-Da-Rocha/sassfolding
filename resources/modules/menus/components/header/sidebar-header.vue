@@ -1,5 +1,5 @@
 <template>
   <header class="flex justify-center items-center h-12 w-12">
-    <img src="@public/android-chrome-512x512.png" alt="Sassfolding Logo">
+    <img alt="Sassfolding Logo" src="@public/android-chrome-512x512.png">
   </header>
 </template>

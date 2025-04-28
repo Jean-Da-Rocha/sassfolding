@@ -19,7 +19,7 @@ export default await antfu({
     // 'tailwindcss/migration-from-tailwind-2': ['off'],
     // 'tailwindcss/no-custom-classname': ['off'],
     'ts/no-unused-expressions': ['off'],
-    'vue/attributes-order': ['error'],
+    'vue/attributes-order': ['error', { alphabetical: true }],
   },
   stylistic: {
     overrides: { 'ts/consistent-type-definitions': ['error', 'type'] },

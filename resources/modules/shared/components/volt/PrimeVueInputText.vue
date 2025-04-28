@@ -24,5 +24,5 @@ const theme = ref<InputTextPassThroughOptions>({
 </script>
 
 <template>
-  <InputText unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" />
+  <InputText :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" unstyled />
 </template>

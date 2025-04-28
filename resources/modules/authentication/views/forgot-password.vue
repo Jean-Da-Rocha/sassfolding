@@ -27,8 +27,8 @@ useHead({ title: 'Forgot Password' });
             <PrimeVueInputText
               id="email"
               v-model="form.fields.email"
-              :invalid="form.errors.hasOwnProperty('email')"
               :autofocus="true"
+              :invalid="form.errors.hasOwnProperty('email')"
               type="text"
             />
             <div v-if="form.errors.email" class="mt-2 text-red-500">

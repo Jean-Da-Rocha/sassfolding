@@ -34,7 +34,7 @@ defineExpose({
 </script>
 
 <template>
-  <Popover ref="popoverInstance" unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+  <Popover ref="popoverInstance" :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" unstyled>
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />
     </template>

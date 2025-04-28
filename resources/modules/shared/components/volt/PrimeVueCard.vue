@@ -19,7 +19,7 @@ const theme = ref<CardPassThroughOptions>({
 </script>
 
 <template>
-  <Card unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+  <Card :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" unstyled>
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />
     </template>

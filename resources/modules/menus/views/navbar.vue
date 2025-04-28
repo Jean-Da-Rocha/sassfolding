@@ -31,8 +31,8 @@ const toggleProfileOverlay = (event: Event) => profileOverlay.value?.toggle(even
     <PrimeVuePopover ref="profileOverlay">
       <div class="w-32">
         <RouterLink
-          :href="route('profile')"
           class="flex items-center p-3 text-xs hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-700 rounded-md"
+          :href="route('profile')"
           method="get"
           @click="toggleProfileOverlay"
         >
@@ -40,8 +40,8 @@ const toggleProfileOverlay = (event: Event) => profileOverlay.value?.toggle(even
           <span class="mx-2">Profile</span>
         </RouterLink>
         <RouterLink
-          :href="route('logout')"
           class="flex items-center p-3 text-xs hover:bg-surface-100 dark:text-surface-0 dark:hover:bg-surface-700 rounded-md"
+          :href="route('logout')"
           method="post"
         >
           <HeroiconsArrowLeftOnRectangle class="size-5" />
