@@ -27,9 +27,9 @@ const theme = ref<PopoverPassThroughOptions>({
 const popoverInstance = useTemplateRef<InstanceType<typeof Popover>>('popoverInstance');
 
 defineExpose({
-  hide: () => popoverInstance.value?.toggle(),
-  show: (event: Event, target?: HTMLElement) => popoverInstance.value?.show(event, target),
-  toggle: (event: Event, target?: HTMLElement) => popoverInstance.value?.toggle(event, target),
+  hide: (): void => popoverInstance.value?.toggle(),
+  show: (event: Event, target?: HTMLElement): void => popoverInstance.value?.show(event, target),
+  toggle: (event: Event, target?: HTMLElement): void => popoverInstance.value?.toggle(event, target),
 });
 </script>
 

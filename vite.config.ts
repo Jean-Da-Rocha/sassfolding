@@ -20,6 +20,11 @@ export default defineConfig(({ mode }) => {
           dirs: ['resources/modules/**'],
           imports: [
             {
+              from: 'hybridly',
+              imports: ['NavigationResponse', 'RouteName'],
+              type: true,
+            },
+            {
               from: 'primevue/button',
               imports: ['ButtonPassThroughOptions', 'ButtonProps'],
               type: true,
@@ -56,7 +61,7 @@ export default defineConfig(({ mode }) => {
             },
             {
               from: 'primevue/paginator',
-              imports: ['PaginatorPassThroughOptions', 'PaginatorProps'],
+              imports: ['PaginatorPassThroughOptions', 'PaginatorProps', 'PageState'],
               type: true,
             },
             {
@@ -77,6 +82,11 @@ export default defineConfig(({ mode }) => {
             {
               from: 'primevue/toggleswitch',
               imports: ['ToggleSwitchPassThroughOptions', 'ToggleSwitchProps'],
+              type: true,
+            },
+            {
+              from: '@/modules/menus/types/app-navigation-type',
+              imports: ['AppNavigationType'],
               type: true,
             },
           ],

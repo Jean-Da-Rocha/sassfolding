@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type { NavigationType } from '@/modules/menus/types/navigation-type';
-import type { NavigationResponse } from 'hybridly';
-
-const props = defineProps<{ menuItem: NavigationType }>();
+const props = defineProps<{ menuItem: AppNavigationType }>();
 
 const { current } = useRoute();
 

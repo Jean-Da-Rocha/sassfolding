@@ -82,7 +82,7 @@ function tableHasActions(): boolean {
         v-if="datatable.records.length === 0"
         :colspan="tableHasActions() ? datatable.columns.length + 1 : datatable.columns.length"
       />
-      <BodyRow v-for="{ key, value, actions } in datatable.records" :key="key">
+      <BodyRow v-for="{ key, value } in datatable.records" :key="key">
         <BodyCell v-for="column in datatable.columns" :key="column.name">
           {{ value(column) }}
         </BodyCell>
@@ -90,7 +90,6 @@ function tableHasActions(): boolean {
           <slot name="edit-button" :record-id="key" />
           <slot name="show-button" :record-id="key" />
           <slot name="delete-button" :confirm-destructive-action="confirmDestructiveAction" :record-id="key" />
-          <InlineAction v-for="action in actions" :key="action.name" :action="action" />
         </BodyCellAction>
       </BodyRow>
     </TableBody>

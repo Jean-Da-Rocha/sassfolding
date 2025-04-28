@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { PageState } from 'primevue/paginator';
-
 import { breakpointsTailwind } from '@vueuse/core';
 
 defineProps<{ paginator: Paginator }>();

@@ -1,6 +1,4 @@
-import type { RouteName } from 'hybridly';
-
-export type NavigationType = {
+export type AppNavigationType = {
   /**
    * Heroicon displayed on the left of the sidebar link.
    */
