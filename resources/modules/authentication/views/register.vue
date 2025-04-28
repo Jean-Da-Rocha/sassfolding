@@ -26,8 +26,8 @@ useHead({ title: 'Sign Up' });
             <PrimeVueInputText
               id="name"
               v-model="form.fields.name"
-              :invalid="form.errors.hasOwnProperty('email')"
               :autofocus="true"
+              :invalid="form.errors.hasOwnProperty('email')"
               type="text"
             />
             <div v-if="form.errors.name" class="mt-2 text-red-500">
@@ -41,8 +41,8 @@ useHead({ title: 'Sign Up' });
             <PrimeVueInputText
               id="email"
               v-model="form.fields.email"
-              :invalid="form.errors.hasOwnProperty('email')"
               :autofocus="true"
+              :invalid="form.errors.hasOwnProperty('email')"
               type="text"
             />
             <div v-if="form.errors.email" class="mt-2 text-red-500">
@@ -57,8 +57,8 @@ useHead({ title: 'Sign Up' });
               id="password"
               v-model="form.fields.password"
               :feedback="false"
-              :invalid="form.errors.hasOwnProperty('password')"
               for="password"
+              :invalid="form.errors.hasOwnProperty('password')"
               toggle-mask
             />
             <div v-if="form.errors.password" class="mt-2 text-red-500">
@@ -73,8 +73,8 @@ useHead({ title: 'Sign Up' });
               id="password_confirmation"
               v-model="form.fields.password_confirmation"
               :feedback="false"
-              :invalid="form.errors.hasOwnProperty('password_confirmation')"
               for="password_confirmation"
+              :invalid="form.errors.hasOwnProperty('password_confirmation')"
               toggle-mask
             />
             <div v-if="form.errors.password_confirmation" class="mt-2 text-red-500">
@@ -88,7 +88,7 @@ useHead({ title: 'Sign Up' });
       </PrimeVueFluid>
       <div class="text-center">
         Already have an account?
-        <RouterLink :href="route('login')" class="text-primary-500 hover:text-primary-700">
+        <RouterLink class="text-primary-500 hover:text-primary-700" :href="route('login')">
           Sign In
         </RouterLink>
       </div>

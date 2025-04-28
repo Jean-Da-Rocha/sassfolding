@@ -27,7 +27,7 @@ const theme = ref<ToggleSwitchPassThroughOptions>({
 </script>
 
 <template>
-  <ToggleSwitch unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+  <ToggleSwitch :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" unstyled>
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />
     </template>

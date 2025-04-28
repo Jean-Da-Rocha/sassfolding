@@ -24,8 +24,8 @@ useHead({ title: 'Sign In' });
             <PrimeVueInputText
               id="email"
               v-model="form.fields.email"
-              :invalid="form.errors.hasOwnProperty('email')"
               :autofocus="true"
+              :invalid="form.errors.hasOwnProperty('email')"
               type="text"
             />
             <div v-if="form.errors.email" class="mt-2 text-red-500">
@@ -40,8 +40,8 @@ useHead({ title: 'Sign In' });
               id="password"
               v-model="form.fields.password"
               :feedback="false"
-              :invalid="form.errors.hasOwnProperty('password')"
               for="password"
+              :invalid="form.errors.hasOwnProperty('password')"
               toggle-mask
             />
             <div v-if="form.errors.password" class="mt-2 text-red-500">
@@ -58,8 +58,8 @@ useHead({ title: 'Sign In' });
               </div>
             </div>
             <RouterLink
-              :href="route('password.request')"
               class="text-sm font-medium text-primary-500 hover:text-primary-700 hover:underline"
+              :href="route('password.request')"
             >
               Forgot your password?
             </RouterLink>
@@ -71,7 +71,7 @@ useHead({ title: 'Sign In' });
       </PrimeVueFluid>
       <div class="text-center">
         Don't have an account?
-        <RouterLink :href="route('register')" class="text-primary-500 hover:text-primary-700">
+        <RouterLink class="text-primary-500 hover:text-primary-700" :href="route('register')">
           Sign Up
         </RouterLink>
       </div>

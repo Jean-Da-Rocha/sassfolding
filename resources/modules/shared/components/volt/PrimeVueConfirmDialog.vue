@@ -20,11 +20,11 @@ const theme = ref<ConfirmDialogPassThroughOptions>({
 </script>
 
 <template>
-  <ConfirmDialog unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+  <ConfirmDialog :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" unstyled>
     <template #container="{ message, acceptCallback, rejectCallback }">
       <div class="flex items-center justify-between shrink-0 p-5">
         <span class="font-semibold text-xl">{{ message.header }}</span>
-        <PrimeVueSecondaryButton variant="text" rounded autofocus @click="rejectCallback">
+        <PrimeVueSecondaryButton autofocus rounded variant="text" @click="rejectCallback">
           <template #icon>
             <HeroiconsXMark />
           </template>

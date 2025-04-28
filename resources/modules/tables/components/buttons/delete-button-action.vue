@@ -3,7 +3,7 @@ defineProps<{ label: string }>();
 </script>
 
 <template>
-  <PrimeVueDangerButton rounded size="small" type="button" icon="pi">
+  <PrimeVueDangerButton icon="pi" rounded size="small" type="button">
     <HeroiconsTrash />
   </PrimeVueDangerButton>
 </template>

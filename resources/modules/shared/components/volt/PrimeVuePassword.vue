@@ -45,7 +45,7 @@ const theme = ref<PasswordPassThroughOptions>({
 </script>
 
 <template>
-  <Password unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+  <Password :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" unstyled>
     <template #maskicon="{ toggleCallback }">
       <HeroiconsEyeSlash class="end-3 text-surface-500 dark:text-surface-400 absolute top-1/2 -mt-2 w-4 h-4 cursor-pointer" @click="toggleCallback" />
     </template>

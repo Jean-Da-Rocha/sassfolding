@@ -33,11 +33,11 @@ const form = useForm<{ email: string; name: string }>({
               <PrimeVueInputText
                 id="email"
                 v-model="form.fields.email"
-                :invalid="form.errors.hasOwnProperty('email')"
                 :autofocus="true"
-                type="text"
                 fluid
+                :invalid="form.errors.hasOwnProperty('email')"
                 size="small"
+                type="text"
               />
               <div v-if="form.errors.email" class="mt-2 text-red-500">
                 {{ form.errors.email }}
@@ -50,11 +50,11 @@ const form = useForm<{ email: string; name: string }>({
               <PrimeVueInputText
                 id="name"
                 v-model="form.fields.name"
-                :invalid="form.errors.hasOwnProperty('name')"
                 :autofocus="true"
-                type="text"
                 fluid
+                :invalid="form.errors.hasOwnProperty('name')"
                 size="small"
+                type="text"
               />
               <div v-if="form.errors.name" class="mt-2 text-red-500">
                 {{ form.errors.name }}
@@ -62,11 +62,11 @@ const form = useForm<{ email: string; name: string }>({
             </div>
             <div class="md:text-right mt-6">
               <PrimeVuePrimaryButton
+                class="w-full md:w-auto"
+                :disabled="form.processing"
                 label="Submit"
                 size="small"
                 type="submit"
-                :disabled="form.processing"
-                class="w-full md:w-auto"
               />
             </div>
           </form>

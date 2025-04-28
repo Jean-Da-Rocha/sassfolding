@@ -58,7 +58,7 @@ const theme = ref<MessagePassThroughOptions>({
 </script>
 
 <template>
-  <Message unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+  <Message :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" unstyled>
     <template #closeicon>
       <HeroiconsXMark />
     </template>

@@ -35,11 +35,11 @@ useHead({ title: 'User Creation' });
               <PrimeVueInputText
                 id="email"
                 v-model="form.fields.email"
-                :invalid="form.errors.hasOwnProperty('email')"
                 :autofocus="true"
-                type="text"
                 fluid
+                :invalid="form.errors.hasOwnProperty('email')"
                 size="small"
+                type="text"
               />
               <div v-if="form.errors.email" class="mt-2 text-red-500">
                 {{ form.errors.email }}
@@ -52,10 +52,10 @@ useHead({ title: 'User Creation' });
               <PrimeVueInputText
                 id="name"
                 v-model="form.fields.name"
-                :invalid="form.errors.hasOwnProperty('name')"
-                type="text"
                 fluid
+                :invalid="form.errors.hasOwnProperty('name')"
                 size="small"
+                type="text"
               />
               <div v-if="form.errors.name" class="mt-2 text-red-500">
                 {{ form.errors.name }}
@@ -69,11 +69,11 @@ useHead({ title: 'User Creation' });
                 id="password"
                 v-model="form.fields.password"
                 :feedback="false"
-                :invalid="form.errors.hasOwnProperty('password')"
-                for="password"
-                toggle-mask
                 fluid
+                for="password"
+                :invalid="form.errors.hasOwnProperty('password')"
                 size="small"
+                toggle-mask
               />
               <div v-if="form.errors.password" class="mt-2 text-red-500">
                 {{ form.errors.password }}
@@ -87,11 +87,11 @@ useHead({ title: 'User Creation' });
                 id="password_confirmation"
                 v-model="form.fields.password_confirmation"
                 :feedback="false"
-                :invalid="form.errors.hasOwnProperty('password_confirmation')"
-                for="password_confirmation"
-                toggle-mask
                 fluid
+                for="password_confirmation"
+                :invalid="form.errors.hasOwnProperty('password_confirmation')"
                 size="small"
+                toggle-mask
               />
               <div v-if="form.errors.password_confirmation" class="mt-2 text-red-500">
                 {{ form.errors.password_confirmation }}
@@ -99,11 +99,11 @@ useHead({ title: 'User Creation' });
             </div>
             <div class="md:text-right mt-6">
               <PrimeVuePrimaryButton
+                class="w-full md:w-auto"
+                :disabled="form.processing"
                 label="Submit"
                 size="small"
                 type="submit"
-                :disabled="form.processing"
-                class="w-full md:w-auto"
               />
             </div>
           </form>

@@ -53,10 +53,10 @@ function changePage(pageState: PageState): void {
 <template :paginator="paginator">
   <PrimeVuePaginator
     :always-show="true"
+    class="mt-5"
     :rows="paginator.meta.per_page"
     :template="paginatorResponsiveTemplate"
     :total-records="paginator.meta.total"
-    class="mt-5"
     @page="(event: PageState): void => changePage(event)"
     @update:rows="(value: number): void => limitRecordsPerPage(value)"
   />

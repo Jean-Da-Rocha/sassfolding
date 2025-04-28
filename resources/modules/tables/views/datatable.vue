@@ -48,10 +48,10 @@ function tableHasActions(): boolean {
       <PrimeVueInputText
         v-if="datatable.filters.length > 0"
         v-model="search"
-        type="search"
-        size="small"
-        placeholder="Search"
         fluid
+        placeholder="Search"
+        size="small"
+        type="search"
       />
     </template>
     <TableHeader>
@@ -89,7 +89,7 @@ function tableHasActions(): boolean {
         <BodyCellAction v-if="tableHasActions()">
           <slot name="edit-button" :record-id="key" />
           <slot name="show-button" :record-id="key" />
-          <slot name="delete-button" :confirm-destructive-action="confirmDestructiveAction" :record-id="key" />
+          <slot :confirm-destructive-action="confirmDestructiveAction" name="delete-button" :record-id="key" />
         </BodyCellAction>
       </BodyRow>
     </TableBody>

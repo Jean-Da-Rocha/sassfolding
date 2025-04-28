@@ -18,7 +18,7 @@ const flashMessages = computed<FlashMessageReturnType[]>(useFlashMessages);
 
 <template>
   <div v-for="{ message, key, severity } in flashMessages" :key="key">
-    <PrimeVueMessage v-if="message" :life="5000" :severity="severity" :sticky="false" closable class="mb-5">
+    <PrimeVueMessage v-if="message" class="mb-5" closable :life="5000" :severity="severity" :sticky="false">
       {{ message }}
     </PrimeVueMessage>
   </div>

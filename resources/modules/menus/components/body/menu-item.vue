@@ -19,6 +19,7 @@ function handleNavigation(): Promise<NavigationResponse> {
 <template>
   <li>
     <RouterLink
+      as="button"
       class="relative flex flex-col items-center justify-center w-16 h-16 hover:text-primary-600 dark:hover:text-primary-300 cursor-pointer"
       :class="[
         (menuItem.routeName && menuItem.routeName === current)
@@ -26,7 +27,6 @@ function handleNavigation(): Promise<NavigationResponse> {
           : 'dark:text-surface-0',
       ]"
       method="get"
-      as="button"
       @click.prevent="handleNavigation"
     >
       <component :is="menuItem.icon" class="size-6" />

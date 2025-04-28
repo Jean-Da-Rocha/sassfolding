@@ -18,7 +18,7 @@ const theme = ref<PaginatorPassThroughOptions>({
 </script>
 
 <template>
-  <Paginator unstyled :pt="theme" :pt-options="{ mergeProps: ptViewMerge }">
+  <Paginator :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" unstyled>
     <template
       #container="{
         changePageCallback,
@@ -34,27 +34,27 @@ const theme = ref<PaginatorPassThroughOptions>({
       }"
     >
       <div class="flex flex-wrap gap-2 items-center justify-center">
-        <PrimeVueSecondaryButton text rounded :disabled="page === 0" @click="firstPageCallback">
+        <PrimeVueSecondaryButton :disabled="page === 0" rounded text @click="firstPageCallback">
           <template #icon>
             <HeroiconsChevronDoubleLeft />
           </template>
         </PrimeVueSecondaryButton>
-        <PrimeVueSecondaryButton text rounded :disabled="page === 0" @click="prevPageCallback">
+        <PrimeVueSecondaryButton :disabled="page === 0" rounded text @click="prevPageCallback">
           <template #icon>
             <HeroiconsChevronLeft />
           </template>
         </PrimeVueSecondaryButton>
         <div class="items-center justify-center gap-2 hidden sm:flex">
-          <PrimeVueSecondaryButton v-for="pageLink of pageLinks" :key="pageLink" :text="page + 1 !== pageLink" rounded class="shrink-0 min-w-10 h-10" :class="[{ 'bg-highlight!': page + 1 === pageLink }]" @click="() => changePageCallback(pageLink - 1)">
+          <PrimeVueSecondaryButton v-for="pageLink of pageLinks" :key="pageLink" class="shrink-0 min-w-10 h-10" :class="[{ 'bg-highlight!': page + 1 === pageLink }]" rounded :text="page + 1 !== pageLink" @click="() => changePageCallback(pageLink - 1)">
             {{ pageLink }}
           </PrimeVueSecondaryButton>
         </div>
-        <PrimeVueSecondaryButton text rounded :disabled="page === pageCount! - 1" @click="nextPageCallback">
+        <PrimeVueSecondaryButton :disabled="page === pageCount! - 1" rounded text @click="nextPageCallback">
           <template #icon>
             <HeroiconsChevronRight />
           </template>
         </PrimeVueSecondaryButton>
-        <PrimeVueSecondaryButton text rounded :disabled="page === pageCount! - 1" @click="lastPageCallback">
+        <PrimeVueSecondaryButton :disabled="page === pageCount! - 1" rounded text @click="lastPageCallback">
           <template #icon>
             <HeroiconsChevronDoubleRight />
           </template>
@@ -63,11 +63,11 @@ const theme = ref<PaginatorPassThroughOptions>({
       <div class="flex gap-2 items-center">
         <PrimeVueSelect
           :model-value="rows"
-          :options="perPageOptions"
           option-label="name"
           option-value="value"
-          pt:label="pe-2"
+          :options="perPageOptions"
           pt:dropdown="w-8"
+          pt:label="pe-2"
           @change="(event) => rowChangeCallback(event.value)"
         />
       </div>
