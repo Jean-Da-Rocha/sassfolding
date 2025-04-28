@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import process from 'node:process';
 import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 import hybridly from 'hybridly/vite';
@@ -103,6 +104,11 @@ export default defineConfig(({ mode }) => {
         },
       }),
     ],
+    resolve: {
+      alias: {
+        '@public': path.resolve(__dirname, './public'),
+      },
+    },
     server: {
       https: {
         cert: readFileSync(`${certPath}.cert`),

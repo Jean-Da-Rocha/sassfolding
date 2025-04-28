@@ -4,6 +4,9 @@
     "noEmit": true,
     "sourceMap": false,
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@public/*": ["./public/*"]
+    }
   }
 }
