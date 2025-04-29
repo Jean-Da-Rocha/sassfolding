@@ -18,7 +18,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/certs
 
 .hybridly
 _ide_helper*
@@ -26,4 +25,4 @@ _ide_helper*
 .pnpm-store
 
 docker/traefik/certs
-docker/ssl
+docker/hybridly/ssl

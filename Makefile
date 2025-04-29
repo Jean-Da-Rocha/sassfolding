@@ -79,11 +79,11 @@ install: ## Install dependencies and set up the local and testing environments.
 	@$(MAKE) restore-dns
 	@$(MAKE) setup-local-environment
 	@$(MAKE) setup-testing-environment
+	@$(MAKE) update-certificates
 	@$(MAKE) build keep-cache=0
 	@$(MAKE) install-all-deps
 	@echo "$(CYAN)[INFO]: Generating APP_KEY for local and testing environments...$(RESET)"
 	@$(HYBRIDLY_RUNNER) php artisan key:generate && php artisan key:generate --env=testing
-	@$(MAKE) update-certificates
 	@$(MAKE) setup-dns
 	@$(MAKE) restart
 
@@ -238,7 +238,7 @@ update-certificates: ## Generate and update SSL certificates for the project.
 		127.0.0.1 0.0.0.0 > /dev/null 2>&1
 	@echo "$(GREEN)[SUCCESS]: SSL certificates generated.$(RESET)"
 	@echo "$(CYAN)[INFO]: Copying mkcert root CA...$(RESET)"
-	@cp "$$(mkcert -CAROOT)/rootCA.pem" ./docker/ssl/rootCA.pem
+	@cp "$$(mkcert -CAROOT)/rootCA.pem" ./docker/hybridly/ssl/rootCA.pem
 	@echo "$(GREEN)[SUCCESS]: mkcert root CA copied.$(RESET)"
 
 .PHONY: vue-tsc

@@ -1,0 +1,24 @@
+services:
+  nginx:
+    container_name: ${COMPOSE_PROJECT_NAME}-nginx
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+    depends_on:
+      - hybridly
+    image: nginx:${NGINX_VERSION}
+    labels:
+      - "traefik.enable=true"
+      # App router
+      - "traefik.http.routers.app-${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.app-${COMPOSE_PROJECT_NAME}.rule=Host(`app.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.app-${COMPOSE_PROJECT_NAME}.tls=true"
+      # Horizon router
+      - "traefik.http.routers.horizon-${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.horizon-${COMPOSE_PROJECT_NAME}.rule=Host(`horizon.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.horizon-${COMPOSE_PROJECT_NAME}.tls=true"
+    networks:
+      - laravel
+    volumes:
+      - ./templates/hybridly.conf.template:/etc/nginx/templates/hybridly.conf.template:ro
+      - .:/var/www/html
+

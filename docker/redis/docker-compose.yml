@@ -1,0 +1,14 @@
+services:
+  redis:
+    container_name: ${COMPOSE_PROJECT_NAME}-redis
+    image: redis:${REDIS_VERSION}
+    networks:
+      - laravel
+    ports:
+      - '${REDIS_FORWARD_PORT}:6379'
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
+    name: ${COMPOSE_PROJECT_NAME}-redis-data

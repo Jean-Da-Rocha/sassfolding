@@ -1,0 +1,27 @@
+services:
+  hybridly:
+    build:
+      args:
+        COMPOSER_VERSION: ${COMPOSER_VERSION}
+        GID: ${GID}
+        GROUP_NAME: ${GROUP_NAME}
+        NODE_VERSION: ${NODE_VERSION}
+        PHP_VERSION: ${PHP_VERSION}
+        PNPM_VERSION: ${PNPM_VERSION}
+        UID: ${UID}
+        USER_NAME: ${USER_NAME}
+        XDEBUG_VERSION: ${XDEBUG_VERSION}
+      context: ../..
+      dockerfile: docker/hybridly/Dockerfile
+    container_name: ${COMPOSE_PROJECT_NAME}-hybridly
+    environment:
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: ${COREPACK_ENABLE_DOWNLOAD_PROMPT:-0}
+      PHP_IDE_CONFIG: serverName=${COMPOSE_PROJECT_NAME}
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - laravel
+    ports:
+      - '${VITE_PORT}:${VITE_PORT}'
+    volumes:
+      - ../..:/var/www/html

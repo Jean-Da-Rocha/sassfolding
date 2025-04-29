@@ -1,0 +1,11 @@
+services:
+  horizon:
+    container_name: ${COMPOSE_PROJECT_NAME}-horizon
+    command: [ "php", "/var/www/html/artisan", "horizon" ]
+    init: true
+    image: ${COMPOSE_PROJECT_NAME}-hybridly
+    networks:
+      - laravel
+    stop_signal: SIGTERM
+    volumes:
+      - ../..:/var/www/html

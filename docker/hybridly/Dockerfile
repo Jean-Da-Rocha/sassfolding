@@ -40,15 +40,15 @@ RUN groupadd -g $GID $GROUP_NAME && useradd -u $UID -ms /bin/bash -g $GROUP_NAME
 
 WORKDIR /var/www/html
 
-COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
-COPY ./docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY ./docker/ssl/rootCA.pem /usr/local/share/ca-certificates/rootCA.crt
+COPY ./docker/hybridly/config/php.ini /usr/local/etc/php/php.ini
+COPY ./docker/hybridly/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY ./docker/hybridly/ssl/rootCA.pem /usr/local/share/ca-certificates/rootCA.crt
 
 RUN update-ca-certificates
 RUN mkdir -p /var/log/supervisor && chown laravel:laravel /var/log/supervisor
 
 USER $USER_NAME
 
-COPY --chown=$USER_NAME:$GROUP_NAME . /var/www/html
+COPY --chown=$USER_NAME:$GROUP_NAME ../.. /var/www/html
 
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
