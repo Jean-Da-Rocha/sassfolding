@@ -3,6 +3,7 @@ install: ## Install dependencies and set up the local and testing environments.
 	@$(MAKE) restore-dns
 	@$(MAKE) setup-local-environment
 	@$(MAKE) setup-testing-environment
+	@$(MAKE) configure-husky-hooks
 	@$(MAKE) update-certificates
 	@$(MAKE) build keep-cache=0
 	@$(MAKE) composer cmd="install --prefer-dist --no-interaction --no-progress"
