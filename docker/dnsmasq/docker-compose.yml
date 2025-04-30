@@ -1,0 +1,14 @@
+services:
+  dnsmasq:
+    cap_add:
+      - NET_ADMIN
+    container_name: ${COMPOSE_PROJECT_NAME}-dnsmasq
+    image: dockurr/dnsmasq:${DNSMASQ_VERSION}
+    networks:
+      laravel:
+        ipv4_address: 172.18.0.10
+    ports:
+      - "${DNSMASQ_UDP_FORWARD_PORT}:53/udp"
+      - "${DNSMASQ_TCP_FORWARD_PORT}:53/tcp"
+    volumes:
+      - ./config/dnsmasq.conf:/etc/dnsmasq.conf:ro

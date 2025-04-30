@@ -1,0 +1,18 @@
+services:
+  mail:
+    container_name: ${COMPOSE_PROJECT_NAME}-mail
+    image: axllent/mailpit:${MAILPIT_VERSION}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mail-${COMPOSE_PROJECT_NAME}.entrypoints=https"
+      - "traefik.http.routers.mail-${COMPOSE_PROJECT_NAME}.rule=Host(`mail.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.mail-${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.services.mail-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8025"
+    networks:
+      - laravel
+    volumes:
+      - mail-data:/data
+
+volumes:
+  mail-data:
+    name: ${COMPOSE_PROJECT_NAME}-mail-data

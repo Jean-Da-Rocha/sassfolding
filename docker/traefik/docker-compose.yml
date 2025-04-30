@@ -1,0 +1,22 @@
+services:
+  traefik:
+    container_name: ${COMPOSE_PROJECT_NAME}-traefik
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+    image: traefik:${TRAEFIK_VERSION}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=https"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${COMPOSE_PROJECT_NAME}.test`)"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.services.router.loadbalancer.server.port=8080"
+    networks:
+      laravel:
+        ipv4_address: 172.18.0.20
+    ports:
+      - "${NGINX_FORWARD_PORT}:80"
+      - "${NGINX_SSL_FORWARD_PORT}:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./certs:/etc/traefik/certs:ro
