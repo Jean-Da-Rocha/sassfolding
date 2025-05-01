@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/health-check', fn () => response()->json(['status' => 'ok']));
+
 Route::middleware([RedirectIfAuthenticated::class])->group(function () {
     Route::get('/', fn () => hybridly('authentication::login'));
 });

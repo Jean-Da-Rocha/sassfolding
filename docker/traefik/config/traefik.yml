@@ -1,13 +1,3 @@
-global:
-  sendAnonymousUsage: false
-
-providers:
-  docker:
-    exposedByDefault: false
-  file:
-    directory: /etc/traefik
-    watch: true
-
 api:
   dashboard: true
   insecure: true
@@ -18,16 +8,29 @@ entryPoints:
     http:
       redirections:
         entryPoint:
-          to: https
           scheme: https
+          to: https
   https:
     address: ":443"
 
-tls:
-  certificates:
-      - certFile: /etc/traefik/certs/{{ env "COMPOSE_PROJECT_NAME" }}.cert
-        keyFile: /etc/traefik/certs/{{ env "COMPOSE_PROJECT_NAME" }}.key
+global:
+  sendAnonymousUsage: false
 
 log:
-  level: INFO
   format: common
+  level: info
+
+ping:
+  entryPoint: traefik
+
+providers:
+  docker:
+    exposedByDefault: false
+  file:
+    directory: /etc/traefik
+    watch: true
+
+tls:
+  certificates:
+    - certFile: /etc/traefik/certs/{{ env "COMPOSE_PROJECT_NAME" }}.cert
+      keyFile: /etc/traefik/certs/{{ env "COMPOSE_PROJECT_NAME" }}.key
