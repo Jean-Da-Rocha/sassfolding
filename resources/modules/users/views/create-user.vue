@@ -97,15 +97,7 @@ useHead({ title: 'User Creation' });
                 {{ form.errors.password_confirmation }}
               </div>
             </div>
-            <div class="md:text-right mt-6">
-              <PrimeVuePrimaryButton
-                class="w-full md:w-auto"
-                :disabled="form.processing"
-                label="Submit"
-                size="small"
-                type="submit"
-              />
-            </div>
+            <FormButtons :cancel-url="route('users.index')" :is-form-processing="form.processing" />
           </form>
         </template>
       </PrimeVueCard>
