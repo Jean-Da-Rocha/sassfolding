@@ -19,6 +19,11 @@ services:
       PHP_IDE_CONFIG: serverName=${COMPOSE_PROJECT_NAME}
     extra_hosts:
       - host.docker.internal:host-gateway
+    healthcheck:
+      retries: 3
+      start_period: 10s
+      test: ["CMD", "bash", "-c", "php --version && composer --version && pnpm --version"]
+      timeout: 5s
     networks:
       - laravel
     ports:

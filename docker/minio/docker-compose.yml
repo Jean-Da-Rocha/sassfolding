@@ -9,6 +9,11 @@ services:
       MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
       MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
       MINIO_SERVER_URL: ${AWS_ENDPOINT}
+    healthcheck:
+      retries: 3
+      start_period: 10s
+      test: ["CMD", "mc", "ready", "local"]
+      timeout: 3s
     image: bitnami/minio:${MINIO_VERSION}
     labels:
       - "traefik.enable=true"

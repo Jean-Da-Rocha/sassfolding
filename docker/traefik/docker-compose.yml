@@ -3,6 +3,11 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-traefik
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+    healthcheck:
+      retries: 3
+      start_period: 20s
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      timeout: 5s
     image: traefik:${TRAEFIK_VERSION}
     labels:
       - "traefik.enable=true"

@@ -1,11 +1,16 @@
 services:
   horizon:
     container_name: ${COMPOSE_PROJECT_NAME}-horizon
-    command: [ "php", "/var/www/html/artisan", "horizon" ]
+    command: ["php", "/var/www/html/artisan", "horizon"]
+    healthcheck:
+      retries: 3
+      test: ["CMD", "php", "/var/www/html/artisan", "horizon:status"]
+      timeout: 10s
     init: true
     image: ${COMPOSE_PROJECT_NAME}-hybridly
     networks:
       - laravel
+    stop_grace_period: 2s
     stop_signal: SIGTERM
     volumes:
       - ../..:/var/www/html

@@ -13,6 +13,11 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
       MYSQL_USER: ${DB_USERNAME}
+    healthcheck:
+      retries: 3
+      start_period: 10s
+      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+      timeout: 5s
     networks:
       - laravel
     ports:

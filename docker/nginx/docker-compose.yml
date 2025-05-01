@@ -5,6 +5,11 @@ services:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
     depends_on:
       - hybridly
+    healthcheck:
+      retries: 3
+      start_period: 10s
+      test: ["CMD", "curl", "-f", "app.${COMPOSE_PROJECT_NAME}.test/health-check"]
+      timeout: 3s
     image: nginx:${NGINX_VERSION}
     labels:
       - "traefik.enable=true"
