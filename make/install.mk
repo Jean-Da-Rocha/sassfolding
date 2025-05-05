@@ -6,10 +6,11 @@ install: ## Install dependencies and set up the local and testing environments.
 	@$(MAKE) configure-husky-hooks
 	@$(MAKE) update-certificates
 	@$(MAKE) build keep-cache=0
-	@$(MAKE) composer cmd="install --prefer-dist --no-interaction --no-progress"
-	@$(MAKE) pnpm cmd="pnpm install --frozen-lockfile --force"
+	@$(HYBRIDLY_RUNNER) composer install --prefer-dist --no-interaction --no-progress
+	@$(HYBRIDLY_RUNNER) pnpm install --frozen-lockfile --force
 	@echo "$(CYAN)[INFO]: Generating APP_KEY for local and testing environments...$(RESET)"
-	@$(HYBRIDLY_RUNNER) php artisan key:generate && php artisan key:generate --env=testing
+	@$(HYBRIDLY_RUNNER) php artisan key:generate
+	@$(HYBRIDLY_RUNNER) php artisan key:generate --env=testing
 	@$(MAKE) setup-dns
 	@$(MAKE) restart
 
