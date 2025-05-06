@@ -20,7 +20,7 @@ importantly: make it collaborative.
 For those reasons, I decided to create a reusable boilerplate that allows you to quickly scaffold a project, with
 almost zero configuration, thanks to the power of docker and some make commands.
 
-Even if this boilerplate is opinionated in a sense of which tool are used, the overall project architecture and the
+Even if this boilerplate is opinionated in a sense of which tools are used, the overall project architecture and the
 strict code rules, I hope you can pick some ideas or find something interesting.
 
 ## Features
@@ -30,10 +30,9 @@ strict code rules, I hope you can pick some ideas or find something interesting.
 - 🧪 Preconfigured `.env` and `.env.testing` environments
 - 🔏 SSL certificates with `mkcert` + `.test` TLD with local DNS resolver
 - 🛠️ Built-in support for Husky Git hooks
-- 🔐 Secure access to Horizon via custom middleware
-- 📦 Modern frontend stack (pnpm, Tailwind CSS, Laravel, Hybridly, etc.)
+- 📦 Modern stack (Pnpm, Tailwind CSS, Laravel, Hybridly, etc.)
 - ✨ Code linting and formatting preconfigured (ESLint, Pint, etc.)
-- 🔎 Robust types enforcement (vue-tsc, PHPStan, laravel typescript-transformer)
+- 🔎 Robust types enforcement (Vue-TSC, PHPStan, Laravel Typescript-Transformer)
 - 📱 Fully responsive
 - 🌓 Light & Dark Mode
 
@@ -41,9 +40,10 @@ strict code rules, I hope you can pick some ideas or find something interesting.
 
 To run this project, you need to have installed:
 
-- Docker (with docker compose >= 2.20.3)
-- Git
-- Mkcert
+- [Docker (with docker compose >= 2.20.3)](https://docs.docker.com/engine/install/)
+- [Git](https://git-scm.com/downloads)
+- [Make](https://www.gnu.org/software/make/)
+- [Mkcert](https://github.com/FiloSottile/mkcert?tab=readme-ov-file#installation)
 
 ## Installation
 
@@ -65,6 +65,8 @@ automatically do the following:
 - Configure a DNS resolver based on .test Top-Level Domain (TLD)
 - Creates the `sassfolding` and `sassfolding_testing` databases
 - Start the containers in detached mode
+- Run the migrations
+- Autocomplete your models using Laravel Ide Helper
 
 You can always run ```make help``` in your console to see which commands are available.
 
@@ -91,16 +93,3 @@ remain protected and scoped*
 ## Contributing
 
 You're welcome to open issues or pull requests if you find bugs or want to suggest improvements.
-
-## Roadmap
-
-Here are some planned improvements and upcoming features:
-
-- Improve Hybridly datatable support for inline and bulk actions
-- Improve datatable pagination
-- Use a modular back-end architecture
-- Add vitest for testing front-end logic and components
-- Upgrade eslint plugins (e.g. eslint-plugin-tailwindcss, sort-imports) for better DX
-- Add dockerized GitHub actions
-- Create production-ready docker services
-- Add ability to use custom top-level domain

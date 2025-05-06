@@ -13,6 +13,9 @@ install: ## Install dependencies and set up the local and testing environments.
 	@$(HYBRIDLY_RUNNER) php artisan key:generate --env=testing
 	@$(MAKE) setup-dns
 	@$(MAKE) restart
+	@sleep 5
+	@$(MAKE) artisan cmd="migrate"
+	@$(MAKE) composer cmd="autocomplete"
 
 .PHONY: restore-dns
 restore-dns: ## Restore the default DNS settings.
