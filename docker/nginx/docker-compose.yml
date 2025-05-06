@@ -25,5 +25,4 @@ services:
       - laravel
     volumes:
       - ./templates/hybridly.conf.template:/etc/nginx/templates/hybridly.conf.template:ro
-      - .:/var/www/html
-
+      - ../..:/var/www/html:ro
