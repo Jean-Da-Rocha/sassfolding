@@ -47,7 +47,8 @@ To run this project, you need to have installed:
 
 ## Installation
 
-You should first read the documentation [here](docker/README.md) to get a good understanding on how docker powers this
+> [!IMPORTANT]  
+> You should first read the documentation [here](docker/README.md) to get a good understanding on how docker powers this
 project.
 
 - ```git clone https://github.com/Jean-Da-Rocha/sassfolding.git```
@@ -66,7 +67,7 @@ automatically do the following:
 - Creates the `sassfolding` and `sassfolding_testing` databases
 - Start the containers in detached mode
 - Run the migrations
-- Autocomplete your models using Laravel Ide Helper
+- Add autocomplete using Laravel Ide Helper
 
 You can always run ```make help``` in your console to see which commands are available.
 
