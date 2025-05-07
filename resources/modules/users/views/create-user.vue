@@ -63,7 +63,8 @@ useHead({ title: 'User Creation' });
                 class="
                   mb-2 block text-sm font-medium text-surface-700
                   dark:text-surface-0
-                " for="name"
+                "
+                for="name"
               >
                 Name
               </label>

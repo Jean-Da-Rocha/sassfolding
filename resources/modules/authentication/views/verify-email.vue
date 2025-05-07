@@ -35,7 +35,8 @@ useHead({ title: 'Verify Email' });
             text-primary-500
             hover:text-primary-700
           "
-          :href="route('logout')" method="post"
+          :href="route('logout')"
+          method="post"
         >
           Sign Out
         </RouterLink>

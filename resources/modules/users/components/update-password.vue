@@ -35,7 +35,8 @@ const form = useForm<{ current_password: string; password: string; password_conf
                 class="
                   mb-2 block text-sm font-medium
                   dark:text-surface-0
-                " for="current_password"
+                "
+                for="current_password"
               >
                 Current password
               </label>
@@ -98,9 +99,8 @@ const form = useForm<{ current_password: string; password: string; password_conf
                 toggle-mask
               />
               <div
-                v-if="form.errors.password_confirmation" class="
-                  mt-2 text-red-500
-                "
+                v-if="form.errors.password_confirmation"
+                class="mt-2 text-red-500"
               >
                 {{ form.errors.password_confirmation }}
               </div>

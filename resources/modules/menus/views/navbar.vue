@@ -24,7 +24,9 @@ const toggleProfileOverlay = (event: Event) => profileOverlay.value?.toggle(even
       class="
         -m-2.5 p-2.5
         lg:hidden
-      " type="button" @click="emit('toggleSidebar')"
+      "
+      type="button"
+      @click="emit('toggleSidebar')"
     >
       <HeroiconsBars3
         class="

@@ -51,7 +51,8 @@ const theme = ref<PasswordPassThroughOptions>({
         class="
           absolute end-3 top-1/2 -mt-2 h-4 w-4 cursor-pointer text-surface-500
           dark:text-surface-400
-        " @click="toggleCallback"
+        "
+        @click="toggleCallback"
       />
     </template>
     <template #unmaskicon="{ toggleCallback }">
@@ -59,7 +60,8 @@ const theme = ref<PasswordPassThroughOptions>({
         class="
           absolute end-3 top-1/2 -mt-2 h-4 w-4 cursor-pointer text-surface-500
           dark:text-surface-400
-        " @click="toggleCallback"
+        "
+        @click="toggleCallback"
       />
     </template>
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">

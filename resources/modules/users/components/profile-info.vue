@@ -29,7 +29,8 @@ const form = useForm<{ email: string; name: string }>({
             class="
               space-y-4
               md:space-y-6
-            " @submit.prevent="form.submit"
+            "
+            @submit.prevent="form.submit"
           >
             <div>
               <label class="mb-2 block text-sm font-medium" for="email">

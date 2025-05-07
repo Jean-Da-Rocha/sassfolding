@@ -51,9 +51,12 @@ const theme = ref<PaginatorPassThroughOptions>({
           "
         >
           <PrimeVueSecondaryButton
-            v-for="pageLink of pageLinks" :key="pageLink" class="
-              h-10 min-w-10 shrink-0
-            " :class="[{ 'bg-highlight!': page + 1 === pageLink }]" rounded :text="page + 1 !== pageLink" @click="() => changePageCallback(pageLink - 1)"
+            v-for="pageLink of pageLinks"
+            :key="pageLink"
+            class="h-10 min-w-10 shrink-0"
+            :class="[{ 'bg-highlight!': page + 1 === pageLink }]"
+            rounded
+            :text="page + 1 !== pageLink" @click="() => changePageCallback(pageLink - 1)"
           >
             {{ pageLink }}
           </PrimeVueSecondaryButton>

@@ -53,7 +53,8 @@ useHead({ title: 'Forgot Password' });
           class="
             text-primary-500
             hover:text-primary-700
-          " :href="route('login')"
+          "
+          :href="route('login')"
         >
           login page
         </RouterLink>

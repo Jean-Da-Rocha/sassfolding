@@ -4,18 +4,24 @@ defineProps<{ label: string; route: string }>();
 
 <template>
   <RouterLink
-    as="button" class="
+    as="button"
+    class="
       w-full
       lg:inline-flex lg:items-center
-    " :href="route" method="get"
+    "
+    :href="route"
+    method="get"
   >
     <PrimeVuePrimaryButton
       class="
         w-full
         lg:w-auto
-      " size="small" type="button"
+      "
+      size="small"
+      type="button"
     >
-      <HeroiconsPlus /> {{ label }}
+      <HeroiconsPlus />
+      {{ label }}
     </PrimeVuePrimaryButton>
   </RouterLink>
 </template>
