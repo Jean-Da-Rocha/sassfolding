@@ -23,9 +23,20 @@ const form = useForm<{ current_password: string; password: string; password_conf
     <template #form>
       <PrimeVueCard>
         <template #content>
-          <form class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
+          <form
+            class="
+              space-y-4
+              md:space-y-6
+            "
+            @submit.prevent="form.submit"
+          >
             <div>
-              <label class="mb-2 block text-sm font-medium dark:text-surface-0" for="current_password">
+              <label
+                class="
+                  mb-2 block text-sm font-medium
+                  dark:text-surface-0
+                " for="current_password"
+              >
                 Current password
               </label>
               <PrimeVuePassword
@@ -43,7 +54,12 @@ const form = useForm<{ current_password: string; password: string; password_conf
               </div>
             </div>
             <div>
-              <label class="mb-2 block text-sm font-medium dark:text-surface-0" for="password">
+              <label
+                class="
+                  mb-2 block text-sm font-medium
+                  dark:text-surface-0
+                " for="password"
+              >
                 New Password
               </label>
               <PrimeVuePassword
@@ -62,7 +78,10 @@ const form = useForm<{ current_password: string; password: string; password_conf
             </div>
             <div>
               <label
-                class="mb-2 block text-sm font-medium dark:text-surface-0"
+                class="
+                  mb-2 block text-sm font-medium
+                  dark:text-surface-0
+                "
                 for="password_confirmation"
               >
                 Confirm Password
@@ -78,13 +97,25 @@ const form = useForm<{ current_password: string; password: string; password_conf
                 size="small"
                 toggle-mask
               />
-              <div v-if="form.errors.password_confirmation" class="mt-2 text-red-500">
+              <div
+                v-if="form.errors.password_confirmation" class="
+                  mt-2 text-red-500
+                "
+              >
                 {{ form.errors.password_confirmation }}
               </div>
             </div>
-            <div class="md:text-right mt-6">
+            <div
+              class="
+                mt-6
+                md:text-right
+              "
+            >
               <PrimeVuePrimaryButton
-                class="w-full md:w-auto"
+                class="
+                  w-full
+                  md:w-auto
+                "
                 :disabled="form.processing"
                 label="Submit"
                 size="small"

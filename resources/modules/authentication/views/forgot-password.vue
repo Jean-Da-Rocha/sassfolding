@@ -19,7 +19,14 @@ useHead({ title: 'Forgot Password' });
         link that will allow you to choose a new one.
       </div>
       <PrimeVueFluid>
-        <form v-focustrap class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
+        <form
+          v-focustrap
+          class="
+            space-y-4
+            md:space-y-6
+          "
+          @submit.prevent="form.submit"
+        >
           <div>
             <label class="mb-2 block text-sm font-medium" for="email">
               Email
@@ -42,7 +49,12 @@ useHead({ title: 'Forgot Password' });
       </PrimeVueFluid>
       <div class="text-center">
         <span>Or, return to the</span>
-        <RouterLink class="text-primary-500 hover:text-primary-700" :href="route('login')">
+        <RouterLink
+          class="
+            text-primary-500
+            hover:text-primary-700
+          " :href="route('login')"
+        >
           login page
         </RouterLink>
       </div>

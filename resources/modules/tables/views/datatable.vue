@@ -63,7 +63,10 @@ function tableHasActions(): boolean {
           <template #sort>
             <span
               v-if="column.isSortable"
-              class="ml-2 flex-none text-surface-700 dark:text-surface-0"
+              class="
+                ml-2 flex-none text-surface-700
+                dark:text-surface-0
+              "
               @click="column.toggleSort({ direction: column.isSorting('asc') ? 'desc' : 'asc' })"
             >
               <HeroiconsChevronUp v-if="column.isSorting('asc')" />

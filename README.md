@@ -3,6 +3,7 @@
 ![Sassfolding App](art/sassfolding.png)
 
 ## Table of Contents
+
 - [Introduction](#introduction)
 - [Features](#features)
 - [Requirements](#requirements)
@@ -47,9 +48,9 @@ To run this project, you need to have installed:
 
 ## Installation
 
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > You should first read the documentation [here](docker/README.md) to get a good understanding on how docker powers this
-project.
+> project.
 
 - ```git clone https://github.com/Jean-Da-Rocha/sassfolding.git```
 - ```cd sassfolding && make install```
@@ -89,9 +90,8 @@ remain protected and scoped*
 ## Known issues
 
 - The datatable module does not fully support Hybridly **inline** and **bulk** actions yet
-- The eslint-plugin-tailwindcss is not working with the project since it has not been updated to Tailwind 4 yet
-- There is an error (can't resolve reference #/definitions/max-line-length-requires-line-length-type from id sort-imports
-) with the eslint-sort-import plugin, which will be fixed in a future update
+- There is an error (can't resolve reference #/definitions/max-line-length-requires-line-length-type from id
+  sort-imports) with the eslint-sort-import plugin, which will be fixed in a future update
 
 ## Contributing
 

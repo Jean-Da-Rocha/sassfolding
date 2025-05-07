@@ -18,7 +18,14 @@ useHead({ title: 'Sign Up' });
   <PrimeVueCard class="mx-auto w-full max-w-[600px]">
     <template #content>
       <PrimeVueFluid>
-        <form v-focustrap class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
+        <form
+          v-focustrap
+          class="
+            space-y-4
+            md:space-y-6
+          "
+          @submit.prevent="form.submit"
+        >
           <div>
             <label class="mb-2 block text-sm font-medium" for="name">
               Name
@@ -77,7 +84,9 @@ useHead({ title: 'Sign Up' });
               :invalid="form.errors.hasOwnProperty('password_confirmation')"
               toggle-mask
             />
-            <div v-if="form.errors.password_confirmation" class="mt-2 text-red-500">
+            <div
+              v-if="form.errors.password_confirmation" class="mt-2 text-red-500"
+            >
               {{ form.errors.password_confirmation }}
             </div>
           </div>
@@ -88,7 +97,13 @@ useHead({ title: 'Sign Up' });
       </PrimeVueFluid>
       <div class="text-center">
         Already have an account?
-        <RouterLink class="text-primary-500 hover:text-primary-700" :href="route('login')">
+        <RouterLink
+          class="
+            text-primary-500
+            hover:text-primary-700
+          "
+          :href="route('login')"
+        >
           Sign In
         </RouterLink>
       </div>

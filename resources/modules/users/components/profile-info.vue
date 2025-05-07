@@ -25,7 +25,12 @@ const form = useForm<{ email: string; name: string }>({
     <template #form>
       <PrimeVueCard>
         <template #content>
-          <form class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
+          <form
+            class="
+              space-y-4
+              md:space-y-6
+            " @submit.prevent="form.submit"
+          >
             <div>
               <label class="mb-2 block text-sm font-medium" for="email">
                 Email
@@ -60,9 +65,17 @@ const form = useForm<{ email: string; name: string }>({
                 {{ form.errors.name }}
               </div>
             </div>
-            <div class="md:text-right mt-6">
+            <div
+              class="
+                mt-6
+                md:text-right
+              "
+            >
               <PrimeVuePrimaryButton
-                class="w-full md:w-auto"
+                class="
+                  w-full
+                  md:w-auto
+                "
                 :disabled="form.processing"
                 label="Submit"
                 size="small"

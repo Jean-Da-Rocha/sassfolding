@@ -47,10 +47,20 @@ const theme = ref<PasswordPassThroughOptions>({
 <template>
   <Password :pt="theme" :pt-options="{ mergeProps: ptViewMerge }" unstyled>
     <template #maskicon="{ toggleCallback }">
-      <HeroiconsEyeSlash class="end-3 text-surface-500 dark:text-surface-400 absolute top-1/2 -mt-2 w-4 h-4 cursor-pointer" @click="toggleCallback" />
+      <HeroiconsEyeSlash
+        class="
+          absolute end-3 top-1/2 -mt-2 h-4 w-4 cursor-pointer text-surface-500
+          dark:text-surface-400
+        " @click="toggleCallback"
+      />
     </template>
     <template #unmaskicon="{ toggleCallback }">
-      <HeroiconsEye class="end-3 text-surface-500 dark:text-surface-400 absolute top-1/2 -mt-2 w-4 h-4 cursor-pointer" @click="toggleCallback" />
+      <HeroiconsEye
+        class="
+          absolute end-3 top-1/2 -mt-2 h-4 w-4 cursor-pointer text-surface-500
+          dark:text-surface-400
+        " @click="toggleCallback"
+      />
     </template>
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />

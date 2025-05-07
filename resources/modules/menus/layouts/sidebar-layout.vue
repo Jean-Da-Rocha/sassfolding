@@ -1,6 +1,10 @@
 <template>
   <aside
-    class="min-w-[5rem] w-auto bg-white dark:bg-surface-900 items-center py-5 space-y-6 border-r border-surface-300 dark:border-surface-700"
+    class="
+      w-auto min-w-[5rem] items-center space-y-6 border-r border-surface-300
+      bg-white py-5
+      dark:border-surface-700 dark:bg-surface-900
+    "
   >
     <slot />
   </aside>

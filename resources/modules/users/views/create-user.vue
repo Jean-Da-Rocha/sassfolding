@@ -27,9 +27,22 @@ useHead({ title: 'User Creation' });
     <template #form>
       <PrimeVueCard>
         <template #content>
-          <form class="space-y-4 md:space-y-6" @keydown.enter.prevent="form.submit" @submit.prevent="form.submit">
+          <form
+            class="
+              space-y-4
+              md:space-y-6
+            "
+            @keydown.enter.prevent="form.submit"
+            @submit.prevent="form.submit"
+          >
             <div>
-              <label class="mb-2 block text-sm font-medium text-surface-700 dark:text-surface-0" for="email">
+              <label
+                class="
+                  mb-2 block text-sm font-medium text-surface-700
+                  dark:text-surface-0
+                "
+                for="email"
+              >
                 Email
               </label>
               <PrimeVueInputText
@@ -46,7 +59,12 @@ useHead({ title: 'User Creation' });
               </div>
             </div>
             <div>
-              <label class="mb-2 block text-sm font-medium text-surface-700 dark:text-surface-0" for="name">
+              <label
+                class="
+                  mb-2 block text-sm font-medium text-surface-700
+                  dark:text-surface-0
+                " for="name"
+              >
                 Name
               </label>
               <PrimeVueInputText
@@ -93,7 +111,10 @@ useHead({ title: 'User Creation' });
                 size="small"
                 toggle-mask
               />
-              <div v-if="form.errors.password_confirmation" class="mt-2 text-red-500">
+              <div
+                v-if="form.errors.password_confirmation"
+                class="mt-2 text-red-500"
+              >
                 {{ form.errors.password_confirmation }}
               </div>
             </div>
