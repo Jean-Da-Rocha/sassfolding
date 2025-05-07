@@ -1,5 +1,5 @@
 .PHONY: artisan
-artisan: ## Run artisan commands using make artisan cmd="" syntax.
+artisan: ## Run artisan commands using 'make artisan cmd=""' syntax.
 	$(HYBRIDLY_EXEC) php artisan $(cmd)
 
 .PHONY: composer

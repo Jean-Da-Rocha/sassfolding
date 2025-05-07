@@ -8,9 +8,8 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Know Issues](#known-issues)
+- [Known Issues](#known-issues)
 - [Contributing](#contributing)
-- [Roadmap](#roadmap)
 
 ## Introduction
 
@@ -30,9 +29,10 @@ strict code rules, I hope you can pick some ideas or find something interesting.
 - 🧪 Preconfigured `.env` and `.env.testing` environments
 - 🔏 SSL certificates with `mkcert` + `.test` TLD with local DNS resolver
 - 🛠️ Built-in support for Husky Git hooks
-- 📦 Modern stack (Pnpm, Tailwind CSS, Laravel, Hybridly, etc.)
+- 📦 Modern stack (Pnpm, Tailwind CSS, Laravel, Hybridly, PrimeVue Volt, etc.)
 - ✨ Code linting and formatting preconfigured (ESLint, Pint, etc.)
 - 🔎 Robust types enforcement (Vue-TSC, PHPStan, Laravel Typescript-Transformer)
+- 🥦 Taze: modern CLI tool to keep front-end dependencies up-to-date
 - 📱 Fully responsive
 - 🌓 Light & Dark Mode
 
@@ -93,4 +93,5 @@ remain protected and scoped*
 
 ## Contributing
 
-You're welcome to open issues or pull requests if you find bugs or want to suggest improvements.
+You're welcome to open issues or pull requests if you find bugs or want to suggest improvements, related to the Docker
+setup or the Sassfolding app.
