@@ -4,7 +4,7 @@ update-certificates: ## Generate and update SSL certificates for the project.
 		echo "$(YELLOW)[WARNING]: Certificate Authority already added to trust stores.$(RESET)"; \
 	else \
 		mkcert -install; \
-		echo "$(GREEN)[SUCCESS]: Certificate Authority added to trust stores.$(RESET)" \
+		echo "$(GREEN)[SUCCESS]: Certificate Authority added to trust stores.$(RESET)"; \
 	fi
 	@echo "$(CYAN)[INFO]: Updating SSL certificates for $(PROJECT_NAME_SLUG).test...$(RESET)"
 	@mkcert \
