@@ -13,21 +13,21 @@
 
 ## Introduction
 
-It always has been a real hassle for me to set up a new project: configure tools, linting, install packages and more
-importantly: make it collaborative.
+Setting up a new project has always been a real hassle for me: configuring tools, setting up linting, installing
+packages, and—more importantly—making it collaborative.
 
-For those reasons, I decided to create a reusable boilerplate that allows you to quickly scaffold a project, with
-almost zero configuration, thanks to the power of docker and some make commands.
+That’s why I decided to create a reusable boilerplate that lets you scaffold a project quickly, with almost zero
+configuration, thanks to the power of Docker and a few Make commands.
 
-Even if this boilerplate is opinionated in a sense of which tools are used, the overall project architecture and the
-strict code rules, I hope you can pick some ideas or find something interesting.
+While the boilerplate is opinionated in terms of tooling, project structure, and code conventions, I hope you’ll still
+find useful ideas or inspiration within it.
 
 ## Features
 
 - 🐳 Docker-first development setup (Laravel, Hybridly, Node, Redis, Mailpit, MinIO, Traefik)
-- ⚡ One-liner setup via `make install`
-- 🧪 Preconfigured `.env` and `.env.testing` environments
-- 🔏 SSL certificates with `mkcert` + `.test` TLD with local DNS resolver
+- ⚡ One-liner setup via **make install**
+- 🧪 Preconfigured **.env** and **.env.testing** environments
+- 🔏 SSL certificates with **mkcert** + **.test** TLD with local DNS resolver
 - 🛠️ Built-in support for Husky Git hooks
 - 📦 Modern stack (Pnpm, Tailwind CSS, Laravel, Hybridly, PrimeVue Volt, etc.)
 - ✨ Code linting and formatting preconfigured (ESLint, Pint, etc.)
@@ -54,7 +54,7 @@ project.
 - ```git clone https://github.com/Jean-Da-Rocha/sassfolding.git```
 - ```cd sassfolding && make install```
 
-Based on the `${COMPOSE_PROJECT_NAME}` variable (**sassfolding** in our case), the installation process will
+Based on the ${COMPOSE_PROJECT_NAME}` variable (**sassfolding** in our case), the installation process will
 automatically do the following:
 
 - Create the dedicated env files (.env and .env.testing), replacing dynamic variables in those files.
@@ -64,7 +64,7 @@ automatically do the following:
 - Install pnpm & composer dependencies
 - Generate keys for both .env and .env.testing files
 - Configure a DNS resolver based on .test Top-Level Domain (TLD)
-- Creates the `sassfolding` and `sassfolding_testing` databases
+- Creates the **sassfolding** and **sassfolding_testing** databases
 - Start the containers in detached mode
 - Run the migrations
 - Add autocomplete using Laravel Ide Helper
@@ -81,7 +81,7 @@ Once the docker container are running, you can access the following URL:
 - https://minio.sassfolding.test - The MinIO dashboard to manage files, folders and buckets
 - https://traefik.sassfolding.test - The Traefik dashboard to view your entrypoints, routes etc.
 
-*Note: There is a middleware called `EnsureValidHorizonUri` to make sure Horizon dashboard and its API
+*Note: There is a middleware called **EnsureValidHorizonUri** to make sure Horizon dashboard and its API
 remain protected and scoped*
 
 ## Known issues
