@@ -3,17 +3,28 @@ defineProps<{ cancelLabel?: string; cancelUrl: string; isFormProcessing: boolean
 </script>
 
 <template>
-  <div class="md:text-right mt-6">
+  <div
+    class="
+      mt-6
+      md:text-right
+    "
+  >
     <RouterLink :href="cancelUrl" method="get">
       <PrimeVueContrastButton
-        class="w-full md:mr-3 md:w-auto"
+        class="
+          w-full
+          md:mr-3 md:w-auto
+        "
         :label="cancelLabel ?? 'Cancel'"
         size="small"
         type="button"
       />
     </RouterLink>
     <PrimeVuePrimaryButton
-      class="w-full mt-3 md:w-auto"
+      class="
+        mt-3 w-full
+        md:w-auto
+      "
       :disabled="isFormProcessing"
       :label="submitLabel ?? 'Submit'"
       size="small"

@@ -11,7 +11,7 @@
 
 ## Introduction
 
-> [!WARNING]  
+> [!WARNING]
 > This Docker setup has only been tested on **ZorinOS 17** and is not **production-ready**.
 > Also, it only supports macOS and Linux based operating systems.
 
@@ -19,7 +19,7 @@ This project provides a standardized and streamlined Docker-based development en
 applications. It includes SSL support for local .test domains, isolated container and volume naming per project, and a
 wide array of pre-configured services to boost development productivity out of the box.
 
-> [!NOTE]  
+> [!NOTE]
 > This setup is not compatible with Laravel Sail as it follows a fundamentally different philosophy and architecture
 
 This stack was built from scratch by someone with no prior Docker experience. The process surfaced several technical

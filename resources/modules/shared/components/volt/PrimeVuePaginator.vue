@@ -33,7 +33,7 @@ const theme = ref<PaginatorPassThroughOptions>({
         rowChangeCallback,
       }"
     >
-      <div class="flex flex-wrap gap-2 items-center justify-center">
+      <div class="flex flex-wrap items-center justify-center gap-2">
         <PrimeVueSecondaryButton :disabled="page === 0" rounded text @click="firstPageCallback">
           <template #icon>
             <HeroiconsChevronDoubleLeft />
@@ -44,8 +44,20 @@ const theme = ref<PaginatorPassThroughOptions>({
             <HeroiconsChevronLeft />
           </template>
         </PrimeVueSecondaryButton>
-        <div class="items-center justify-center gap-2 hidden sm:flex">
-          <PrimeVueSecondaryButton v-for="pageLink of pageLinks" :key="pageLink" class="shrink-0 min-w-10 h-10" :class="[{ 'bg-highlight!': page + 1 === pageLink }]" rounded :text="page + 1 !== pageLink" @click="() => changePageCallback(pageLink - 1)">
+        <div
+          class="
+            hidden items-center justify-center gap-2
+            sm:flex
+          "
+        >
+          <PrimeVueSecondaryButton
+            v-for="pageLink of pageLinks"
+            :key="pageLink"
+            class="h-10 min-w-10 shrink-0"
+            :class="[{ 'bg-highlight!': page + 1 === pageLink }]"
+            rounded
+            :text="page + 1 !== pageLink" @click="() => changePageCallback(pageLink - 1)"
+          >
             {{ pageLink }}
           </PrimeVueSecondaryButton>
         </div>
@@ -60,7 +72,7 @@ const theme = ref<PaginatorPassThroughOptions>({
           </template>
         </PrimeVueSecondaryButton>
       </div>
-      <div class="flex gap-2 items-center">
+      <div class="flex items-center gap-2">
         <PrimeVueSelect
           :model-value="rows"
           option-label="name"

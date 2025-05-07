@@ -22,7 +22,14 @@ useHead({ title: 'Reset Password' });
   <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
       <PrimeVueFluid>
-        <form v-focustrap class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
+        <form
+          v-focustrap
+          class="
+            space-y-4
+            md:space-y-6
+          "
+          @submit.prevent="form.submit"
+        >
           <div>
             <label class="mb-2 block text-sm font-medium" for="email">
               Email
@@ -66,7 +73,9 @@ useHead({ title: 'Reset Password' });
               :invalid="form.errors.hasOwnProperty('password_confirmation')"
               toggle-mask
             />
-            <div v-if="form.errors.password_confirmation" class="mt-2 text-red-500">
+            <div
+              v-if="form.errors.password_confirmation" class="mt-2 text-red-500"
+            >
               {{ form.errors.password_confirmation }}
             </div>
           </div>

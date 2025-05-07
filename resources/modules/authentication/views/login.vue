@@ -16,7 +16,14 @@ useHead({ title: 'Sign In' });
   <PrimeVueCard class="mx-auto w-full max-w-[600px]">
     <template #content>
       <PrimeVueFluid>
-        <form v-focustrap class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
+        <form
+          v-focustrap
+          class="
+            space-y-4
+            md:space-y-6
+          "
+          @submit.prevent="form.submit"
+        >
           <div>
             <label class="mb-2 block text-sm font-medium" for="email">
               Email
@@ -58,7 +65,10 @@ useHead({ title: 'Sign In' });
               </div>
             </div>
             <RouterLink
-              class="text-sm font-medium text-primary-500 hover:text-primary-700 hover:underline"
+              class="
+                text-sm font-medium text-primary-500
+                hover:text-primary-700 hover:underline
+              "
               :href="route('password.request')"
             >
               Forgot your password?
@@ -71,7 +81,13 @@ useHead({ title: 'Sign In' });
       </PrimeVueFluid>
       <div class="text-center">
         Don't have an account?
-        <RouterLink class="text-primary-500 hover:text-primary-700" :href="route('register')">
+        <RouterLink
+          class="
+            text-primary-500
+            hover:text-primary-700
+          "
+          :href="route('register')"
+        >
           Sign Up
         </RouterLink>
       </div>

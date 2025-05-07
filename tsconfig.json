@@ -1,12 +1,12 @@
 {
   "extends": "./.hybridly/tsconfig.json",
   "compilerOptions": {
-    "noEmit": true,
-    "sourceMap": false,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
     "paths": {
       "@public/*": ["./public/*"]
-    }
+    },
+    "noEmit": true,
+    "sourceMap": false,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
   }
 }

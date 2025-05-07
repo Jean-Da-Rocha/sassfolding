@@ -17,14 +17,27 @@ useHead({ title: 'Verify Email' });
         we just emailed to you? If you didn't receive the email, we will gladly send you another.
       </div>
       <PrimeVueFluid>
-        <form class="space-y-4 md:space-y-6" @submit.prevent="form.submit">
+        <form
+          class="
+            space-y-4
+            md:space-y-6
+          "
+          @submit.prevent="form.submit"
+        >
           <div>
             <PrimeVuePrimaryButton :disabled="form.processing" label="Resend Verification Email" type="submit" />
           </div>
         </form>
       </PrimeVueFluid>
-      <div class="text-center">
-        <RouterLink class="text-primary-500 hover:text-primary-700" :href="route('logout')" method="post">
+      <div class="mt-4 text-center">
+        <RouterLink
+          class="
+            text-primary-500
+            hover:text-primary-700
+          "
+          :href="route('logout')"
+          method="post"
+        >
           Sign Out
         </RouterLink>
       </div>
