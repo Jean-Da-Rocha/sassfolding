@@ -37,17 +37,17 @@ challenges, which are discussed in the [advanced topics](#advanced-topics) secti
 
 ## Architecture
 
-| Container    | Purpose                                                                  |
-|--------------|--------------------------------------------------------------------------|
-| **DNSMasq**  | Handles wildcard DNS resolution for `.test` domains without `/etc/hosts` |
-| **Hybridly** | Main app container running both PHP and Node.js                          |
-| **Horizon**  | Supervisor for managing Laravel queues with Redis                        |
-| **Mailpit**  | Local SMTP server and email inbox for testing emails                     |
-| **MinIO**    | S3-compatible object storage (for local file upload testing)             |
-| **MySQL**    | Relational database used by Laravel for both local and testing           |
-| **Nginx**    | Serves PHP requests via FastCGI since Traefik does not support it        |
-| **Redis**    | Used for queues, cache, and sessions                                     |
-| **Traefik**  | Dynamic reverse proxy with built-in TLS and dashboard support            |
+| Container    | Purpose                                                                      |
+|--------------|------------------------------------------------------------------------------|
+| **DNSMasq**  | Handles wildcard DNS resolution for **.test** domains without **/etc/hosts** |
+| **Hybridly** | Main app container running both PHP and Node.js                              |
+| **Horizon**  | Supervisor for managing Laravel queues with Redis                            |
+| **Mailpit**  | Local SMTP server and email inbox for testing emails                         |
+| **MinIO**    | S3-compatible object storage (for local file upload testing)                 |
+| **MySQL**    | Relational database used by Laravel for both local and testing               |
+| **Nginx**    | Serves PHP requests via FastCGI since Traefik does not support it            |
+| **Redis**    | Used for queues, cache, and sessions                                         |
+| **Traefik**  | Dynamic reverse proxy with built-in TLS and dashboard support                |
 
 ## Usage
 
@@ -64,11 +64,12 @@ will be based on the **sassfolding** working directory:
 - URL: app.sassfolding.test, horizon.sassfolding.test, mail.sassfolding.test...
 
 > [!NOTE]
-> If you would like to use a name different from your working directory, you can set a value to the **OVERRIDE_PROJECT_NAME**
-> at the top of the **Makefile**. The **OVERRIDE_PROJECT_NAME** will have priority and its slugified version will be used
-> as the **COMPOSE_PROJECT_NAME** for the whole project
+> If you want to use a different name than the current working directory, you can set the **OVERRIDE_PROJECT_NAME**
+> variable at the top of the Makefile. Its slugified version will take priority and be used as the
+> **COMPOSE_PROJECT_NAME** throughout the project.
 
-If you want to play around with versions, ports or other configurations, you're free to edit the dedicated .env values.
+If you want to experiment with versions, ports, or other configurations, feel free to edit the corresponding values
+in the **.env** file.
 
 > [!TIP]
 > Don't forget to run the ```make rebuild``` command to reflect your changes.
