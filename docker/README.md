@@ -27,13 +27,13 @@ challenges, which are discussed in the [advanced topics](#advanced-topics) secti
 
 ## Features
 
-- Fully configurable via .env (versions, ports, project name, etc.)
-- Unique container, volume, and network names per project (COMPOSE_PROJECT_NAME)
-- Local domain support without modifying /etc/hosts, thanks to DNSMasq and Traefik
-- Built-in SSL certificates for .test domains
-- First-class support for Hybridly and Laravel Horizon
-- Mail and object storage (Mailpit, MinIO) included
-- Graceful integration with modern development workflows
+- ⚙️ Fully configurable via .env (versions, ports, project name, etc.)
+- 📦 Unique container, volume, and network names per project (COMPOSE_PROJECT_NAME)
+- 🌐 Local domain support without modifying /etc/hosts, thanks to DNSMasq and Traefik
+- 🔒 Built-in SSL certificates for .test domains
+- 🚀 First-class support for Hybridly and Laravel Horizon
+- 📬 Mail and object storage (Mailpit, MinIO) included
+- 🛠️ Graceful integration with modern development workflows
 
 ## Architecture
 

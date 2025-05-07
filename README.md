@@ -66,10 +66,12 @@ automatically do the following:
 - Configure a DNS resolver based on .test Top-Level Domain (TLD)
 - Creates the **sassfolding** and **sassfolding_testing** databases
 - Start the containers in detached mode
-- Run the migrations
-- Add autocomplete using Laravel Ide Helper
 
 You can always run ```make help``` in your console to see which commands are available.
+
+> [!TIP]
+> Don’t forget to run `make artisan cmd="migrate"` to run your migrations and `make composer cmd="autocomplete"`
+> to enable autocompletion based on your database structure.
 
 ## Usage
 
