@@ -55,7 +55,7 @@ To run this project, you need to have installed:
 - ```git clone https://github.com/Jean-Da-Rocha/sassfolding.git```
 - ```cd sassfolding && make install```
 
-Based on the ${COMPOSE_PROJECT_NAME}` variable (**sassfolding** in our case), the installation process will
+Based on the `${COMPOSE_PROJECT_NAME}` variable (**sassfolding** in our case), the installation process will
 automatically do the following:
 
 - Create the dedicated env files (.env and .env.testing), replacing dynamic variables in those files.
@@ -78,11 +78,11 @@ You can always run ```make help``` in your console to see which commands are ava
 
 Once the docker container are running, you can access the following URL:
 
-- https://app.sassfolding.test - The main application
-- https://horizon.sassfolding.test - The Laravel Horizon dashboard to monitor your Redis queues
-- https://mail.sassfolding.test - The Mailpit dashboard to receive your mails locally
-- https://minio.sassfolding.test - The MinIO dashboard to manage files, folders and buckets
-- https://traefik.sassfolding.test - The Traefik dashboard to view your entrypoints, routes etc.
+- **https://app.sassfolding.test** - The main application
+- **https://horizon.sassfolding.test** - The Laravel Horizon dashboard to monitor your Redis queues
+- **https://mail.sassfolding.test** - The Mailpit dashboard to receive your mails locally
+- **https://minio.sassfolding.test** - The MinIO dashboard to manage files, folders and buckets
+- **https://traefik.sassfolding.test** - The Traefik dashboard to view your entrypoints, routes etc.
 
 *Note: There is a middleware called **EnsureValidHorizonUri** to make sure Horizon dashboard and its API
 remain protected and scoped*

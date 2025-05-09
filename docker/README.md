@@ -1,6 +1,7 @@
 # Sassfolding Docker
 
 ## Table of contents
+
 - [Introduction](#introduction)
 - [Features](#features)
 - [Architecture](#architecture)
@@ -15,7 +16,8 @@
 > This Docker setup has only been tested on **ZorinOS 17** and is not **production-ready**.
 > Also, it only supports macOS and Linux based operating systems.
 
-This project provides a standardized and streamlined Docker-based development environment tailored for Laravel + Hybridly
+This project provides a standardized and streamlined Docker-based development environment tailored for Laravel +
+Hybridly
 applications. It includes SSL support for local .test domains, isolated container and volume naming per project, and a
 wide array of pre-configured services to boost development productivity out of the box.
 
@@ -51,11 +53,12 @@ challenges, which are discussed in the [advanced topics](#advanced-topics) secti
 
 ## Usage
 
-The whole docker project is based on the [COMPOSE_PROJECT_NAME](https://docs.docker.com/compose/how-tos/environment-variables/envvars/#compose_project_name)
+The whole docker project is based on
+the [COMPOSE_PROJECT_NAME](https://docs.docker.com/compose/how-tos/environment-variables/envvars/#compose_project_name)
 variable, which is understood by Docker.
 
 Basically, when you first pull the project and run the ```make install``` command, the script will use the slugified
-version of your working directory. For example, when you pull this project your containers, networks, volumes and URL
+version of your working directory. For example, when you pull this project, your containers, networks, volumes and URL
 will be based on the **sassfolding** working directory:
 
 - Container names: sassfolding-redis, sassfolding-hybridly, sassfolding-traefik...
@@ -80,13 +83,16 @@ in the **.env** file.
 ## Advanced topics
 
 In order to use clean **.test** domains locally like **app.sassfolding.test**, the stack relies on a lightweight
-DNS server: **DNSMasq**. This setup allows requests for any subdomain under .test to be resolved to the correct Docker IP
+DNS server: **DNSMasq**. This setup allows requests for any subdomain under .test to be resolved to the correct Docker
+IP
 address without editing your /etc/hosts file manually.
 
 ### How it works
 
-- The dnsmasq container listens on **53/udp** and **53/tcp** and handles requests to domains like ***.sassfolding.test**.
-- It is configured to resolve any **.test** domain to the static IP of the **Traefik** container (172.18.0.20 in our case).
+- The dnsmasq container listens on **53/udp** and **53/tcp** and handles requests to domains like ***.sassfolding.test
+  **.
+- It is configured to resolve any **.test** domain to the static IP of the **Traefik** container (172.18.0.20 in our
+  case).
 - For all other domains, it forwards requests to upstream resolvers like **8.8.8.8** and **1.1.1.1**.
 
 Here is the dnsmasq.conf used for the project:
@@ -101,6 +107,7 @@ server=8.8.4.4
 server=1.1.1.1
 server=1.0.0.1
 ```
+
 This means that *.test will resolve to 172.18.0.20, which is where Traefik is listening.
 
 ### DNS Integration on Host Machine
@@ -139,14 +146,15 @@ Manually editing **/etc/hosts** is tedious and static. This approach:
 While the setup is functional and stable for development, several technical caveats remain:
 
 - **Hardcoded IPs**: Static IPs are used for Traefik and DNSMasq, which may lead to conflicts or require adjustments on
-custom setups. Also, it makes it it makes this setup harder to adapt for production use.
+  custom setups. Also, it makes it this setup harder to adapt for production use.
 - **Non-optimized build size**: Some containers could be optimized in terms of size and how volumes are handled.
 - **PHP and Node in the same container**: because Hybridly executes Artisan commands via Vite using the
-[**vite-plugin-run**](https://hybridly.dev/configuration/vite#run), PHP and Node must coexist in the same container.
-This design violates the separation of concerns.
+  [**vite-plugin-run**](https://hybridly.dev/configuration/vite#run), PHP and Node must coexist in the same container.
+  This design violates the separation of concerns.
 - **No graceful shutdown for Horizon**: While the horizon container can be properly started, stopped or restarted on its
-own, it does not gracefully shut down when all services are restarted together (make restart) and it has to be killed by
-Docker. The **stop_grace_period** has been lowered to **2s** for horizon, but it's a bad practice per se.
+  own, it does not gracefully shut down when all services are restarted together (make restart) and it has to be killed
+  by
+  Docker. The **stop_grace_period** has been lowered to **2s** for horizon, but it's a bad practice per se.
 
 ## Acknowledgment
 
