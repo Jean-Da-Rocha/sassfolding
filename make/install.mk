@@ -56,7 +56,7 @@ else
 		echo "$(CYAN)[INFO]: Created /etc/systemd/resolved.conf.d directory.$(RESET)"; \
 	fi
 	@echo "[Resolve]" | sudo tee /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf > /dev/null
-	@echo "DNS=$(DNSMASQ_IP_ADDRESS)" | sudo tee -a /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf > /dev/null
+	@echo "DNS=$(DNSMASQ_IP_ADDRESS):5353" | sudo tee -a /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf > /dev/null
 	@echo "Domains=$(DNS_DOMAIN)" | sudo tee -a /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf > /dev/null
 	@if systemctl is-active --quiet systemd-resolved; then \
 		sudo systemctl restart systemd-resolved; \

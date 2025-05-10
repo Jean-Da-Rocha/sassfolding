@@ -12,7 +12,7 @@ ifndef VERBOSE
 endif
 
 DNS_DOMAIN=test
-DNSMASQ_IP_ADDRESS=172.18.0.10
+DNSMASQ_IP_ADDRESS=127.0.0.1
 
 ifneq ("$(wildcard .env)","")
   PROJECT_NAME := $(shell grep '^COMPOSE_PROJECT_NAME=' .env | cut -d'=' -f2)

@@ -1,18 +1,14 @@
 include:
-   - ./docker/dnsmasq/docker-compose.yml
-   - ./docker/horizon/docker-compose.yml
-   - ./docker/hybridly/docker-compose.yml
-   - ./docker/mailpit/docker-compose.yml
-   - ./docker/minio/docker-compose.yml
-   - ./docker/mysql/docker-compose.yml
-   - ./docker/nginx/docker-compose.yml
-   - ./docker/redis/docker-compose.yml
-   - ./docker/traefik/docker-compose.yml
+  - ./docker/dnsmasq/docker-compose.yml
+  - ./docker/horizon/docker-compose.yml
+  - ./docker/hybridly/docker-compose.yml
+  - ./docker/mailpit/docker-compose.yml
+  - ./docker/minio/docker-compose.yml
+  - ./docker/mysql/docker-compose.yml
+  - ./docker/nginx/docker-compose.yml
+  - ./docker/redis/docker-compose.yml
+  - ./docker/traefik/docker-compose.yml
 
 networks:
   laravel:
-    ipam:
-      config:
-        - subnet: "172.18.0.0/16"
-      driver: default
     name: project.${COMPOSE_PROJECT_NAME}
