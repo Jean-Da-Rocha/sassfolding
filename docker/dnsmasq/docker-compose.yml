@@ -6,14 +6,13 @@ services:
     healthcheck:
       retries: 3
       start_period: 10s
-      test: ["CMD", "getent", "hosts", "app.${COMPOSE_PROJECT_NAME}.test"]
+      test: [ "CMD", "getent", "hosts", "app.${COMPOSE_PROJECT_NAME}.test" ]
       timeout: 3s
     image: dockurr/dnsmasq:${DNSMASQ_VERSION}
     networks:
-      laravel:
-        ipv4_address: 172.18.0.10
+      - laravel
     ports:
-      - "${DNSMASQ_UDP_FORWARD_PORT}:53/udp"
-      - "${DNSMASQ_TCP_FORWARD_PORT}:53/tcp"
+      - "${DNSMASQ_FORWARD_PORT}:53/udp"
+      - "${DNSMASQ_FORWARD_PORT}:53/tcp"
     volumes:
       - ./config/dnsmasq.conf:/etc/dnsmasq.conf:ro

@@ -17,7 +17,7 @@ install: ## Install dependencies and set up the local and testing environments.
 .PHONY: restore-dns
 restore-dns: ## Restore the default DNS settings.
 	@echo "$(CYAN)[INFO]: Restoring default DNS...$(RESET)"
-ifeq ($(shell uname),Darwin)
+ifeq ($(UNIX_SHELL_NAME),Darwin)
 	@echo "$(CYAN)[INFO]: macOS: Restoring default DNS resolver for *.$(DNS_DOMAIN)...$(RESET)"
 	@if [ -f /etc/resolver/$(DNS_DOMAIN) ]; then \
 		sudo rm -f /etc/resolver/$(DNS_DOMAIN); \
@@ -25,7 +25,7 @@ ifeq ($(shell uname),Darwin)
 	else \
 		echo "$(YELLOW)[WARNING]: No macOS DNS resolver for *.$(DNS_DOMAIN) to remove.$(RESET)"; \
 	fi
-else
+else ifeq ($(UNIX_SHELL_NAME),Linux)
 	@echo "$(CYAN)[INFO]: Linux: Restoring default DNS resolver for *.$(DNS_DOMAIN)...$(RESET)"
 	@if [ -f /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf ]; then \
 		sudo rm /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf; \
@@ -34,12 +34,15 @@ else
 	else \
 		echo "$(YELLOW)[WARNING]: No systemd-resolved DNS override to remove.$(RESET)"; \
 	fi
+else
+	@echo "$(RED)[ERROR]: Unsupported OS '$(UNIX_SHELL_NAME)'. DNS setup aborted.$(RESET)"
+	@exit 1
 endif
 
 .PHONY: setup-dns
 setup-dns: ## Set up DNS resolver for the provided top level domain (TLD).
 	@echo "$(CYAN)[INFO]: Setting up DNS for *.$(DNS_DOMAIN)...$(RESET)"
-ifeq ($(shell uname),Darwin)
+ifeq ($(UNIX_SHELL_NAME),Darwin)
 	@echo "$(CYAN)[INFO]: macOS: Configuring DNS resolver for *.$(DNS_DOMAIN)...$(RESET)"
 	@if [ ! -f /etc/resolver/$(DNS_DOMAIN) ]; then \
 		echo "$(CYAN)[INFO]: Adding DNS resolver configuration...$(RESET)"; \
@@ -49,14 +52,14 @@ ifeq ($(shell uname),Darwin)
 	else \
 		echo "$(YELLOW)[WARNING]: DNS resolver for $(DNS_DOMAIN) already exists. Skipping...$(RESET)"; \
 	fi
-else
+else ifeq ($(UNIX_SHELL_NAME),Linux)
 	@echo "$(CYAN)[INFO]: Linux: Configuring DNS resolver for *.$(DNS_DOMAIN)...$(RESET)"
 	@if [ ! -d /etc/systemd/resolved.conf.d ]; then \
 		sudo mkdir -p /etc/systemd/resolved.conf.d; \
 		echo "$(CYAN)[INFO]: Created /etc/systemd/resolved.conf.d directory.$(RESET)"; \
 	fi
 	@echo "[Resolve]" | sudo tee /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf > /dev/null
-	@echo "DNS=$(DNSMASQ_IP_ADDRESS)" | sudo tee -a /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf > /dev/null
+	@echo "DNS=$(DNSMASQ_IP_ADDRESS):$(DNSMASQ_FORWARD_PORT)" | sudo tee -a /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf > /dev/null
 	@echo "Domains=$(DNS_DOMAIN)" | sudo tee -a /etc/systemd/resolved.conf.d/$(DNS_DOMAIN).conf > /dev/null
 	@if systemctl is-active --quiet systemd-resolved; then \
 		sudo systemctl restart systemd-resolved; \
@@ -64,4 +67,7 @@ else
 	else \
 		echo "$(YELLOW)[WARNING]: systemd-resolved is not running. Please start it manually.$(RESET)"; \
 	fi
+else
+	@echo "$(RED)[ERROR]: Unsupported OS '$(UNIX_SHELL_NAME)'. DNS setup aborted.$(RESET)"
+	@exit 1
 endif
