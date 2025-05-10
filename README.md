@@ -64,6 +64,7 @@ automatically do the following:
 - Build the docker images
 - Install pnpm & composer dependencies
 - Generate keys for both .env and .env.testing files
+- Define the **DNSMASQ_FORWARD_PORT** to use based on the operating system.
 - Configure a DNS resolver based on .test Top-Level Domain (TLD)
 - Creates the **sassfolding** and **sassfolding_testing** databases
 - Start the containers in detached mode

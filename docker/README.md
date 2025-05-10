@@ -117,18 +117,21 @@ To make your system aware of this custom DNS routing, the project provides two *
 - **make setup-dns** - Adds a custom resolver configuration pointing **.test** to the DNSMasq container.
 - **make restore-dns** - Removes this custom DNS configuration and restores your system’s default settings.
 
-These commands behave differently depending on your operating system:
+The behavior of these commands depends on your operating system and is determined by the **DNSMASQ_FORWARD_PORT**
+variable, which specifies the DNS port to be used and is read by Docker within the DNSMasq container.
 
 #### On macOS:
 
-- Adds a file at **/etc/resolver/test** that directs DNS queries for .test domains to the container's IP.
+- Adds a file at **/etc/resolver/test** that directs DNS queries for .test domains to the container's IP, listening on
+  port **53**, since macOS DNS resolver operates only on this port.
 - Uses standard macOS DNS resolver behavior (no systemd needed).
 
 #### On Linux:
 
 - Creates a file at **/etc/systemd/resolved.conf.d/test.conf**.
-- Instructs **systemd-resolved** to forward **.test** queries to the container.
-- Restarts the **systemd-resolved** service to apply changes
+- Instructs **systemd-resolved** to forward **.test** queries to the container, using port **5353** by default, which
+  avoids conflicts with the system's primary port **53**.
+- Restarts the **systemd-resolved** service to apply changes.
 
 > [!IMPORTANT]
 > **systemd-resolved** must be active. If it's not running, the script will warn you to start it manually.
@@ -145,8 +148,6 @@ Manually editing **/etc/hosts** is tedious and static. This approach:
 
 While the setup is functional and stable for development, several technical caveats remain:
 
-- **Hardcoded IPs**: Static IPs are used for Traefik and DNSMasq, which may lead to conflicts or require adjustments on
-  custom setups. Also, it makes it this setup harder to adapt for production use.
 - **Non-optimized build size**: Some containers could be optimized in terms of size and how volumes are handled.
 - **PHP and Node in the same container**: because Hybridly executes Artisan commands via Vite using the
   [**vite-plugin-run**](https://hybridly.dev/configuration/vite#run), PHP and Node must coexist in the same container.
