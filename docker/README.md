@@ -17,9 +17,8 @@
 > Also, it only supports macOS and Linux based operating systems.
 
 This project provides a standardized and streamlined Docker-based development environment tailored for Laravel +
-Hybridly
-applications. It includes SSL support for local .test domains, isolated container and volume naming per project, and a
-wide array of pre-configured services to boost development productivity out of the box.
+Hybridly applications. It includes SSL support for local .test domains, isolated container and volume naming per
+project, and a wide array of pre-configured services to boost development productivity out of the box.
 
 > [!NOTE]
 > This setup is not compatible with Laravel Sail as it follows a fundamentally different philosophy and architecture
@@ -61,10 +60,10 @@ Basically, when you first pull the project and run the ```make install``` comman
 version of your working directory. For example, when you pull this project, your containers, networks, volumes and URL
 will be based on the **sassfolding** working directory:
 
-- Container names: sassfolding-redis, sassfolding-hybridly, sassfolding-traefik...
+- Container names: sassfolding-redis, sassfolding-hybridly, sassfolding-traefik, etc.
 - Network name: project.sassfolding
-- Volume names: sassfolding-redis-data, sassfolding-mail-data etc.
-- URL: app.sassfolding.test, horizon.sassfolding.test, mail.sassfolding.test...
+- Volume names: sassfolding-redis-data, sassfolding-mail-data, etc.
+- URL: app.sassfolding.test, horizon.sassfolding.test, mail.sassfolding.test, etc.
 
 > [!NOTE]
 > If you want to use a different name than the current working directory, you can set the **OVERRIDE_PROJECT_NAME**
@@ -83,22 +82,20 @@ in the **.env** file.
 ## Advanced topics
 
 In order to use clean **.test** domains locally like **app.sassfolding.test**, the stack relies on a lightweight
-DNS server: **DNSMasq**. This setup allows requests for any subdomain under .test to be resolved to the correct Docker
-IP
-address without editing your /etc/hosts file manually.
+DNS server: **DNSMasq**. This setup allows requests for any subdomain under **.test** to be resolved to **localhost**
+(127.0.0.1), ensuring that the DNS queries are handled locally without manually editing your /etc/hosts file.
 
 ### How it works
 
 - The dnsmasq container listens on **53/udp** and **53/tcp** and handles requests to domains like ***.sassfolding.test
   **.
-- It is configured to resolve any **.test** domain to the static IP of the **Traefik** container (172.18.0.20 in our
-  case).
+- It is configured to resolve any **.test** domains to your localhost (127.0.0.1)
 - For all other domains, it forwards requests to upstream resolvers like **8.8.8.8** and **1.1.1.1**.
 
 Here is the dnsmasq.conf used for the project:
 
 ```apacheconf
-address=/test/172.18.0.20
+address=/test/127.0.0.1
 
 no-hosts
 
@@ -108,17 +105,15 @@ server=1.1.1.1
 server=1.0.0.1
 ```
 
-This means that *.test will resolve to 172.18.0.20, which is where Traefik is listening.
-
 ### DNS Integration on Host Machine
 
 To make your system aware of this custom DNS routing, the project provides two **Makefile** targets:
 
-- **make setup-dns** - Adds a custom resolver configuration pointing **.test** to the DNSMasq container.
+- **make setup-dns** - Adds a custom resolver configuration pointing **.test** to the **dnsmasq** container.
 - **make restore-dns** - Removes this custom DNS configuration and restores your system’s default settings.
 
 The behavior of these commands depends on your operating system and is determined by the **DNSMASQ_FORWARD_PORT**
-variable, which specifies the DNS port to be used and is read by Docker within the DNSMasq container.
+variable, which specifies the DNS port to be used and is read by Docker within the **dnsmasq** container.
 
 #### On macOS:
 

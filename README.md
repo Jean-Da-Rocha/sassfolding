@@ -58,13 +58,13 @@ To run this project, you need to have installed:
 Based on the `${COMPOSE_PROJECT_NAME}` variable (**sassfolding** in our case), the installation process will
 automatically do the following:
 
-- Create the dedicated env files (.env and .env.testing), replacing dynamic variables in those files.
+- Create the dedicated env files (.env and .env.testing), replacing dynamic variables in those files
 - Generate SSL certificates for HTTPS
 - Configure husky hooks
 - Build the docker images
 - Install pnpm & composer dependencies
 - Generate keys for both .env and .env.testing files
-- Define the **DNSMASQ_FORWARD_PORT** to use based on the operating system.
+- Define the **DNSMASQ_FORWARD_PORT** to use based on the operating system
 - Configure a DNS resolver based on .test Top-Level Domain (TLD)
 - Creates the **sassfolding** and **sassfolding_testing** databases
 - Start the containers in detached mode
