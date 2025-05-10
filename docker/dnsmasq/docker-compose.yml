@@ -12,7 +12,7 @@ services:
     networks:
       - laravel
     ports:
-      - "${DNSMASQ_UDP_FORWARD_PORT}:53/udp"
-      - "${DNSMASQ_TCP_FORWARD_PORT}:53/tcp"
+      - "${DNSMASQ_FORWARD_PORT}:53/udp"
+      - "${DNSMASQ_FORWARD_PORT}:53/tcp"
     volumes:
       - ./config/dnsmasq.conf:/etc/dnsmasq.conf:ro

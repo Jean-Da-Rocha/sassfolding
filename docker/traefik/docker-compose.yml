@@ -18,12 +18,8 @@ services:
     networks:
       laravel:
         aliases:
-          - "app.${COMPOSE_PROJECT_NAME}.test"
-          - "horizon.${COMPOSE_PROJECT_NAME}.test"
           - "storage.${COMPOSE_PROJECT_NAME}.test"
           - "minio.${COMPOSE_PROJECT_NAME}.test"
-          - "mail.${COMPOSE_PROJECT_NAME}.test"
-          - "traefik.${COMPOSE_PROJECT_NAME}.test"
     ports:
       - "${NGINX_FORWARD_PORT}:80"
       - "${NGINX_SSL_FORWARD_PORT}:443"

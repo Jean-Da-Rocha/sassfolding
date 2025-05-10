@@ -1,5 +1,6 @@
 # Empty by default. Set a value if you don't want to use the working directory as project name.
 OVERRIDE_PROJECT_NAME ?=
+UNIX_SHELL_NAME := $(shell uname -s)
 
 CYAN   := \033[0;36m
 GREEN  := \033[0;32m
@@ -11,8 +12,9 @@ ifndef VERBOSE
 	MAKEFLAGS += --no-print-directory
 endif
 
-DNS_DOMAIN=test
-DNSMASQ_IP_ADDRESS=127.0.0.1
+DNS_DOMAIN := test
+DNSMASQ_FORWARD_PORT := $(if $(findstring Darwin,$(UNIX_SHELL_NAME)),53,5353)
+DNSMASQ_IP_ADDRESS := 127.0.0.1
 
 ifneq ("$(wildcard .env)","")
   PROJECT_NAME := $(shell grep '^COMPOSE_PROJECT_NAME=' .env | cut -d'=' -f2)
@@ -23,7 +25,6 @@ ifeq ($(PROJECT_NAME),)
 endif
 
 PROJECT_NAME := $(if $(OVERRIDE_PROJECT_NAME), $(OVERRIDE_PROJECT_NAME), $(PROJECT_NAME))
-
 PROJECT_NAME_SLUG := $(shell echo $(PROJECT_NAME) | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -d -c 'a-z0-9-')
 
 DOCKER ?= @docker
