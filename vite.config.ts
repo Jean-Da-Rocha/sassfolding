@@ -26,6 +26,26 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/accordion',
+              imports: ['AccordionPassThroughOptions', 'AccordionProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/accordioncontent',
+              imports: ['AccordionContentPassThroughOptions', 'AccordionContentProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/accordionheader',
+              imports: ['AccordionHeaderPassThroughOptions', 'AccordionHeaderProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/accordionpanel',
+              imports: ['AccordionPanelPassThroughOptions', 'AccordionPanelProps'],
+              type: true,
+            },
+            {
               from: 'primevue/button',
               imports: ['ButtonPassThroughOptions', 'ButtonProps'],
               type: true,
