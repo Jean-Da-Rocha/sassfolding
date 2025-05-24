@@ -56,6 +56,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/avatargroup',
+              imports: ['AvatarGroupPassThroughOptions', 'AvatarGroupProps'],
+              type: true,
+            },
+            {
               from: 'primevue/button',
               imports: ['ButtonPassThroughOptions', 'ButtonProps'],
               type: true,
