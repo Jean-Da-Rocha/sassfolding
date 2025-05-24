@@ -51,6 +51,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/avatar',
+              imports: ['AvatarPassThroughOptions', 'AvatarProps'],
+              type: true,
+            },
+            {
               from: 'primevue/button',
               imports: ['ButtonPassThroughOptions', 'ButtonProps'],
               type: true,
