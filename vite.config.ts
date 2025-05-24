@@ -101,6 +101,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/dataview',
+              imports: ['DataViewPassThroughOptions', 'DataViewProps'],
+              type: true,
+            },
+            {
               from: 'primevue/fluid',
               imports: ['FluidProps'],
               type: true,
