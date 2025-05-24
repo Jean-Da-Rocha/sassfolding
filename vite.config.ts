@@ -46,6 +46,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/autocomplete',
+              imports: ['AutoCompletePassThroughOptions', 'AutoCompleteProps'],
+              type: true,
+            },
+            {
               from: 'primevue/button',
               imports: ['ButtonPassThroughOptions', 'ButtonProps'],
               type: true,
