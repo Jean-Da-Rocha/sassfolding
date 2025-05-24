@@ -86,6 +86,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/chip',
+              imports: ['ChipPassThroughOptions', 'ChipProps'],
+              type: true,
+            },
+            {
               from: 'primevue/checkbox',
               imports: ['CheckboxPassThroughOptions', 'CheckboxProps'],
               type: true,
