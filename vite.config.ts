@@ -26,13 +26,68 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/accordion',
+              imports: ['AccordionPassThroughOptions', 'AccordionProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/accordioncontent',
+              imports: ['AccordionContentPassThroughOptions', 'AccordionContentProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/accordionheader',
+              imports: ['AccordionHeaderPassThroughOptions', 'AccordionHeaderProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/accordionpanel',
+              imports: ['AccordionPanelPassThroughOptions', 'AccordionPanelProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/autocomplete',
+              imports: ['AutoCompletePassThroughOptions', 'AutoCompleteProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/avatar',
+              imports: ['AvatarPassThroughOptions', 'AvatarProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/avatargroup',
+              imports: ['AvatarGroupPassThroughOptions', 'AvatarGroupProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/badge',
+              imports: ['BadgePassThroughOptions', 'BadgeProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/breadcrumb',
+              imports: ['BreadcrumbPassThroughOptions', 'BreadcrumbProps'],
+              type: true,
+            },
+            {
               from: 'primevue/button',
               imports: ['ButtonPassThroughOptions', 'ButtonProps'],
               type: true,
             },
             {
+              from: 'primevue/buttongroup',
+              imports: ['ButtonGroupPassThroughOptions', 'ButtonGroupProps'],
+              type: true,
+            },
+            {
               from: 'primevue/card',
               imports: ['CardPassThroughOptions', 'CardProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/chip',
+              imports: ['ChipPassThroughOptions', 'ChipProps'],
               type: true,
             },
             {
@@ -43,6 +98,11 @@ export default defineConfig(({ mode }) => {
             {
               from: 'primevue/confirmdialog',
               imports: ['ConfirmDialogPassThroughOptions', 'ConfirmDialogProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/dataview',
+              imports: ['DataViewPassThroughOptions', 'DataViewProps'],
               type: true,
             },
             {
