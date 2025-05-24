@@ -76,6 +76,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/buttongroup',
+              imports: ['ButtonGroupPassThroughOptions', 'ButtonGroupProps'],
+              type: true,
+            },
+            {
               from: 'primevue/card',
               imports: ['CardPassThroughOptions', 'CardProps'],
               type: true,
