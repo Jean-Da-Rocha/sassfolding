@@ -66,6 +66,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/breadcrumb',
+              imports: ['BreadcrumbPassThroughOptions', 'BreadcrumbProps'],
+              type: true,
+            },
+            {
               from: 'primevue/button',
               imports: ['ButtonPassThroughOptions', 'ButtonProps'],
               type: true,
