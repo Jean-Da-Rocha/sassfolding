@@ -141,6 +141,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/inputotp',
+              imports: ['InputOtpPassThroughOptions', 'InputOtpProps'],
+              type: true,
+            },
+            {
               from: 'primevue/inputnumber',
               imports: ['InputNumberPassThroughOptions', 'InputNumberProps'],
               type: true,
