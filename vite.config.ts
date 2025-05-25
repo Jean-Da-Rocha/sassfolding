@@ -201,6 +201,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/progressbar',
+              imports: ['ProgressBarPassThroughOptions', 'ProgressBarProps'],
+              type: true,
+            },
+            {
               from: 'primevue/select',
               imports: ['SelectPassThroughOptions', 'SelectProps'],
               type: true,
