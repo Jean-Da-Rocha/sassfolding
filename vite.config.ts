@@ -156,6 +156,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/listbox',
+              imports: ['ListboxPassThroughOptions', 'ListboxProps'],
+              type: true,
+            },
+            {
               from: 'primevue/message',
               imports: ['MessagePassThroughOptions', 'MessageProps'],
               type: true,
