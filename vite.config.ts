@@ -136,6 +136,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/inputmask',
+              imports: ['InputMaskPassThroughOptions', 'InputMaskProps'],
+              type: true,
+            },
+            {
               from: 'primevue/inputtext',
               imports: ['InputTextPassThroughOptions', 'InputTextProps'],
               type: true,
