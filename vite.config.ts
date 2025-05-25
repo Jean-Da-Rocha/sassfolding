@@ -121,6 +121,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/fieldset',
+              imports: ['FieldsetPassThroughOptions', 'FieldsetProps'],
+              type: true,
+            },
+            {
               from: 'primevue/fluid',
               imports: ['FluidProps'],
               type: true,
