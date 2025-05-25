@@ -106,6 +106,16 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/dialog',
+              imports: ['DialogPassThroughOptions', 'DialogProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/divider',
+              imports: ['DividerPassThroughOptions', 'DividerProps'],
+              type: true,
+            },
+            {
               from: 'primevue/fluid',
               imports: ['FluidProps'],
               type: true,
