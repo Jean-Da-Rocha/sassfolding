@@ -116,6 +116,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/drawer',
+              imports: ['DrawerPassThroughOptions', 'DrawerProps'],
+              type: true,
+            },
+            {
               from: 'primevue/fluid',
               imports: ['FluidProps'],
               type: true,
