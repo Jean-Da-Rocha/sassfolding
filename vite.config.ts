@@ -131,6 +131,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/inplace',
+              imports: ['InplacePassThroughOptions', 'InplaceProps'],
+              type: true,
+            },
+            {
               from: 'primevue/inputtext',
               imports: ['InputTextPassThroughOptions', 'InputTextProps'],
               type: true,
