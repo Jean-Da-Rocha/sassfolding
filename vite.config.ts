@@ -171,6 +171,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/metergroup',
+              imports: ['MeterGroupPassThroughOptions', 'MeterGroupProps'],
+              type: true,
+            },
+            {
               from: 'primevue/paginator',
               imports: ['PaginatorPassThroughOptions', 'PaginatorProps', 'PageState'],
               type: true,
