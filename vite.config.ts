@@ -186,6 +186,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/panel',
+              imports: ['PanelPassThroughOptions', 'PanelProps'],
+              type: true,
+            },
+            {
               from: 'primevue/password',
               imports: ['PasswordPassThroughOptions', 'PasswordProps'],
               type: true,
