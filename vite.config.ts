@@ -176,6 +176,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/multiselect',
+              imports: ['MultiSelectPassThroughOptions', 'MultiSelectProps'],
+              type: true,
+            },
+            {
               from: 'primevue/paginator',
               imports: ['PaginatorPassThroughOptions', 'PaginatorProps', 'PageState'],
               type: true,
