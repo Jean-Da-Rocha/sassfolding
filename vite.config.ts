@@ -161,6 +161,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/menu',
+              imports: ['Menu', 'MenuPassThroughOptions', 'MenuProps'],
+              type: true,
+            },
+            {
               from: 'primevue/message',
               imports: ['MessagePassThroughOptions', 'MessageProps'],
               type: true,
