@@ -206,6 +206,16 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/radiobutton',
+              imports: ['RadioButtonPassThroughOptions', 'RadioButtonProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/rating',
+              imports: ['RatingPassThroughOptions', 'RatingProps'],
+              type: true,
+            },
+            {
               from: 'primevue/select',
               imports: ['SelectPassThroughOptions', 'SelectProps'],
               type: true,
