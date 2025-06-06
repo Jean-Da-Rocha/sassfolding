@@ -331,6 +331,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/tree',
+              imports: ['TreePassThroughOptions', 'TreeProps'],
+              type: true,
+            },
+            {
               from: '@/modules/menus/types/app-navigation-type',
               imports: ['AppNavigationType'],
               type: true,
