@@ -18,18 +18,18 @@ const theme = ref<RatingPassThroughOptions>({
     }"
     unstyled
   >
-    <template #onicon="{ toggleCallback }">
+    <template #onicon="slotProps">
       <HeroiconsStarSolid
-        class="h-4 w-4 text-base text-primary transition-colors duration-200" @click="toggleCallback"
+        class="h-4 w-4 text-base text-primary transition-colors duration-200" @click="(slotProps as any).toggleCallback"
       />
     </template>
-    <template #officon="{ toggleCallback }">
+    <template #officon="slotProps">
       <HeroiconsStar
         class="
           h-4 w-4 text-base text-surface-500 transition-colors duration-200
           dark:text-surface-400
         "
-        @click="toggleCallback"
+        @click="(slotProps as any).toggleCallback"
       />
     </template>
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
