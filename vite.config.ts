@@ -116,11 +116,6 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
-              from: 'primevue/drawer',
-              imports: ['DrawerPassThroughOptions', 'DrawerProps'],
-              type: true,
-            },
-            {
               from: 'primevue/fieldset',
               imports: ['FieldsetPassThroughOptions', 'FieldsetProps'],
               type: true,
