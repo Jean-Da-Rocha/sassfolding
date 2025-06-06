@@ -311,6 +311,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/toast',
+              imports: ['ToastPassThroughOptions', 'ToastProps'],
+              type: true,
+            },
+            {
               from: 'primevue/toggleswitch',
               imports: ['ToggleSwitchPassThroughOptions', 'ToggleSwitchProps'],
               type: true,
