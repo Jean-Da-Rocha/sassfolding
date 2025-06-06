@@ -271,6 +271,31 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/tabs',
+              imports: ['TabPassThroughOptions', 'TabProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/tablist',
+              imports: ['TabListPassThroughOptions', 'TabListProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/tabpanel',
+              imports: ['TabPanelPassThroughOptions', 'TabPanelProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/tabpanels',
+              imports: ['TabPanelsPassThroughOptions', 'TabPanelsProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/tabs',
+              imports: ['TabsPassThroughOptions', 'TabsProps'],
+              type: true,
+            },
+            {
               from: 'primevue/toggleswitch',
               imports: ['ToggleSwitchPassThroughOptions', 'ToggleSwitchProps'],
               type: true,
