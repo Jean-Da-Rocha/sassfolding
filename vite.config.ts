@@ -301,6 +301,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/textarea',
+              imports: ['TextareaPassThroughOptions', 'TextareaProps'],
+              type: true,
+            },
+            {
               from: 'primevue/toggleswitch',
               imports: ['ToggleSwitchPassThroughOptions', 'ToggleSwitchProps'],
               type: true,
