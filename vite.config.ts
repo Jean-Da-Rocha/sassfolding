@@ -231,6 +231,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/slider',
+              imports: ['SliderPassThroughOptions', 'SliderProps'],
+              type: true,
+            },
+            {
               from: 'primevue/splitter',
               imports: ['SplitterPassThroughOptions', 'SplitterProps'],
               type: true,
