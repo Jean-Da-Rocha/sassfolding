@@ -221,6 +221,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/selectbutton',
+              imports: ['SelectButtonPassThroughOptions', 'SelectButtonProps'],
+              type: true,
+            },
+            {
               from: 'primevue/toggleswitch',
               imports: ['ToggleSwitchPassThroughOptions', 'ToggleSwitchProps'],
               type: true,
