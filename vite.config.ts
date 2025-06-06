@@ -296,6 +296,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/tag',
+              imports: ['TagPassThroughOptions', 'TagProps'],
+              type: true,
+            },
+            {
               from: 'primevue/toggleswitch',
               imports: ['ToggleSwitchPassThroughOptions', 'ToggleSwitchProps'],
               type: true,
