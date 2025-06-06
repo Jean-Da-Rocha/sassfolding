@@ -236,8 +236,38 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/step',
+              imports: ['StepPassThroughOptions', 'StepProps'],
+              type: true,
+            },
+            {
               from: 'primevue/splitter',
               imports: ['SplitterPassThroughOptions', 'SplitterProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/steplist',
+              imports: ['StepListPassThroughOptions', 'StepListProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/stepitem',
+              imports: ['StepItemPassThroughOptions', 'StepItemProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/steppanel',
+              imports: ['StepPanelPassThroughOptions', 'StepPanelProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/steppanels',
+              imports: ['StepPanelsPassThroughOptions', 'StepPanelsProps'],
+              type: true,
+            },
+            {
+              from: 'primevue/stepper',
+              imports: ['StepperPassThroughOptions', 'StepperProps'],
               type: true,
             },
             {
