@@ -3,6 +3,9 @@ type Props = {} & /* @vue-ignore */ AccordionHeaderProps;
 
 defineProps<Props>();
 
+// Workaround to solve Volt UI bad typing.
+const parentInstance = inject('$parentInstance') as ComponentPublicInstance<{ active: boolean }>;
+
 const theme = ref<AccordionHeaderPassThroughOptions>({
   root: `cursor-pointer disabled:pointer-events-none disabled:opacity-60 flex items-center justify-between p-[1.125rem] font-semibold
         bg-surface-0 dark:bg-surface-900
@@ -22,8 +25,8 @@ const theme = ref<AccordionHeaderPassThroughOptions>({
     }"
     unstyled
   >
-    <template #toggleicon="{ active }">
-      <HeroiconsChevronDown v-if="active" />
+    <template #toggleicon>
+      <HeroiconsChevronDown v-if="parentInstance.active" />
       <HeroiconsChevronUp v-else />
     </template>
     <slot />
