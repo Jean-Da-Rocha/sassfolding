@@ -326,6 +326,11 @@ export default defineConfig(({ mode }) => {
               type: true,
             },
             {
+              from: 'primevue/toolbar',
+              imports: ['ToolbarPassThroughOptions', 'ToolbarProps'],
+              type: true,
+            },
+            {
               from: '@/modules/menus/types/app-navigation-type',
               imports: ['AppNavigationType'],
               type: true,
