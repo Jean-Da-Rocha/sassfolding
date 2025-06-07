@@ -15,10 +15,8 @@
         md:col-span-2 md:mt-0
       "
     >
-      <div class="xs:py-6">
-        <div class="grid gap-6">
-          <slot name="form" />
-        </div>
+      <div class="grid gap-6">
+        <slot name="form" />
       </div>
     </div>
   </div>

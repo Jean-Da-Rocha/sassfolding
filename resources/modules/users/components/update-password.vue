@@ -90,7 +90,7 @@ const form = useForm<{ current_password: string; password: string; password_conf
               <PrimeVuePassword
                 id="password_confirmation"
                 v-model="form.fields.password_confirmation"
-                :autocomplete="false"
+                autocomplete="off"
                 :feedback="false"
                 fluid
                 for="password_confirmation"

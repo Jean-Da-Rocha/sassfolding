@@ -5,6 +5,7 @@ import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 import hybridly from 'hybridly/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { defineConfig, loadEnv } from 'vite';
+import { primeVueVoltUiTypeImports } from './resources/modules/shared/components/volt/imports';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
@@ -25,66 +26,7 @@ export default defineConfig(({ mode }) => {
               imports: ['NavigationResponse', 'RouteName'],
               type: true,
             },
-            {
-              from: 'primevue/button',
-              imports: ['ButtonPassThroughOptions', 'ButtonProps'],
-              type: true,
-            },
-            {
-              from: 'primevue/card',
-              imports: ['CardPassThroughOptions', 'CardProps'],
-              type: true,
-            },
-            {
-              from: 'primevue/checkbox',
-              imports: ['CheckboxPassThroughOptions', 'CheckboxProps'],
-              type: true,
-            },
-            {
-              from: 'primevue/confirmdialog',
-              imports: ['ConfirmDialogPassThroughOptions', 'ConfirmDialogProps'],
-              type: true,
-            },
-            {
-              from: 'primevue/fluid',
-              imports: ['FluidProps'],
-              type: true,
-            },
-            {
-              from: 'primevue/inputtext',
-              imports: ['InputTextPassThroughOptions', 'InputTextProps'],
-              type: true,
-            },
-            {
-              from: 'primevue/message',
-              imports: ['MessagePassThroughOptions', 'MessageProps'],
-              type: true,
-            },
-            {
-              from: 'primevue/paginator',
-              imports: ['PaginatorPassThroughOptions', 'PaginatorProps', 'PageState'],
-              type: true,
-            },
-            {
-              from: 'primevue/password',
-              imports: ['PasswordPassThroughOptions', 'PasswordProps'],
-              type: true,
-            },
-            {
-              from: 'primevue/popover',
-              imports: ['Popover', 'PopoverPassThroughOptions', 'PopoverProps'],
-              type: true,
-            },
-            {
-              from: 'primevue/select',
-              imports: ['SelectPassThroughOptions', 'SelectProps'],
-              type: true,
-            },
-            {
-              from: 'primevue/toggleswitch',
-              imports: ['ToggleSwitchPassThroughOptions', 'ToggleSwitchProps'],
-              type: true,
-            },
+            ...primeVueVoltUiTypeImports,
             {
               from: '@/modules/menus/types/app-navigation-type',
               imports: ['AppNavigationType'],

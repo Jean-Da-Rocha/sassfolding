@@ -1,10 +1,10 @@
 import { antfu } from '@antfu/eslint-config';
-import eslintPluginReadableTailwind from 'eslint-plugin-readable-tailwind';
+import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss';
 import eslintParserVue from 'vue-eslint-parser';
 
 export default await antfu({
   plugins: {
-    'readable-tailwind': eslintPluginReadableTailwind,
+    'better-tailwindcss': eslintPluginBetterTailwindcss,
   },
   rules: {
     'curly': ['error', 'multi-line', 'consistent'],
@@ -16,10 +16,10 @@ export default await antfu({
     'style/brace-style': ['error', '1tbs'],
     'ts/no-unused-expressions': ['off'],
     'vue/attributes-order': ['error', { alphabetical: true }],
-    ...eslintPluginReadableTailwind.configs.error.rules,
+    ...eslintPluginBetterTailwindcss.configs['recommended-error'].rules,
   },
   settings: {
-    'readable-tailwind': {
+    'better-tailwindcss': {
       entryPoint: 'resources/application/tailwind.css',
     },
   },
