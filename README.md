@@ -91,8 +91,6 @@ remain protected and scoped*
 ## Known issues
 
 - The datatable module does not fully support Hybridly **inline** and **bulk** actions yet
-- There is an error (can't resolve reference #/definitions/max-line-length-requires-line-length-type from id
-  sort-imports) with the eslint-sort-import plugin, which will be fixed in a future update
 
 ## Contributing
 

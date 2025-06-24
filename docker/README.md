@@ -13,8 +13,13 @@
 ## Introduction
 
 > [!WARNING]
-> This Docker setup has only been tested on **ZorinOS 17** and is not **production-ready**.
-> Also, it only supports macOS and Linux based operating systems.
+> This Docker setup has only been tested on the following operating systems:
+> - **ZorinOS 17**
+> - **Ubuntu 24.2**
+> - **Sequoia 15.5**
+> 
+> It is not **production-ready** yet.
+> Also, it only supports **macOS** and **Linux** based operating systems.
 
 This project provides a standardized and streamlined Docker-based development environment tailored for Laravel +
 Hybridly applications. It includes SSL support for local .test domains, isolated container and volume naming per
@@ -87,8 +92,7 @@ DNS server: **DNSMasq**. This setup allows requests for any subdomain under **.t
 
 ### How it works
 
-- The dnsmasq container listens on **53/udp** and **53/tcp** and handles requests to domains like ***.sassfolding.test
-  **.
+- The dnsmasq container listens on **53/udp** and **53/tcp** and handles requests to domains like ***.sassfolding.test**.
 - It is configured to resolve any **.test** domains to your localhost (127.0.0.1)
 - For all other domains, it forwards requests to upstream resolvers like **8.8.8.8** and **1.1.1.1**.
 
