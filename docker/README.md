@@ -151,10 +151,6 @@ While the setup is functional and stable for development, several technical cave
 - **PHP and Node in the same container**: because Hybridly executes Artisan commands via Vite using the
   [**vite-plugin-run**](https://hybridly.dev/configuration/vite#run), PHP and Node must coexist in the same container.
   This design violates the separation of concerns.
-- **No graceful shutdown for Horizon**: While the horizon container can be properly started, stopped or restarted on its
-  own, it does not gracefully shut down when all services are restarted together (make restart) and it has to be killed
-  by
-  Docker. The **stop_grace_period** has been lowered to **2s** for horizon, but it's a bad practice per se.
 
 ## Acknowledgment
 
