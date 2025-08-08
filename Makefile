@@ -1,5 +1,12 @@
 # Empty by default. Set a value if you don't want to use the working directory as project name.
 OVERRIDE_PROJECT_NAME ?=
+
+PROJECT_DIRECTORY := $(CURDIR)
+export PROJECT_DIRECTORY
+
+DOCKER_DIRECTORY := /home/juanito/sassfolding-docker-local
+export DOCKER_DIRECTORY
+
 UNIX_SHELL_NAME := $(shell uname -s)
 
 CYAN   := \033[0;36m
@@ -33,12 +40,12 @@ HORIZON_EXEC ?= $(DOCKER_COMPOSE) exec -it horizon
 HYBRIDLY_EXEC ?= $(DOCKER_COMPOSE) exec -it hybridly
 HYBRIDLY_RUNNER ?= $(DOCKER_COMPOSE) run --rm --no-deps hybridly
 
--include make/backend.mk
--include make/certs.mk
--include make/docker.mk
--include make/environment.mk
--include make/frontend.mk
--include make/install.mk
+-include $(DOCKER_DIRECTORY)/make/backend.mk
+-include $(DOCKER_DIRECTORY)/make/certs.mk
+-include $(DOCKER_DIRECTORY)/make/docker.mk
+-include $(DOCKER_DIRECTORY)/make/environment.mk
+-include $(DOCKER_DIRECTORY)/make/frontend.mk
+-include $(DOCKER_DIRECTORY)/make/install.mk
 
 .PHONY: help
 help:

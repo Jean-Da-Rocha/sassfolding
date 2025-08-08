@@ -24,5 +24,6 @@ _ide_helper*
 .phpstorm.meta.php
 .pnpm-store
 
-docker/traefik/certs
-docker/hybridly/ssl
+# Docker folders and files will not be tracked as their purpose is only for local development.
+docker
+docker-compose.yml
