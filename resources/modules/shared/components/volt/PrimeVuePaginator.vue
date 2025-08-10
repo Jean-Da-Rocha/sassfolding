@@ -15,6 +15,11 @@ const theme = ref<PaginatorPassThroughOptions>({
   root: `flex items-center justify-center flex-wrap py-2 px-4 rounded-md gap-1
         bg-surface-0 dark:bg-surface-900 text-surface-700 dark:text-surface-0`,
 });
+
+type SelectChangeEvent = {
+  originalEvent: MouseEvent;
+  value: number;
+};
 </script>
 
 <template>
@@ -80,7 +85,7 @@ const theme = ref<PaginatorPassThroughOptions>({
           :options="perPageOptions"
           pt:dropdown="w-8"
           pt:label="pe-2"
-          @change="(event) => rowChangeCallback(event.value)"
+          @change="(event: SelectChangeEvent) => rowChangeCallback(event.value)"
         />
       </div>
     </template>
