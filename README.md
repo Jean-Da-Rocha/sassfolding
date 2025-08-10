@@ -49,8 +49,9 @@ To run this project, you need to have installed:
 ## Installation
 
 > [!IMPORTANT]
-> You should first read the documentation [here](docker/README.md) to get a good understanding on how docker powers this
-> project.
+> You should first read the documentation
+> [here](https://github.com/Jean-Da-Rocha/sassfolding-docker-local/blob/main/README.md) to get a good understanding on
+> how docker powers this project.
 
 - ```git clone https://github.com/Jean-Da-Rocha/sassfolding.git```
 - ```cd sassfolding && make install```
@@ -58,15 +59,15 @@ To run this project, you need to have installed:
 Based on the `${COMPOSE_PROJECT_NAME}` variable (**sassfolding** in our case), the installation process will
 automatically do the following:
 
-- Create the dedicated env files (.env and .env.testing), replacing dynamic variables in those files
+- Create the dedicated .env files, replacing the `${COMPOSE_PROJECT_NAME}` variable in those files
 - Generate SSL certificates for HTTPS
 - Configure husky hooks
 - Build the docker images
 - Install pnpm & composer dependencies
 - Generate keys for both .env and .env.testing files
-- Define the **DNSMASQ_FORWARD_PORT** to use based on the operating system
+- Define the **DNSMASQ_FORWARD_PORT** to use based on your operating system
 - Configure a DNS resolver based on .test Top-Level Domain (TLD)
-- Creates the **sassfolding** and **sassfolding_testing** databases
+- Create the **sassfolding** and **sassfolding_testing** databases
 - Start the containers in detached mode
 
 You can always run ```make help``` in your console to see which commands are available.
@@ -77,20 +78,24 @@ You can always run ```make help``` in your console to see which commands are ava
 
 ## Usage
 
-Once the docker container are running, you can access the following URL:
+Once the docker containers are running, you can access the following URL:
 
 - **https://app.sassfolding.test** - The main application
 - **https://horizon.sassfolding.test** - The Laravel Horizon dashboard to monitor your Redis queues
-- **https://mail.sassfolding.test** - The Mailpit dashboard to receive your mails locally
+- **https://mail.sassfolding.test** - The Mailpit dashboard to receive your emails locally
 - **https://minio.sassfolding.test** - The MinIO dashboard to manage files, folders and buckets
 - **https://traefik.sassfolding.test** - The Traefik dashboard to view your entrypoints, routes etc.
 
 *Note: There is a middleware called **EnsureValidHorizonUri** to make sure Horizon dashboard and its API
 remain protected and scoped*
 
+> [!CAUTION]
+> To make Laravel Horizon work with the docker setup, the HORIZON_PATH= variable in your .env should stay empty.
+
 ## Known issues
 
-- The datatable module does not fully support Hybridly **inline** and **bulk** actions yet
+- The datatable module does not fully support Hybridly [inline](https://hybridly.dev/guide/tables.html#inline-actions)
+and [bulk](https://hybridly.dev/guide/tables.html#bulk-actions) actions yet
 
 ## Contributing
 
