@@ -1,13 +1,13 @@
 include:
-  - ./docker/dnsmasq/docker-compose.yml
-  - ./docker/horizon/docker-compose.yml
-  - ./docker/hybridly/docker-compose.yml
-  - ./docker/mailpit/docker-compose.yml
-  - ./docker/minio/docker-compose.yml
-  - ./docker/mysql/docker-compose.yml
-  - ./docker/nginx/docker-compose.yml
-  - ./docker/redis/docker-compose.yml
-  - ./docker/traefik/docker-compose.yml
+  - ${DOCKER_DIRECTORY}/dnsmasq/docker-compose.yml
+  - ${DOCKER_DIRECTORY}/horizon/docker-compose.yml
+  - ${DOCKER_DIRECTORY}/hybridly/docker-compose.yml
+  - ${DOCKER_DIRECTORY}/mailpit/docker-compose.yml
+  - ${DOCKER_DIRECTORY}/minio/docker-compose.yml
+  - ${DOCKER_DIRECTORY}/mysql/docker-compose.yml
+  - ${DOCKER_DIRECTORY}/nginx/docker-compose.yml
+  - ${DOCKER_DIRECTORY}/redis/docker-compose.yml
+  - ${DOCKER_DIRECTORY}/traefik/docker-compose.yml
 
 networks:
   laravel:

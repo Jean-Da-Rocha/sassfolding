@@ -10,7 +10,7 @@ import { primeVueVoltUiTypeImports } from './resources/modules/shared/components
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
   const composeProjectName = env.VITE_APP_NAME;
-  const certPath = `docker/traefik/certs/${composeProjectName}`;
+  const certPath = `/certs/${composeProjectName}`;
 
   return {
     build: {
