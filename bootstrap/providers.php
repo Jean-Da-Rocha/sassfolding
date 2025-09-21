@@ -2,8 +2,14 @@
 
 declare(strict_types=1);
 
+use Modules\Core\Providers\AppServiceProvider;
+use Modules\Core\Providers\CoreServiceProvider;
+use Modules\Core\Providers\HorizonServiceProvider;
+use Modules\Users\Providers\UserServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\FortifyServiceProvider::class,
-    App\Providers\HorizonServiceProvider::class,
+    AppServiceProvider::class,
+    HorizonServiceProvider::class,
+    UserServiceProvider::class,
+    CoreServiceProvider::class,
 ];

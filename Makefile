@@ -10,7 +10,4 @@ export PROJECT_DIRECTORY
 export OVERRIDE_PROJECT_NAME
 
 # Variables to override
-
-PHP_VERSION := 8.3
-
 include $(DOCKER_DIRECTORY)/make/main.mk
