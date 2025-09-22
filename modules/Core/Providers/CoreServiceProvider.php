@@ -11,8 +11,10 @@ class CoreServiceProvider extends ServiceProvider
 {
     public function boot(Hybridly $hybridly): void
     {
-        if ($this->app->runningInConsole()) {
-            foreach (glob(__DIR__.'/../Console/Commands/*.php') as $file) {
+        $commandFiles = glob(__DIR__.'/../Console/Commands/*.php');
+
+        if (is_array($commandFiles)) {
+            foreach ($commandFiles as $file) {
                 $class = 'Modules\\Core\\Console\\Commands\\'.basename($file, '.php');
 
                 if (class_exists($class)) {
