@@ -40,8 +40,8 @@ return [
     'architecture' => [
         'load_default_module' => false,
         'eager_load_views' => true,
-        'root_directory' => 'resources',
-        'application_directory' => 'application',
+        'root_directory' => 'modules/Core/Resources',
+        'application_directory' => 'Application',
         'application_main' => Architecture::APPLICATION_MAIN,
         'root_view' => Architecture::ROOT_VIEW,
         'extensions' => ['vue', 'tsx'],
@@ -100,7 +100,6 @@ return [
         'namespace_transformer' => GlobalPropertiesNamespaceTransformer::class,
         'base_paths' => [
             base_path('modules'),
-            base_path('src'),
         ],
     ],
 ];
