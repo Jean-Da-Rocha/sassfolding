@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\Core\Providers;
 
 use Carbon\CarbonImmutable;
-use Hybridly\Hybridly;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Console\CliDumper;
 use Illuminate\Foundation\Http\HtmlDumper;
@@ -19,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(Hybridly $hybridly): void
+    public function boot(): void
     {
         URL::forceScheme('https');
 
@@ -29,8 +28,5 @@ class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict();
         Model::unguard();
         Date::use(CarbonImmutable::class);
-
-        $hybridly->loadModulesFrom(resource_path('modules'));
-        $hybridly->loadLayoutsFrom(resource_path('modules/shared'));
     }
 }

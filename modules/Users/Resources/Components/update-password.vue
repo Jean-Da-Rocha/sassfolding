@@ -1,27 +1,23 @@
 <script setup lang="ts">
-const form = useForm<{ email: string; name: string; password: string; password_confirmation: string }>({
+const form = useForm<{ current_password: string; password: string; password_confirmation: string }>({
   fields: {
-    email: '',
-    name: '',
+    current_password: '',
     password: '',
     password_confirmation: '',
   },
-  method: 'POST',
-  preserveState: true,
-  url: route('users.store'),
+  method: 'PUT',
+  url: route('user-password.update'),
 });
-
-useHead({ title: 'User Creation' });
 </script>
 
-<template layout="shared::main">
+<template layout="core::main">
   <FormSection>
     <template #title>
-      User Creation
+      Update Password
     </template>
 
     <template #description>
-      Create a new user for your application.
+      Ensure your account is using a long, random password to stay secure.
     </template>
 
     <template #form>
@@ -32,57 +28,40 @@ useHead({ title: 'User Creation' });
               space-y-4
               md:space-y-6
             "
-            @keydown.enter.prevent="form.submit"
             @submit.prevent="form.submit"
           >
             <div>
               <label
                 class="
-                  mb-2 block text-sm font-medium text-surface-700
+                  mb-2 block text-sm font-medium
                   dark:text-surface-0
                 "
-                for="email"
+                for="current_password"
               >
-                Email
+                Current password
               </label>
-              <PrimeVueInputText
-                id="email"
-                v-model="form.fields.email"
-                :autofocus="true"
+              <PrimeVuePassword
+                id="current_password"
+                v-model="form.fields.current_password"
+                :feedback="false"
                 fluid
-                :invalid="form.errors.hasOwnProperty('email')"
+                for="current_password"
+                :invalid="form.errors.hasOwnProperty('password')"
                 size="small"
-                type="text"
+                toggle-mask
               />
-              <div v-if="form.errors.email" class="mt-2 text-red-500">
-                {{ form.errors.email }}
+              <div v-if="form.errors.current_password" class="mt-2 text-red-500">
+                {{ form.errors.current_password }}
               </div>
             </div>
             <div>
               <label
                 class="
-                  mb-2 block text-sm font-medium text-surface-700
+                  mb-2 block text-sm font-medium
                   dark:text-surface-0
-                "
-                for="name"
+                " for="password"
               >
-                Name
-              </label>
-              <PrimeVueInputText
-                id="name"
-                v-model="form.fields.name"
-                fluid
-                :invalid="form.errors.hasOwnProperty('name')"
-                size="small"
-                type="text"
-              />
-              <div v-if="form.errors.name" class="mt-2 text-red-500">
-                {{ form.errors.name }}
-              </div>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium" for="password">
-                Password
+                New Password
               </label>
               <PrimeVuePassword
                 id="password"
@@ -99,16 +78,23 @@ useHead({ title: 'User Creation' });
               </div>
             </div>
             <div>
-              <label class="mb-2 block text-sm font-medium" for="password_confirmation">
+              <label
+                class="
+                  mb-2 block text-sm font-medium
+                  dark:text-surface-0
+                "
+                for="password_confirmation"
+              >
                 Confirm Password
               </label>
               <PrimeVuePassword
                 id="password_confirmation"
                 v-model="form.fields.password_confirmation"
+                autocomplete="off"
                 :feedback="false"
                 fluid
                 for="password_confirmation"
-                :invalid="form.errors.hasOwnProperty('password_confirmation')"
+                :invalid="form.errors.hasOwnProperty('password')"
                 size="small"
                 toggle-mask
               />
@@ -119,7 +105,23 @@ useHead({ title: 'User Creation' });
                 {{ form.errors.password_confirmation }}
               </div>
             </div>
-            <FormButtons :cancel-url="route('users.index')" :is-form-processing="form.processing" />
+            <div
+              class="
+                mt-6
+                md:text-right
+              "
+            >
+              <PrimeVuePrimaryButton
+                class="
+                  w-full
+                  md:w-auto
+                "
+                :disabled="form.processing"
+                label="Submit"
+                size="small"
+                type="submit"
+              />
+            </div>
           </form>
         </template>
       </PrimeVueCard>

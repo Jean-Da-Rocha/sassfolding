@@ -1,25 +1,19 @@
 <script setup lang="ts">
-const props = defineProps<{
-  email: string;
-  token: string;
-}>();
-
-const form = useForm<{ email: string; password: string; password_confirmation: string; token: string }>({
+const form = useForm<{ email: string; password: string; remember: boolean }>({
   fields: {
-    email: props.email,
+    email: '',
     password: '',
-    password_confirmation: '',
-    token: props.token,
+    remember: false,
   },
   method: 'POST',
-  url: route('password.update'),
+  url: route('login'),
 });
 
-useHead({ title: 'Reset Password' });
+useHead({ title: 'Sign In' });
 </script>
 
-<template layout="shared::guest">
-  <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
+<template layout="core::guest">
+  <PrimeVueCard class="mx-auto w-full max-w-[600px]">
     <template #content>
       <PrimeVueFluid>
         <form
@@ -61,29 +55,42 @@ useHead({ title: 'Reset Password' });
               {{ form.errors.password }}
             </div>
           </div>
-          <div>
-            <label class="mb-2 block text-sm font-medium" for="password_confirmation">
-              Confirm Password
-            </label>
-            <PrimeVuePassword
-              id="password_confirmation"
-              v-model="form.fields.password_confirmation"
-              :feedback="false"
-              for="password_confirmation"
-              :invalid="form.errors.hasOwnProperty('password_confirmation')"
-              toggle-mask
-            />
-            <div
-              v-if="form.errors.password_confirmation" class="mt-2 text-red-500"
-            >
-              {{ form.errors.password_confirmation }}
+          <div class="flex items-center justify-between">
+            <div class="flex items-start">
+              <div class="flex h-5 items-center">
+                <PrimeVueCheckbox id="remember" v-model="form.fields.remember" :binary="true" />
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="remember">Remember me</label>
+              </div>
             </div>
+            <RouterLink
+              class="
+                text-sm font-medium text-primary-500
+                hover:text-primary-700 hover:underline
+              "
+              :href="route('password.request')"
+            >
+              Forgot your password?
+            </RouterLink>
           </div>
           <div>
-            <PrimeVuePrimaryButton :disabled="form.processing" label="Reset Password" type="submit" />
+            <PrimeVuePrimaryButton :disabled="form.processing" label="Sign In" type="submit" />
           </div>
         </form>
       </PrimeVueFluid>
+      <div class="text-center">
+        Don't have an account?
+        <RouterLink
+          class="
+            text-primary-500
+            hover:text-primary-700
+          "
+          :href="route('register')"
+        >
+          Sign Up
+        </RouterLink>
+      </div>
     </template>
   </PrimeVueCard>
 </template>

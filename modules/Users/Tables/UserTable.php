@@ -10,8 +10,8 @@ use Hybridly\Refining\Sorts\Sort;
 use Hybridly\Tables\Columns\TextColumn;
 use Hybridly\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\Datatables\Concerns\HasPerPageLimitation;
 use Modules\Users\Models\User;
-use Modules\Users\Tables\Concerns\HasPerPageLimitation;
 
 final class UserTable extends Table
 {
@@ -19,7 +19,7 @@ final class UserTable extends Table
 
     protected string $model = User::class;
 
-    /** @return array<array-key, TextColumn> */
+    /** @return array<int, TextColumn> */
     protected function defineColumns(): array
     {
         return [
@@ -43,7 +43,7 @@ final class UserTable extends Table
         return User::query()->select(['id', 'email', 'email_verified_at', 'name', 'created_at']);
     }
 
-    /** @return array<array-key, Group|Sort> */
+    /** @return array<int, Group|Sort> */
     protected function defineRefiners(): array
     {
         return [

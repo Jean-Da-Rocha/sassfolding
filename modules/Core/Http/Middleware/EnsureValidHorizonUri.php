@@ -18,7 +18,7 @@ class EnsureValidHorizonUri
      */
     public function handle(Request $request, Closure $next): Response
     {
-        /** @var array<array-key, string> $uriPatterns */
+        /** @var array<int, string> $uriPatterns */
         $uriPatterns = config('horizon.uri_patterns');
         /** @var string $appName */
         $appName = config('app.name');

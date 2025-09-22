@@ -8,7 +8,7 @@ const form = useForm({
 useHead({ title: 'Verify Email' });
 </script>
 
-<template layout="shared::guest">
+<template layout="core::guest">
   <PrimeVueCard class="mx-auto w-full max-w-[600px]">
     <template #content>
       <AlertMessage />

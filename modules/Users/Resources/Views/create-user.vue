@@ -1,27 +1,27 @@
 <script setup lang="ts">
-const props = defineProps<{ user: App.Data.UserData }>();
-
-const form = useForm<{ email: string; name: string }>({
+const form = useForm<{ email: string; name: string; password: string; password_confirmation: string }>({
   fields: {
-    email: props.user.email,
-    name: props.user.name,
+    email: '',
+    name: '',
+    password: '',
+    password_confirmation: '',
   },
-  method: 'PUT',
+  method: 'POST',
   preserveState: true,
-  url: route('users.update', { user: props.user.id }),
+  url: route('users.store'),
 });
 
-useHead({ title: 'User Modification' });
+useHead({ title: 'User Creation' });
 </script>
 
-<template layout="shared::main">
+<template layout="core::main">
   <FormSection>
     <template #title>
-      User Modification
+      User Creation
     </template>
 
     <template #description>
-      Edit <span class="font-bold">{{ user.name }}</span> information.
+      Create a new user for your application.
     </template>
 
     <template #form>
@@ -78,6 +78,45 @@ useHead({ title: 'User Modification' });
               />
               <div v-if="form.errors.name" class="mt-2 text-red-500">
                 {{ form.errors.name }}
+              </div>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium" for="password">
+                Password
+              </label>
+              <PrimeVuePassword
+                id="password"
+                v-model="form.fields.password"
+                :feedback="false"
+                fluid
+                for="password"
+                :invalid="form.errors.hasOwnProperty('password')"
+                size="small"
+                toggle-mask
+              />
+              <div v-if="form.errors.password" class="mt-2 text-red-500">
+                {{ form.errors.password }}
+              </div>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium" for="password_confirmation">
+                Confirm Password
+              </label>
+              <PrimeVuePassword
+                id="password_confirmation"
+                v-model="form.fields.password_confirmation"
+                :feedback="false"
+                fluid
+                for="password_confirmation"
+                :invalid="form.errors.hasOwnProperty('password_confirmation')"
+                size="small"
+                toggle-mask
+              />
+              <div
+                v-if="form.errors.password_confirmation"
+                class="mt-2 text-red-500"
+              >
+                {{ form.errors.password_confirmation }}
               </div>
             </div>
             <FormButtons :cancel-url="route('users.index')" :is-form-processing="form.processing" />

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 const props = defineProps<{
-  users: Table<App.Data.UserData>;
+  users: Table<Modules.Users.Data.UserData>;
 }>();
 
 useHead({ title: 'Users Listing' });
 </script>
 
-<template layout="shared::main">
+<template layout="core::main">
   <Datatable :table="props.users">
     <template #create-button>
       <CreateButtonAction label="Create User" :route="route('users.create')" />

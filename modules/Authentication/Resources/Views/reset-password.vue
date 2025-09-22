@@ -1,21 +1,25 @@
 <script setup lang="ts">
-const form = useForm<{ email: string; name: string; password: string; password_confirmation: string }>({
+const props = defineProps<{
+  email: string;
+  token: string;
+}>();
+
+const form = useForm<{ email: string; password: string; password_confirmation: string; token: string }>({
   fields: {
-    email: '',
-    name: '',
+    email: props.email,
     password: '',
     password_confirmation: '',
+    token: props.token,
   },
   method: 'POST',
-  reset: true,
-  url: route('register'),
+  url: route('password.update'),
 });
 
-useHead({ title: 'Sign Up' });
+useHead({ title: 'Reset Password' });
 </script>
 
-<template layout="shared::guest">
-  <PrimeVueCard class="mx-auto w-full max-w-[600px]">
+<template layout="core::guest">
+  <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
     <template #content>
       <PrimeVueFluid>
         <form
@@ -26,21 +30,6 @@ useHead({ title: 'Sign Up' });
           "
           @submit.prevent="form.submit"
         >
-          <div>
-            <label class="mb-2 block text-sm font-medium" for="name">
-              Name
-            </label>
-            <PrimeVueInputText
-              id="name"
-              v-model="form.fields.name"
-              :autofocus="true"
-              :invalid="form.errors.hasOwnProperty('email')"
-              type="text"
-            />
-            <div v-if="form.errors.name" class="mt-2 text-red-500">
-              {{ form.errors.name }}
-            </div>
-          </div>
           <div>
             <label class="mb-2 block text-sm font-medium" for="email">
               Email
@@ -91,22 +80,10 @@ useHead({ title: 'Sign Up' });
             </div>
           </div>
           <div>
-            <PrimeVuePrimaryButton :disabled="form.processing" label="Register" type="submit" />
+            <PrimeVuePrimaryButton :disabled="form.processing" label="Reset Password" type="submit" />
           </div>
         </form>
       </PrimeVueFluid>
-      <div class="text-center">
-        Already have an account?
-        <RouterLink
-          class="
-            text-primary-500
-            hover:text-primary-700
-          "
-          :href="route('login')"
-        >
-          Sign In
-        </RouterLink>
-      </div>
     </template>
   </PrimeVueCard>
 </template>
