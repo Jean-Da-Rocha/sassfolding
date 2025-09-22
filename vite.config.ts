@@ -5,7 +5,7 @@ import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 import hybridly from 'hybridly/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { defineConfig, loadEnv } from 'vite';
-import { primeVueVoltUiTypeImports } from './resources/modules/shared/components/volt/imports';
+import { primeVueVoltUiTypeImports } from './modules/Core/Resources/Components/volt/imports';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       hybridly({
         autoImports: {
-          dirs: ['resources/modules/**'],
+          dirs: ['modules/**'],
           imports: [
             {
               from: 'hybridly',
@@ -28,14 +28,14 @@ export default defineConfig(({ mode }) => {
             },
             ...primeVueVoltUiTypeImports,
             {
-              from: '@/modules/menus/types/app-navigation-type',
+              from: 'modules/Menus/Types/app-navigation-type',
               imports: ['AppNavigationType'],
               type: true,
             },
           ],
         },
         vueComponents: {
-          dirs: ['resources/modules/**'],
+          dirs: ['modules/**'],
           resolvers: [
             IconsResolver({
               enabledCollections: ['heroicons'],

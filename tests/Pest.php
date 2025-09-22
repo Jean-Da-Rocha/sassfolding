@@ -14,11 +14,12 @@ declare(strict_types=1);
 */
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestCase;
 
 uses(
-    Tests\TestCase::class,
-    RefreshDatabase::class
-)->in('Feature', 'Unit');
+    TestCase::class,
+    RefreshDatabase::class,
+)->in(__DIR__.'/../modules/*/Tests');
 
 /*
 |--------------------------------------------------------------------------
