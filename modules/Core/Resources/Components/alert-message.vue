@@ -1,12 +1,12 @@
 <script setup lang="ts">
-export type FlashMessageReturnType = Pick<App.Data.FlashMessageData, 'message' | 'severity'> & {
+export type FlashMessageReturnType = Pick<Modules.Core.Data.FlashMessageData, 'message' | 'severity'> & {
   key: `${string}-${string}-${string}-${string}-${string}`;
 };
 
 function useFlashMessages(): FlashMessageReturnType[] {
   const { flash } = useProperties();
 
-  return flash?.messages.map((flashMessage: App.Data.FlashMessageData) => ({
+  return flash?.messages.map((flashMessage: Modules.Core.Data.FlashMessageData) => ({
     key: crypto.randomUUID(),
     message: flashMessage.message,
     severity: flashMessage.severity,
