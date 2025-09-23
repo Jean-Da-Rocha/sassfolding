@@ -14,6 +14,8 @@ use Laravel\Fortify\Fortify;
 
 class AuthenticationServiceProvider extends ServiceProvider
 {
+    const string MODULE_NAMESPACE = 'authentication';
+
     public function boot(Hybridly $hybridly): void
     {
         Fortify::verifyEmailView(fn () => hybridly('authentication::verify-email'));
@@ -35,6 +37,6 @@ class AuthenticationServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($throttleKey);
         });
 
-        $hybridly->loadViewsFrom(base_path('modules/Authentication/Resources/Views'), 'authentication');
+        $hybridly->loadViewsFrom(base_path('modules/Authentication/Resources/Views'), self::MODULE_NAMESPACE);
     }
 }

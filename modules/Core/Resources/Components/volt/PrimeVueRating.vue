@@ -20,13 +20,13 @@ const theme = ref<RatingPassThroughOptions>({
   >
     <template #onicon="slotProps">
       <HeroiconsStarSolid
-        class="h-4 w-4 text-base text-primary transition-colors duration-200" @click="(slotProps as any).toggleCallback"
+        class="text-primary h-4 w-4 text-base transition-colors duration-200" @click="(slotProps as any).toggleCallback"
       />
     </template>
     <template #officon="slotProps">
       <HeroiconsStar
         class="
-          h-4 w-4 text-base text-surface-500 transition-colors duration-200
+          text-surface-500 h-4 w-4 text-base transition-colors duration-200
           dark:text-surface-400
         "
         @click="(slotProps as any).toggleCallback"

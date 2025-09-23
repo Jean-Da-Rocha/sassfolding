@@ -21,10 +21,10 @@ function handleNavigation(): Promise<NavigationResponse> {
     <RouterLink
       as="button"
       class="
-        relative flex h-16 w-16 cursor-pointer flex-col items-center
-        justify-center
         hover:text-primary-600
         dark:hover:text-primary-300
+        relative flex h-16 w-16 cursor-pointer flex-col items-center
+        justify-center
       "
       :class="[
         (menuItem.routeName && menuItem.routeName === current)

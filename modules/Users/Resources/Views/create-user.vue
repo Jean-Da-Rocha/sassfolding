@@ -38,7 +38,7 @@ useHead({ title: 'User Creation' });
             <div>
               <label
                 class="
-                  mb-2 block text-sm font-medium text-surface-700
+                  text-surface-700 mb-2 block text-sm font-medium
                   dark:text-surface-0
                 "
                 for="email"
@@ -61,7 +61,7 @@ useHead({ title: 'User Creation' });
             <div>
               <label
                 class="
-                  mb-2 block text-sm font-medium text-surface-700
+                  text-surface-700 mb-2 block text-sm font-medium
                   dark:text-surface-0
                 "
                 for="name"

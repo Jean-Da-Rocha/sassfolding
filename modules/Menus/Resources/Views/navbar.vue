@@ -13,11 +13,11 @@ const toggleProfileOverlay = (event: Event) => profileOverlay.value?.toggle(even
 <template>
   <nav
     class="
-      top-0 z-10 flex items-center gap-x-6 border-b border-surface-300
-      bg-surface-0 p-4 px-4
+      border-surface-300 bg-surface-0 top-0 z-10 flex items-center gap-x-6
+      border-b p-4 px-4
+      dark:border-surface-700 dark:bg-surface-900
       sm:px-6
       lg:px-8
-      dark:border-surface-700 dark:bg-surface-900
     "
   >
     <button
@@ -30,33 +30,33 @@ const toggleProfileOverlay = (event: Event) => profileOverlay.value?.toggle(even
     >
       <HeroiconsBars3
         class="
-          size-6 text-surface-700
-          hover:cursor-pointer
+          text-surface-700 size-6
           dark:text-surface-0
+          hover:cursor-pointer
         "
       />
     </button>
     <div class="ml-auto flex items-center gap-6">
       <HeroiconsInbox
         class="
-          size-6 text-surface-700
-          hover:cursor-pointer hover:text-primary
+          text-surface-700 size-6
+          hover:text-primary hover:cursor-pointer
           dark:text-surface-0
         "
       />
       <HeroiconsBell
         class="
-          size-6 text-surface-700
-          hover:cursor-pointer hover:text-primary
+          text-surface-700 size-6
+          hover:text-primary hover:cursor-pointer
           dark:text-surface-0
         "
       />
       <span
         class="
-          flex h-8 w-8 items-center justify-center rounded-full bg-primary
-          text-surface-0
-          hover:cursor-pointer
+          bg-primary text-surface-0 flex h-8 w-8 items-center justify-center
+          rounded-full
           dark:text-surface-700
+          hover:cursor-pointer
         "
         @click="toggleProfileOverlay"
       >
@@ -68,9 +68,9 @@ const toggleProfileOverlay = (event: Event) => profileOverlay.value?.toggle(even
       <div class="w-32">
         <RouterLink
           class="
-            flex items-center rounded-md p-3 text-xs
             hover:bg-surface-100
             dark:text-surface-0 dark:hover:bg-surface-700
+            flex items-center rounded-md p-3 text-xs
           "
           :href="route('profile')"
           method="get"
@@ -81,9 +81,9 @@ const toggleProfileOverlay = (event: Event) => profileOverlay.value?.toggle(even
         </RouterLink>
         <RouterLink
           class="
-            flex items-center rounded-md p-3 text-xs
             hover:bg-surface-100
             dark:text-surface-0 dark:hover:bg-surface-700
+            flex items-center rounded-md p-3 text-xs
           "
           :href="route('logout')"
           method="post"

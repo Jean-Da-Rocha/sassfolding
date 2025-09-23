@@ -1,7 +1,7 @@
 <template>
   <tr
     class="
-      divide-x divide-surface-300
+      divide-surface-300 divide-x
       dark:divide-surface-700
     "
     role="row"

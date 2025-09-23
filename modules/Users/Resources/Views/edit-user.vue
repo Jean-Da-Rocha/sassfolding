@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{ user: App.Data.UserData }>();
+const props = defineProps<{ user: Modules.Users.Data.UserData }>();
 
 const form = useForm<{ email: string; name: string }>({
   fields: {
@@ -38,7 +38,7 @@ useHead({ title: 'User Modification' });
             <div>
               <label
                 class="
-                  mb-2 block text-sm font-medium text-surface-700
+                  text-surface-700 mb-2 block text-sm font-medium
                   dark:text-surface-0
                 "
                 for="email"
@@ -61,7 +61,7 @@ useHead({ title: 'User Modification' });
             <div>
               <label
                 class="
-                  mb-2 block text-sm font-medium text-surface-700
+                  text-surface-700 mb-2 block text-sm font-medium
                   dark:text-surface-0
                 "
                 for="name"
