@@ -28,16 +28,16 @@
         </div>
         <div
           class="
-            mt-5 border-r border-b border-l border-surface-300
+            border-surface-300 mt-5 border-r border-b border-l
+            dark:border-surface-700
             sm:mx-0
             lg:border
-            dark:border-surface-700
           "
         >
           <div class="overflow-x-auto">
             <table
               class="
-                w-full table-auto divide-y divide-surface-300
+                divide-surface-300 w-full table-auto divide-y
                 dark:divide-surface-700
               "
             >

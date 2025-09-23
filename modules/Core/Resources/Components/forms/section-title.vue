@@ -8,8 +8,8 @@
     <div class="lg:px-4">
       <h3
         class="
-          text-lg font-medium
           dark:text-surface-0
+          text-lg font-medium
         "
       >
         <slot name="title" />
@@ -17,8 +17,8 @@
 
       <p
         class="
-          mt-1 text-sm
           dark:text-surface-0
+          mt-1 text-sm
         "
       >
         <slot name="description" />

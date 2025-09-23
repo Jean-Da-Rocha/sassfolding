@@ -33,8 +33,8 @@ const form = useForm<{ current_password: string; password: string; password_conf
             <div>
               <label
                 class="
-                  mb-2 block text-sm font-medium
                   dark:text-surface-0
+                  mb-2 block text-sm font-medium
                 "
                 for="current_password"
               >
@@ -57,8 +57,8 @@ const form = useForm<{ current_password: string; password: string; password_conf
             <div>
               <label
                 class="
-                  mb-2 block text-sm font-medium
                   dark:text-surface-0
+                  mb-2 block text-sm font-medium
                 " for="password"
               >
                 New Password
@@ -80,8 +80,8 @@ const form = useForm<{ current_password: string; password: string; password_conf
             <div>
               <label
                 class="
-                  mb-2 block text-sm font-medium
                   dark:text-surface-0
+                  mb-2 block text-sm font-medium
                 "
                 for="password_confirmation"
               >

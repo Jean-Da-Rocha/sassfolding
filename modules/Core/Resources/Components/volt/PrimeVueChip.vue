@@ -25,9 +25,9 @@ const theme = ref<ChipPassThroughOptions>({
     <template #removeicon="{ removeCallback, keydownCallback }">
       <HeroiconsXCircle
         class="
-          h-4 w-4 cursor-pointer rounded-full text-base text-surface-800
-          focus-visible:outline focus-visible:outline-offset-2
-          focus-visible:outline-primary
+          text-surface-800 h-4 w-4 cursor-pointer rounded-full text-base
+          focus-visible:outline-primary focus-visible:outline
+          focus-visible:outline-offset-2
           dark:text-surface-0
         "
         @click="removeCallback"

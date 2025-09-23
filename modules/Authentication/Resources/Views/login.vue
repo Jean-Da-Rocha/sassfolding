@@ -66,7 +66,7 @@ useHead({ title: 'Sign In' });
             </div>
             <RouterLink
               class="
-                text-sm font-medium text-primary-500
+                text-primary-500 text-sm font-medium
                 hover:text-primary-700 hover:underline
               "
               :href="route('password.request')"

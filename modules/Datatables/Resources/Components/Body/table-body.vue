@@ -1,7 +1,7 @@
 <template>
   <tbody
     class="
-      divide-y divide-surface-300
+      divide-surface-300 divide-y
       dark:divide-surface-700 dark:bg-surface-900
     "
   >

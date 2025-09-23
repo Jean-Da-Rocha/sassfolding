@@ -64,7 +64,7 @@ function tableHasActions(): boolean {
             <span
               v-if="column.isSortable"
               class="
-                ml-2 flex-none text-surface-700
+                text-surface-700 ml-2 flex-none
                 dark:text-surface-0
               "
               @click="column.toggleSort({ direction: column.isSorting('asc') ? 'desc' : 'asc' })"

@@ -83,7 +83,7 @@ const theme = ref<SelectPassThroughOptions>({
       <HeroiconsMagnifyingGlass class="text-surface-400" />
     </template>
     <template #clearicon>
-      <HeroiconsXMark class="absolute end-10 top-1/2 -mt-2 text-surface-400" />
+      <HeroiconsXMark class="text-surface-400 absolute end-10 top-1/2 -mt-2" />
     </template>
     <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
       <slot :name="slotName" v-bind="slotProps ?? {}" />

@@ -1,8 +1,8 @@
 <template>
   <tr
     class="
+      lg:divide-surface-300 lg:table-row lg:divide-x lg:dark:divide-surface-700
       block text-right
-      lg:table-row lg:divide-x lg:divide-surface-300 lg:dark:divide-surface-700
     "
     role="row"
   >
