@@ -9,6 +9,8 @@ use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
 {
+    public const string MODULE_NAMESPACE = 'core';
+
     public function boot(Hybridly $hybridly): void
     {
         $commandFiles = glob(__DIR__.'/../Console/Commands/*.php');
@@ -25,7 +27,7 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__.'/../Routes/web.php');
 
-        $hybridly->loadComponentsFrom(base_path('modules/Core/Resources/Components'), 'core');
-        $hybridly->loadLayoutsFrom(base_path('modules/Core/Resources/Layouts'), 'core');
+        $hybridly->loadComponentsFrom(base_path('modules/Core/Resources/Components'), self::MODULE_NAMESPACE);
+        $hybridly->loadLayoutsFrom(base_path('modules/Core/Resources/Layouts'), self::MODULE_NAMESPACE);
     }
 }

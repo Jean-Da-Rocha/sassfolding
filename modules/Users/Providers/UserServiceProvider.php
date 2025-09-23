@@ -20,6 +20,8 @@ use Modules\Users\Http\Responses\SuccessfulPasswordResetLinkRequestResponse;
 
 class UserServiceProvider extends ServiceProvider
 {
+    const string MODULE_NAMESPACE = 'users';
+
     public function boot(Hybridly $hybridly): void
     {
         $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
@@ -44,7 +46,7 @@ class UserServiceProvider extends ServiceProvider
 
         $this->app->register(RouteServiceProvider::class);
 
-        $hybridly->loadComponentsFrom(base_path('modules/Users/Resources/Components'), 'users');
-        $hybridly->loadViewsFrom(base_path('modules/Users/Resources/Views'), 'users');
+        $hybridly->loadComponentsFrom(base_path('modules/Users/Resources/Components'), self::MODULE_NAMESPACE);
+        $hybridly->loadViewsFrom(base_path('modules/Users/Resources/Views'), self::MODULE_NAMESPACE);
     }
 }
