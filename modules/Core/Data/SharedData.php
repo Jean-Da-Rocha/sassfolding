@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Core\Data;
 
+use Modules\Users\Data\UserData;
 use Spatie\LaravelData\Data;
 
 final class SharedData extends Data
@@ -12,7 +13,7 @@ final class SharedData extends Data
     public function __construct(
         public readonly ?FlashData $flash,
         public readonly RouteData $route,
-        public readonly SecurityData $security,
+        public readonly ?UserData $user,
         public readonly array $errors = [],
     ) {}
 }

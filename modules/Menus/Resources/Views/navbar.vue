@@ -3,7 +3,7 @@ const emit = defineEmits<{
   (event: 'toggleSidebar'): void;
 }>();
 
-const { user } = useSecurity();
+const { user } = useAuth();
 
 const profileOverlay = useTemplateRef<InstanceType<typeof Popover>>('profileOverlay');
 

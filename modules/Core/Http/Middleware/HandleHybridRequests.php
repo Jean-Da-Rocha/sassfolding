@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Route;
 use Modules\Core\Data\FlashData;
 use Modules\Core\Data\FlashMessageData;
 use Modules\Core\Data\RouteData;
-use Modules\Core\Data\SecurityData;
 use Modules\Core\Data\SharedData;
 use Modules\Core\Enums\FlashMessage;
 use Modules\Users\Data\UserData;
@@ -46,9 +45,7 @@ class HandleHybridRequests extends Middleware
                 ],
             ),
             route: new RouteData(name: Route::currentRouteName()),
-            security: new SecurityData(
-                user: UserData::optional(auth()->user()),
-            ),
+            user: UserData::optional(auth()->user()),
             // The errors array is used to type hint the 'error' property on the front-end.
             // This property will be overwritten by Hybridly automatically.
             errors: [],
