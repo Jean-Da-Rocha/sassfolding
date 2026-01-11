@@ -25,7 +25,7 @@ find useful ideas or inspiration within it.
 
 ## Features
 
-- 🐳 Docker-first development setup (Laravel, Hybridly, Node, Redis, Mailpit, MinIO, Traefik)
+- 🐳 Docker-first development setup (Laravel, Hybridly, Node, Redis, Mailpit, RustFS, Traefik)
 - ⚡ One-liner setup via **make install**
 - 🧪 Preconfigured **.env** and **.env.testing** environments
 - 🔏 SSL certificates with **mkcert** + **.test** TLD with local DNS resolver
@@ -83,7 +83,7 @@ Once the docker containers are running, you can access the following URL:
 - **https://app.sassfolding.test** - The main application
 - **https://horizon.sassfolding.test** - The Laravel Horizon dashboard to monitor your Redis queues
 - **https://mail.sassfolding.test** - The Mailpit dashboard to receive your emails locally
-- **https://minio.sassfolding.test** - The MinIO dashboard to manage files, folders and buckets
+- **https://rustfs.sassfolding.test** - The RustFS dashboard to manage files, folders and buckets
 - **https://traefik.sassfolding.test** - The Traefik dashboard to view your entrypoints, routes etc.
 
 *Note: There is a middleware called **EnsureValidHorizonUri** to make sure Horizon dashboard and its API
@@ -95,7 +95,7 @@ remain protected and scoped*
 ## Known issues
 
 - The datatable module does not fully support Hybridly [inline](https://hybridly.dev/guide/tables.html#inline-actions)
-and [bulk](https://hybridly.dev/guide/tables.html#bulk-actions) actions yet
+  and [bulk](https://hybridly.dev/guide/tables.html#bulk-actions) actions yet
 
 ## Contributing
 

@@ -3,10 +3,10 @@ include:
   - ${DOCKER_DIRECTORY}/horizon/docker-compose.yml
   - ${DOCKER_DIRECTORY}/hybridly/docker-compose.yml
   - ${DOCKER_DIRECTORY}/mailpit/docker-compose.yml
-#  - ${DOCKER_DIRECTORY}/minio/docker-compose.yml
   - ${DOCKER_DIRECTORY}/mysql/docker-compose.yml
   - ${DOCKER_DIRECTORY}/nginx/docker-compose.yml
   - ${DOCKER_DIRECTORY}/redis/docker-compose.yml
+  - ${DOCKER_DIRECTORY}/rustfs/docker-compose.yml
   - ${DOCKER_DIRECTORY}/traefik/docker-compose.yml
 
 networks:
