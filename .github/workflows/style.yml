@@ -53,6 +53,12 @@ jobs:
       - name: Create PHPStan cache directory
         run: mkdir -p storage/phpstan
 
+      - name: Create IDE helper stub for PHPStan
+        run: |
+          if [ ! -f _ide_helper_models.php ]; then
+            echo "<?php" > _ide_helper_models.php
+          fi
+
       - name: Cache PHPStan results
         uses: actions/cache@v4
         with:
@@ -98,6 +104,9 @@ jobs:
 
       - name: Run ESLint
         run: pnpm run lint
+
+      - name: Build frontend assets
+        run: pnpm run build
 
       - name: Run vue-tsc
         run: pnpm run vue-tsc
