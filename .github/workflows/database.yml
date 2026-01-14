@@ -1,0 +1,92 @@
+name: Database
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PHP_VERSION: '8.5'
+  COMPOSER_VERSION: '2.9.2'
+
+jobs:
+  migrations:
+    name: Validate Migrations
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:9.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: testing_db
+          MYSQL_USER: laravel
+          MYSQL_PASSWORD: hybridly
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -phybridly"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: bcmath, gd, mbstring, pcntl, pdo_mysql, zip, redis
+          tools: composer:${{ env.COMPOSER_VERSION }}
+          coverage: none
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress --optimize-autoloader
+
+      - name: Setup environment
+        run: |
+          cp .env.testing.example .env.testing
+          php artisan key:generate --env=testing
+
+      - name: Configure database connection
+        run: |
+          sed -i 's/DB_HOST=mysql/DB_HOST=127.0.0.1/' .env.testing
+          sed -i 's/DB_DATABASE=.*_testing/DB_DATABASE=testing_db/' .env.testing
+
+      - name: Wait for MySQL
+        run: |
+          while ! mysqladmin ping -h"127.0.0.1" -ularavel -phybridly --silent; do
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
+
+      - name: Run migrations
+        run: php artisan migrate --env=testing --force --verbose
+
+      - name: Test migration rollback
+        run: php artisan migrate:rollback --env=testing --force --verbose
+
+      - name: Re-run migrations
+        run: php artisan migrate --env=testing --force --verbose
+
+      - name: Verify database schema
+        run: php artisan migrate:status --env=testing
