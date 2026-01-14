@@ -85,9 +85,9 @@ jobs:
           cp .env.testing.example .env.testing
           sed -i 's/\${COMPOSE_PROJECT_NAME}/${{ github.event.repository.name }}/g' .env.testing
           sed -i 's/APP_URL=.*/APP_URL=http:\/\/localhost/' .env.testing
-          sed -i 's/DB_HOST=mysql/DB_HOST=127.0.0.1/' .env.testing
-          sed -i 's/DB_DATABASE=.*_testing/DB_DATABASE=testing_db/' .env.testing
-          sed -i 's/REDIS_HOST=redis/REDIS_HOST=127.0.0.1/' .env.testing
+          sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env.testing
+          sed -i 's/DB_DATABASE=.*/DB_DATABASE=testing_db/' .env.testing
+          sed -i 's/REDIS_HOST=.*/REDIS_HOST=127.0.0.1/' .env.testing
           php artisan key:generate --env=testing
 
       - name: Wait for MySQL
