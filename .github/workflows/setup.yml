@@ -13,7 +13,6 @@ concurrency:
 env:
   PHP_VERSION: '8.5'
   NODE_VERSION: '24'
-  PNPM_VERSION: '10.25.0'
   COMPOSER_VERSION: '2.9.2'
 
 jobs:
@@ -40,8 +39,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
 
       - name: Get Composer cache directory
         id: composer-cache
