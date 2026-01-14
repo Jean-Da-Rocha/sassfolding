@@ -8,6 +8,7 @@
         <testsuite name="Modules">
             <directory>./modules/*/Tests/Feature</directory>
             <directory>./modules/*/Tests/Unit</directory>
+            <directory>./modules/*/Tests/Architecture</directory>
         </testsuite>
     </testsuites>
     <php>

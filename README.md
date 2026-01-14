@@ -6,6 +6,7 @@
 
 - [Introduction](#introduction)
 - [Features](#features)
+- [Architecture](#architecture)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -36,6 +37,87 @@ find useful ideas or inspiration within it.
 - 🥦 Taze: modern CLI tool to keep front-end dependencies up-to-date
 - 📱 Fully responsive
 - 🌓 Light & Dark Mode
+
+## Architecture
+
+This project follows a **modular monolith** architecture where each module is self-contained with its own routes,
+controllers, models, views, migrations, and tests.
+
+### Module Dependency Rules
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                           CORE                                  │
+│      Base classes, enums, middleware, UI components             │
+│              Can be imported by ALL modules                     │
+└─────────────────────────────────────────────────────────────────┘
+                              ▲
+┌─────────────────────────────┴───────────────────────────────────┐
+│                         DATATABLES                              │
+│                  Reusable table infrastructure                  │
+│              Can be imported by ALL modules                     │
+└─────────────────────────────────────────────────────────────────┘
+                              ▲
+┌─────────────────────────────┴───────────────────────────────────┐
+│                           USERS                                 │
+│    Model + Data can be imported by feature modules              │
+│    Actions/Services stay encapsulated within module             │
+└─────────────────────────────────────────────────────────────────┘
+                              ▲
+        ┌─────────────────────┼─────────────────────┐
+        │                     │                     │
+┌───────┴───────┐     ┌───────┴───────┐     ┌───────┴───────┐
+│AUTHENTICATION │     │    MENUS      │     │  [YOUR NEW    │
+│               │     │               │     │   MODULE]     │
+│Feature Module │     │Feature Module │     │               │
+└───────────────┘     └───────────────┘     └───────────────┘
+        ✗ Feature modules should NOT import from each other
+```
+
+### Module Types
+
+| Type           | Modules              | Can Import From                       | Can Be Imported By    |
+|----------------|----------------------|---------------------------------------|-----------------------|
+| Foundation     | Core                 | Laravel/Vendor, Users\Data            | All modules           |
+| Infrastructure | Datatables           | Core                                  | All modules           |
+| Domain         | Users                | Core, Datatables                      | All (Model/Data only) |
+| Feature        | Authentication, Menus| Core, Datatables, Users (Model/Data)  | None                  |
+
+### Key Architectural Decisions
+
+**Why Hybridly over Inertia?**
+
+Hybridly provides tighter Laravel integration with features like automatic TypeScript type generation from PHP,
+native table support, and a more Laravel-centric API. It bridges Laravel and Vue while maintaining strong typing
+across the stack.
+
+**Why RustFS over MinIO?**
+
+MinIO entered maintenance mode in December 2025, with no new features and Docker images removed from public registries.
+RustFS is a Rust-based, S3-compatible alternative that offers better performance (2.3x throughput for small objects)
+and active development.
+
+**Why PrimeVue Volt?**
+
+Volt UI uses an on-demand component distribution model (`npx volt-vue add <Component>`) where components are copied
+into your project. This gives full control over styling and bundle size while leveraging PrimeVue's accessible,
+feature-rich components.
+
+### Enforcing Boundaries
+
+Architecture tests in `modules/Core/Tests/Architecture/` enforce these rules at CI time:
+
+```bash
+# Run architecture tests
+./vendor/bin/pest --filter=Architecture
+```
+
+These tests will fail if:
+- Core imports from any other module
+- Feature modules import from each other
+- Users Actions are used outside the Users module
+- Controllers don't extend the base Controller
+- Data objects don't extend Spatie\LaravelData\Data
 
 ## Requirements
 

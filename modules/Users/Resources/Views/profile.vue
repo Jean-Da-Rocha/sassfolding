@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { user } = useSecurity();
+const { user } = useAuth();
 
 useHead({ title: 'User Profile' });
 </script>
