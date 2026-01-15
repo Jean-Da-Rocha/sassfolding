@@ -14,3 +14,10 @@ parameters:
 
   scanFiles:
     - _ide_helper_models.php
+
+  ignoreErrors:
+    # Pest architecture testing methods are not recognized by PHPStan
+    - identifier: method.notFound
+      message: '#Call to an undefined method Pest\\PendingCalls\\TestCall::expect\(\)\.#'
+      paths:
+        - modules/*/Tests/Architecture/*Test.php

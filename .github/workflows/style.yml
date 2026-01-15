@@ -78,10 +78,7 @@ jobs:
       - name: Generate IDE Helper files
         run: |
           mkdir -p helpers
-          php artisan ide-helper:eloquent
-          php artisan ide-helper:generate
-          php artisan ide-helper:meta
-          php artisan ide-helper:models -M
+          php artisan ide-helper:autocomplete
 
       - name: Run Laravel Pint
         run: php ./vendor/bin/pint --test
