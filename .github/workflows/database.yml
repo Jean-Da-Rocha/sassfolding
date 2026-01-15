@@ -35,12 +35,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup environment
-        uses: ./.github/actions/setup
-        with:
-          install-node: 'false'
-          build-assets: 'false'
-          run-migrations: 'false'
+      - name: Install system dependencies and PHP extensions
+        run: |
+          apt-get update -qq
+          apt-get install -y --no-install-recommends \
+            git unzip libonig-dev libpng-dev libxml2-dev libzip-dev \
+            default-mysql-client curl
+          docker-php-ext-install -j$(nproc) bcmath gd mbstring pcntl pdo_mysql zip
+          pecl install redis && docker-php-ext-enable redis
+          rm -rf /var/lib/apt/lists/*
+
+      - name: Install Composer
+        run: |
+          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          composer --version
+
+      - name: Install Composer dependencies
+        run: composer install --quiet --prefer-dist --no-interaction --no-progress --optimize-autoloader
+
+      - name: Setup Laravel environment
+        run: |
+          cp .env.ci .env
+          php artisan key:generate
 
       - name: Run migrations
         run: php artisan migrate --force --verbose
