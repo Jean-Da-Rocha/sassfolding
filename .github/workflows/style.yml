@@ -1,112 +1,69 @@
-name: Style
+name: Code Style Checks
 
 on:
   pull_request:
-    branches: [main]
+    branches: [ main ]
   push:
-    branches: [main]
+    branches: [ main ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  PHP_VERSION: '8.5'
-  NODE_VERSION: '24'
-  COMPOSER_VERSION: '2.9.2'
-
 jobs:
-  php-style:
-    name: PHP Style (Pint + PHPStan)
+  lint:
+    name: Code Style Checks
     runs-on: ubuntu-latest
+    container:
+      image: php:8.5-fpm
+
+    services:
+      mysql:
+        image: mysql:9.5
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: testing
+          MYSQL_USER: laravel
+          MYSQL_PASSWORD: hybridly
+        options: >-
+          --health-cmd="mysqladmin ping -phybridly"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.PHP_VERSION }}
-          extensions: bcmath, gd, mbstring, pcntl, pdo_mysql, zip, redis
-          tools: composer:${{ env.COMPOSER_VERSION }}
-          coverage: none
+      - name: Setup environment
+        uses: ./.github/actions/setup
 
-      - name: Get Composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - name: Run database migrations
+        run: php artisan migrate --force
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress --optimize-autoloader
+      - name: Generate IDE Helper files
+        run: |
+          mkdir -p helpers
+          php artisan ide-helper:eloquent
+          php artisan ide-helper:generate
+          php artisan ide-helper:meta
+          php artisan ide-helper:models -M
 
       - name: Run Laravel Pint
-        run: vendor/bin/pint --test
-
-      - name: Create PHPStan cache directory
-        run: mkdir -p storage/phpstan
-
-      - name: Create IDE helper stub for PHPStan
-        run: |
-          if [ ! -f _ide_helper_models.php ]; then
-            echo "<?php" > _ide_helper_models.php
-          fi
+        run: php ./vendor/bin/pint --test
 
       - name: Cache PHPStan results
         uses: actions/cache@v4
         with:
           path: storage/phpstan
           key: ${{ runner.os }}-phpstan-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-phpstan-
+          restore-keys: ${{ runner.os }}-phpstan-
 
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyze --memory-limit=1G
-
-  js-style:
-    name: JS/TS Style (ESLint + vue-tsc)
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - name: Cache pnpm dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install pnpm dependencies
-        run: pnpm install --frozen-lockfile
+        run: php ./vendor/bin/phpstan analyze --memory-limit=2G
 
       - name: Run ESLint
-        run: pnpm run lint
-
-      - name: Build frontend assets
-        run: pnpm run build
+        run: pnpm eslint . --max-warnings=0
 
       - name: Run vue-tsc
-        run: pnpm run vue-tsc
+        run: pnpm vue-tsc --noEmit
