@@ -52,4 +52,4 @@ runs:
       uses: actions/download-artifact@v4
       with:
         name: frontend-build
-        path: public/build
+        path: .
