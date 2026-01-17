@@ -38,6 +38,9 @@ jobs:
       - name: Setup Laravel environment
         uses: ./.github/actions/setup-laravel
 
+      - name: Generate Hybridly configuration
+        run: php artisan hybridly:config
+
       - name: Build frontend assets
         run: pnpm vite build --logLevel error
 
