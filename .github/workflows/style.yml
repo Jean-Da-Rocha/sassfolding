@@ -11,43 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Build Frontend Assets
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Laravel environment
-        uses: ./.github/actions/setup-laravel
-
-      - name: Build frontend assets
-        run: pnpm vite build --logLevel error
-
-      - name: Verify build artifacts
-        run: |
-          echo "Checking public/build directory:"
-          ls -la public/build || echo "public/build does not exist"
-          echo "Checking .hybridly directory:"
-          ls -la .hybridly || echo ".hybridly does not exist"
-          if [ -f .hybridly/tsconfig.json ]; then
-            echo ".hybridly/tsconfig.json exists"
-            cat .hybridly/tsconfig.json
-          else
-            echo ".hybridly/tsconfig.json does NOT exist"
-          fi
-
-      - name: Upload frontend build
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-build
-          path: |
-            public/build
-            .hybridly
-          retention-days: 1
-
   lint:
-    needs: build
     name: Code Style Checks
     runs-on: ubuntu-latest
 
@@ -73,20 +37,9 @@ jobs:
 
       - name: Setup Laravel environment
         uses: ./.github/actions/setup-laravel
-        with:
-          download-build: 'true'
 
-      - name: Verify downloaded artifacts
-        run: |
-          echo "Checking public/build directory:"
-          ls -la public/build || echo "public/build does not exist"
-          echo "Checking .hybridly directory:"
-          ls -la .hybridly || echo ".hybridly does not exist"
-          if [ -f .hybridly/tsconfig.json ]; then
-            echo ".hybridly/tsconfig.json exists"
-          else
-            echo ".hybridly/tsconfig.json does NOT exist"
-          fi
+      - name: Build frontend assets
+        run: pnpm vite build --logLevel error
 
       - name: Setup Laravel environment
         run: |
