@@ -11,11 +11,41 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build:
+    name: Build Frontend Assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js with pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: Install Node dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build frontend assets
+        run: pnpm vite build --logLevel error
+
+      - name: Upload frontend build
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: public/build
+          retention-days: 1
+
   lint:
+    needs: build
     name: Code Style Checks
     runs-on: ubuntu-latest
-    container:
-      image: php:8.5-fpm
 
     services:
       mysql:
@@ -25,6 +55,8 @@ jobs:
           MYSQL_DATABASE: testing
           MYSQL_USER: laravel
           MYSQL_PASSWORD: hybridly
+        ports:
+          - 3306:3306
         options: >-
           --health-cmd="mysqladmin ping -phybridly"
           --health-interval=10s
@@ -35,31 +67,38 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install system dependencies and PHP extensions
-        run: |
-          apt-get update -qq
-          apt-get install -y --no-install-recommends \
-            git unzip libonig-dev libpng-dev libxml2-dev libzip-dev \
-            default-mysql-client curl
-          docker-php-ext-install -j$(nproc) bcmath gd mbstring pcntl pdo_mysql zip
-          pecl install redis && docker-php-ext-enable redis
-          rm -rf /var/lib/apt/lists/*
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: bcmath, gd, mbstring, pcntl, pdo_mysql, redis, zip
+          tools: composer:v2
+          coverage: none
 
-      - name: Install Composer
-        run: |
-          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-          composer --version
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
 
       - name: Install Composer dependencies
         run: composer install --quiet --prefer-dist --no-interaction --no-progress --optimize-autoloader
 
-      - name: Install Node.js and pnpm
-        run: |
-          curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
-          apt-get install -y nodejs
-          npm install -g pnpm@10
-          node --version
-          pnpm --version
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js with pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
 
       - name: Install Node dependencies
         run: pnpm install --frozen-lockfile
@@ -69,8 +108,11 @@ jobs:
           cp .env.ci .env
           php artisan key:generate
 
-      - name: Build frontend assets
-        run: pnpm vite build --logLevel error
+      - name: Download frontend build
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-build
+          path: public/build
 
       - name: Run database migrations
         run: php artisan migrate --force
@@ -90,8 +132,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: storage/phpstan
-          key: ${{ runner.os }}-phpstan-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-phpstan-
+          key: phpstan-${{ runner.os }}-${{ hashFiles('**/composer.lock', 'phpstan.neon', 'phpstan-baseline.neon') }}
+          restore-keys: phpstan-${{ runner.os }}-
 
       - name: Run PHPStan
         run: php ./vendor/bin/phpstan analyze --memory-limit=2G
