@@ -7,10 +7,18 @@ import IconsResolver from 'unplugin-icons/resolver';
 import { defineConfig, loadEnv } from 'vite';
 import { primeVueVoltUiTypeImports } from './modules/Core/Resources/Components/volt/imports';
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd());
   const composeProjectName = env.VITE_APP_NAME;
   const certPath = `/certs/${composeProjectName}`;
+
+  // Only configure HTTPS for dev server when certificates are available
+  const httpsConfig = command === 'serve' && composeProjectName
+    ? {
+        cert: readFileSync(`${certPath}.cert`),
+        key: readFileSync(`${certPath}.key`),
+      }
+    : undefined;
 
   return {
     build: {
@@ -52,10 +60,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
-      https: {
-        cert: readFileSync(`${certPath}.cert`),
-        key: readFileSync(`${certPath}.key`),
-      },
+      https: httpsConfig,
       watch: {
         // Ignore directories that slow down Vite and cause 'file watchers limit' errors.
         ignored: [

@@ -1,0 +1,80 @@
+name: Code Style Checks
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Code Style Checks
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:9.5
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: testing
+          MYSQL_USER: laravel
+          MYSQL_PASSWORD: hybridly
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -phybridly"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Laravel environment
+        uses: ./.github/actions/setup-laravel
+
+      - name: Generate Hybridly configuration
+        run: php artisan hybridly:config
+
+      - name: Build frontend assets
+        run: pnpm vite build --logLevel error
+
+      - name: Setup Laravel environment
+        run: |
+          cp .env.ci .env
+          php artisan key:generate
+
+      - name: Run database migrations
+        run: php artisan migrate --force
+
+      - name: Generate IDE Helper files
+        run: |
+          mkdir -p helpers
+          php artisan ide-helper:eloquent
+          php artisan ide-helper:generate
+          php artisan ide-helper:meta
+          php artisan ide-helper:models -M --dir='modules'
+
+      - name: Run Laravel Pint
+        run: php ./vendor/bin/pint --test
+
+      - name: Cache PHPStan results
+        uses: actions/cache@v4
+        with:
+          path: storage/phpstan
+          key: phpstan-${{ runner.os }}-${{ hashFiles('**/composer.lock', 'phpstan.neon', 'phpstan-baseline.neon') }}
+          restore-keys: phpstan-${{ runner.os }}-
+
+      - name: Run PHPStan
+        run: php ./vendor/bin/phpstan analyze --memory-limit=2G
+
+      - name: Run ESLint
+        run: pnpm eslint . --max-warnings=0
+
+      - name: Run vue-tsc
+        run: pnpm vue-tsc --noEmit

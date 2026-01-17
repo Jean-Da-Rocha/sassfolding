@@ -1,0 +1,96 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build Frontend Assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Laravel environment
+        uses: ./.github/actions/setup-laravel
+
+      - name: Generate Hybridly configuration
+        run: php artisan hybridly:config
+
+      - name: Build frontend assets
+        run: pnpm vite build --logLevel error
+
+      - name: Upload frontend build
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: |
+            public/build
+            .hybridly
+          retention-days: 1
+
+  tests:
+    needs: build
+    name: ${{ matrix.testsuite }} Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        testsuite:
+          - Feature
+          - Unit
+          - Architecture
+
+    services:
+      mysql:
+        image: mysql:9.5
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: testing
+          MYSQL_USER: laravel
+          MYSQL_PASSWORD: hybridly
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -phybridly"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      redis:
+        image: redis:8.0
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Laravel environment
+        uses: ./.github/actions/setup-laravel
+        with:
+          download-build: 'true'
+
+      - name: Setup Laravel environment
+        run: |
+          cp .env.ci .env
+          php artisan key:generate
+
+      - name: Run database migrations
+        run: php artisan migrate --force
+
+      - name: Run ${{ matrix.testsuite }} tests
+        run: php artisan test --order-by random --testsuite=${{ matrix.testsuite }}
