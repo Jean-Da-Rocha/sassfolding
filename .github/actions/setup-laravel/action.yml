@@ -1,0 +1,55 @@
+name: 'Setup Laravel Environment'
+description: 'Install PHP, Composer, Node.js, and dependencies for Laravel + Hybridly'
+
+inputs:
+  download-build:
+    description: 'Download pre-built frontend assets from artifact'
+    required: false
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.5'
+        extensions: bcmath, gd, mbstring, pcntl, pdo_mysql, redis, zip
+        tools: composer:v2
+        coverage: none
+
+    - name: Get Composer cache directory
+      id: composer-cache
+      shell: bash
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - name: Cache Composer dependencies
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+        restore-keys: composer-${{ runner.os }}-
+
+    - name: Install Composer dependencies
+      shell: bash
+      run: composer install --quiet --prefer-dist --no-interaction --no-progress --optimize-autoloader
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+
+    - name: Setup Node.js with pnpm cache
+      uses: actions/setup-node@v4
+      with:
+        node-version: 24
+        cache: 'pnpm'
+
+    - name: Install Node dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile
+
+    - name: Download frontend build
+      if: inputs.download-build == 'true'
+      uses: actions/download-artifact@v4
+      with:
+        name: frontend-build
+        path: public/build

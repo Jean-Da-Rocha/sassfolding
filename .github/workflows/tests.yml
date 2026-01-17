@@ -18,17 +18,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js with pnpm cache
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: 'pnpm'
-
-      - name: Install Node dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Setup Laravel environment
+        uses: ./.github/actions/setup-laravel
 
       - name: Build frontend assets
         run: pnpm vite build --logLevel error
@@ -83,50 +74,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Setup Laravel environment
+        uses: ./.github/actions/setup-laravel
         with:
-          php-version: '8.5'
-          extensions: bcmath, gd, mbstring, pcntl, pdo_mysql, redis, zip
-          tools: composer:v2
-          coverage: none
-
-      - name: Get Composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: composer-${{ runner.os }}-
-
-      - name: Install Composer dependencies
-        run: composer install --quiet --prefer-dist --no-interaction --no-progress --optimize-autoloader
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js with pnpm cache
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: 'pnpm'
-
-      - name: Install Node dependencies
-        run: pnpm install --frozen-lockfile
+          download-build: 'true'
 
       - name: Setup Laravel environment
         run: |
           cp .env.ci .env
           php artisan key:generate
-
-      - name: Download frontend build
-        uses: actions/download-artifact@v4
-        with:
-          name: frontend-build
-          path: public/build
 
       - name: Run database migrations
         run: php artisan migrate --force
