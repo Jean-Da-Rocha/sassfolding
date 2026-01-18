@@ -52,7 +52,8 @@ useHead({ title: 'Sign Up' });
             type="text"
           />
           <p
-            v-if="form.errors.name" class="
+            v-if="form.errors.name"
+            class="
               text-sm text-red-600
               dark:text-red-400
             "
@@ -76,7 +77,8 @@ useHead({ title: 'Sign Up' });
             type="email"
           />
           <p
-            v-if="form.errors.email" class="
+            v-if="form.errors.email"
+            class="
               text-sm text-red-600
               dark:text-red-400
             "
@@ -111,7 +113,8 @@ useHead({ title: 'Sign Up' });
             </template>
           </UInput>
           <p
-            v-if="form.errors.password" class="
+            v-if="form.errors.password"
+            class="
               text-sm text-red-600
               dark:text-red-400
             "
@@ -174,8 +177,9 @@ useHead({ title: 'Sign Up' });
               text-gray-600
               dark:text-gray-400
             "
-          >Already have an account?</span>
-          {{ ' ' }}
+          >
+            Already have an account?
+          </span>
           <RouterLink
             class="
               font-medium text-primary-600

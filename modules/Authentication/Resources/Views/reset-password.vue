@@ -56,7 +56,8 @@ useHead({ title: 'Reset Password' });
             type="email"
           />
           <p
-            v-if="form.errors.email" class="
+            v-if="form.errors.email"
+            class="
               text-sm text-red-600
               dark:text-red-400
             "
@@ -91,7 +92,8 @@ useHead({ title: 'Reset Password' });
             </template>
           </UInput>
           <p
-            v-if="form.errors.password" class="
+            v-if="form.errors.password"
+            class="
               text-sm text-red-600
               dark:text-red-400
             "
@@ -126,7 +128,8 @@ useHead({ title: 'Reset Password' });
             </template>
           </UInput>
           <p
-            v-if="form.errors.password_confirmation" class="
+            v-if="form.errors.password_confirmation"
+            class="
               text-sm text-red-600
               dark:text-red-400
             "
