@@ -17,13 +17,11 @@ export default await antfu({
     'ts/no-unused-expressions': ['off'],
     'vue/attributes-order': ['error', { alphabetical: true }],
     ...eslintPluginBetterTailwindcss.configs['recommended-error'].rules,
-    'better-tailwindcss/no-unregistered-classes': ['error', {
-      ignore: ['highlight', 'primary', 'surface'], // PrimeVue Volt UI related.
-    }],
+    'better-tailwindcss/no-unregistered-classes': ['error'],
   },
   settings: {
     'better-tailwindcss': {
-      entryPoint: 'resources/application/tailwind.css',
+      entryPoint: 'modules/Core/Resources/Application/tailwind.css',
     },
   },
   stylistic: {
