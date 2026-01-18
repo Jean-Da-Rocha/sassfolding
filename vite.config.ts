@@ -113,6 +113,8 @@ export default defineConfig(({ command, mode }): UserConfig => {
           '**/storage/**',
           '**/tests/**',
           '**/vendor/**',
+          '**/.pnpm-store/**',
+          '**/node_modules/**',
         ],
       },
     },

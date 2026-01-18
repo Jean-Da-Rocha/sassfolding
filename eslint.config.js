@@ -17,7 +17,6 @@ export default await antfu({
     'ts/no-unused-expressions': ['off'],
     'vue/attributes-order': ['error', { alphabetical: true }],
     ...eslintPluginBetterTailwindcss.configs['recommended-error'].rules,
-    'better-tailwindcss/no-unregistered-classes': ['error'],
   },
   settings: {
     'better-tailwindcss': {
