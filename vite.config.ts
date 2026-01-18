@@ -1,3 +1,6 @@
+import type { Options as AutoImportOptions } from 'unplugin-auto-import/types';
+import type { Options as ComponentsOptions } from 'unplugin-vue-components/types';
+import type { UserConfig } from 'vite';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
@@ -6,7 +9,7 @@ import hybridly from 'hybridly/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { defineConfig, loadEnv } from 'vite';
 
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ command, mode }): UserConfig => {
   const env = loadEnv(mode, process.cwd());
   const composeProjectName = env.VITE_APP_NAME;
   const certPath = `/certs/${composeProjectName}`;
@@ -19,46 +22,75 @@ export default defineConfig(({ command, mode }) => {
       }
     : undefined;
 
+  const autoImportConfig: Partial<AutoImportOptions> = {
+    dirs: ['modules/**'],
+    dts: '.hybridly/auto-imports.d.ts',
+    imports: [
+      'vue',
+      '@vueuse/core',
+      {
+        from: 'hybridly/vue',
+        imports: [
+          'useProperty',
+          'setProperty',
+          'useRefinements',
+          'useTable',
+          'useBulkSelect',
+          'useProperties',
+          'useBackForward',
+          'useContext',
+          'useForm',
+          'useDialog',
+          'useHistoryState',
+          'usePaginator',
+          'registerHook',
+          'useRoute',
+          'useQueryParameter',
+          'useQueryParameters',
+        ],
+      },
+      {
+        from: '@unhead/vue',
+        imports: ['useHead', 'useSeoMeta'],
+      },
+      {
+        from: 'hybridly',
+        imports: ['router', 'route', 'can', 'getRouterContext'],
+      },
+      {
+        from: 'modules/Menus/Types/app-navigation-type',
+        imports: ['AppNavigationType'],
+        type: true,
+      },
+    ],
+    vueTemplate: true,
+  };
+
+  const componentsConfig: Partial<ComponentsOptions> = {
+    dirs: ['modules/**'],
+    dts: '.hybridly/components.d.ts',
+    resolvers: [
+      IconsResolver({
+        enabledCollections: ['heroicons'],
+        prefix: false,
+      }),
+      // Custom resolver for RouterLink from hybridly
+      (componentName: string) => {
+        if (componentName === 'RouterLink') {
+          return { from: 'hybridly/vue', name: 'RouterLink' };
+        }
+      },
+    ],
+  };
+
   return {
     build: {
       sourcemap: false,
     },
     plugins: [
       ui({
-        autoImport: {
-          dirs: ['modules/**'],
-          dts: '.hybridly/auto-import.d.ts',
-          imports: [
-            {
-              from: 'hybridly/vue',
-              imports: ['router', 'route', 'useRoute', 'useForm', 'useProperty', 'useDialog'],
-            },
-            {
-              from: '@unhead/vue',
-              imports: ['useHead', 'useSeoMeta'],
-            },
-            {
-              from: 'hybridly',
-              imports: ['NavigationResponse', 'RouteName', 'Method'],
-              type: true,
-            },
-            {
-              from: 'modules/Menus/Types/app-navigation-type',
-              imports: ['AppNavigationType'],
-              type: true,
-            },
-          ],
-        },
-        components: {
-          dirs: ['modules/**'],
-          dts: '.hybridly/components.d.ts',
-          resolvers: [
-            IconsResolver({
-              enabledCollections: ['heroicons'],
-              prefix: false,
-            }),
-          ],
-        },
+        autoImport: autoImportConfig,
+        components: componentsConfig,
         router: false,
       }),
       hybridly({
@@ -72,7 +104,7 @@ export default defineConfig(({ command, mode }) => {
       },
     },
     server: {
-      https: httpsConfig,
+      ...(httpsConfig ? { https: httpsConfig } : {}),
       watch: {
         // Ignore directories that slow down Vite and cause 'file watchers limit' errors.
         ignored: [
