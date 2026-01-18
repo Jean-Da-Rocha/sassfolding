@@ -11,54 +11,87 @@ useHead({ title: 'Forgot Password' });
 </script>
 
 <template layout="core::guest">
-  <PrimeVueCard class="mx-auto w-full max-w-[600px]">
-    <template #content>
-      <AlertMessage />
-      <div class="mb-4 text-sm">
-        Forgot your password? No problem. Just let us know your email address and we will email you a password reset
-        link that will allow you to choose a new one.
-      </div>
-      <PrimeVueFluid>
-        <form
-          v-focustrap
-          class="
-            space-y-4
-            md:space-y-6
-          "
-          @submit.prevent="form.submit"
-        >
-          <div>
-            <label class="mb-2 block text-sm font-medium" for="email">
-              Email
+  <div class="mx-auto w-full max-w-lg">
+    <UCard>
+      <template #header>
+        <div class="text-center">
+          <h2 class="text-2xl font-bold tracking-tight">
+            Forgot password?
+          </h2>
+          <p
+            class="
+              mt-2 text-sm text-gray-600
+              dark:text-gray-400
+            "
+          >
+            No problem. Enter your email and we'll send you a reset link.
+          </p>
+        </div>
+      </template>
+
+      <div class="space-y-6">
+        <AlertMessage />
+
+        <form class="space-y-6" @submit.prevent="form.submit">
+          <div class="space-y-2">
+            <label class="block text-sm font-medium" for="email">
+              Email address
             </label>
-            <PrimeVueInputText
+            <UInput
               id="email"
               v-model="form.fields.email"
-              :autofocus="true"
-              :invalid="form.errors.hasOwnProperty('email')"
-              type="text"
+              autocomplete="email"
+              class="w-full"
+              :invalid="Boolean(form.errors.email)"
+              placeholder="you@example.com"
+              size="lg"
+              type="email"
             />
-            <div v-if="form.errors.email" class="mt-2 text-red-500">
+            <p
+              v-if="form.errors.email" class="
+                text-sm text-red-600
+                dark:text-red-400
+              "
+            >
               {{ form.errors.email }}
-            </div>
+            </p>
           </div>
-          <div>
-            <PrimeVuePrimaryButton :disabled="form.processing" label="Email Password Reset Link" type="submit" />
-          </div>
+
+          <UButton
+            class="w-full"
+            color="primary"
+            :disabled="form.processing"
+            :loading="form.processing"
+            size="lg"
+            type="submit"
+          >
+            Send reset link
+          </UButton>
         </form>
-      </PrimeVueFluid>
-      <div class="text-center">
-        <span>Or, return to the</span>
-        <RouterLink
-          class="
-            text-primary-500
-            hover:text-primary-700
-          "
-          :href="route('login')"
-        >
-          login page
-        </RouterLink>
       </div>
-    </template>
-  </PrimeVueCard>
+
+      <template #footer>
+        <div class="text-center text-sm">
+          <span
+            class="
+              text-gray-600
+              dark:text-gray-400
+            "
+          >Remember your password?</span>
+          {{ ' ' }}
+          <RouterLink
+            class="
+              font-medium text-primary-600
+              hover:text-primary-500
+              dark:text-primary-400
+              dark:hover:text-primary-300
+            "
+            :href="route('login')"
+          >
+            Sign in
+          </RouterLink>
+        </div>
+      </template>
+    </UCard>
+  </div>
 </template>

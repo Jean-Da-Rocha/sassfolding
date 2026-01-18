@@ -15,75 +15,137 @@ const form = useForm<{ email: string; password: string; password_confirmation: s
   url: route('password.update'),
 });
 
+const showPassword = ref(false);
+const showPasswordConfirmation = ref(false);
+
 useHead({ title: 'Reset Password' });
 </script>
 
 <template layout="core::guest">
-  <PrimeVueCard class="mx-auto mt-8 w-full max-w-[600px]">
-    <template #content>
-      <PrimeVueFluid>
-        <form
-          v-focustrap
-          class="
-            space-y-4
-            md:space-y-6
-          "
-          @submit.prevent="form.submit"
+  <div class="mx-auto w-full max-w-lg">
+    <UCard>
+      <template #header>
+        <div class="text-center">
+          <h2 class="text-2xl font-bold tracking-tight">
+            Reset your password
+          </h2>
+          <p
+            class="
+              mt-2 text-sm text-gray-600
+              dark:text-gray-400
+            "
+          >
+            Enter your new password below
+          </p>
+        </div>
+      </template>
+
+      <form class="space-y-6" @submit.prevent="form.submit">
+        <div class="space-y-2">
+          <label class="block text-sm font-medium" for="email">
+            Email address
+          </label>
+          <UInput
+            id="email"
+            v-model="form.fields.email"
+            autocomplete="email"
+            class="w-full"
+            :invalid="Boolean(form.errors.email)"
+            readonly
+            size="lg"
+            type="email"
+          />
+          <p
+            v-if="form.errors.email" class="
+              text-sm text-red-600
+              dark:text-red-400
+            "
+          >
+            {{ form.errors.email }}
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-medium" for="password">
+            New password
+          </label>
+          <UInput
+            id="password"
+            v-model="form.fields.password"
+            autocomplete="new-password"
+            class="w-full"
+            :invalid="Boolean(form.errors.password)"
+            placeholder="Create a strong password"
+            size="lg"
+            :type="showPassword ? 'text' : 'password'"
+          >
+            <template #trailing>
+              <UButton
+                :aria-label="showPassword ? 'Hide password' : 'Show password'"
+                color="neutral"
+                :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                size="sm"
+                variant="link"
+                @click="showPassword = !showPassword"
+              />
+            </template>
+          </UInput>
+          <p
+            v-if="form.errors.password" class="
+              text-sm text-red-600
+              dark:text-red-400
+            "
+          >
+            {{ form.errors.password }}
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-medium" for="password_confirmation">
+            Confirm new password
+          </label>
+          <UInput
+            id="password_confirmation"
+            v-model="form.fields.password_confirmation"
+            autocomplete="new-password"
+            class="w-full"
+            :invalid="Boolean(form.errors.password_confirmation)"
+            placeholder="Re-enter your password"
+            size="lg"
+            :type="showPasswordConfirmation ? 'text' : 'password'"
+          >
+            <template #trailing>
+              <UButton
+                :aria-label="showPasswordConfirmation ? 'Hide password' : 'Show password'"
+                color="neutral"
+                :icon="showPasswordConfirmation ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                size="sm"
+                variant="link"
+                @click="showPasswordConfirmation = !showPasswordConfirmation"
+              />
+            </template>
+          </UInput>
+          <p
+            v-if="form.errors.password_confirmation" class="
+              text-sm text-red-600
+              dark:text-red-400
+            "
+          >
+            {{ form.errors.password_confirmation }}
+          </p>
+        </div>
+
+        <UButton
+          block
+          color="primary"
+          :disabled="form.processing"
+          :loading="form.processing"
+          size="lg"
+          type="submit"
         >
-          <div>
-            <label class="mb-2 block text-sm font-medium" for="email">
-              Email
-            </label>
-            <PrimeVueInputText
-              id="email"
-              v-model="form.fields.email"
-              :autofocus="true"
-              :invalid="form.errors.hasOwnProperty('email')"
-              type="text"
-            />
-            <div v-if="form.errors.email" class="mt-2 text-red-500">
-              {{ form.errors.email }}
-            </div>
-          </div>
-          <div>
-            <label class="mb-2 block text-sm font-medium" for="password">
-              Password
-            </label>
-            <PrimeVuePassword
-              id="password"
-              v-model="form.fields.password"
-              :feedback="false"
-              for="password"
-              :invalid="form.errors.hasOwnProperty('password')"
-              toggle-mask
-            />
-            <div v-if="form.errors.password" class="mt-2 text-red-500">
-              {{ form.errors.password }}
-            </div>
-          </div>
-          <div>
-            <label class="mb-2 block text-sm font-medium" for="password_confirmation">
-              Confirm Password
-            </label>
-            <PrimeVuePassword
-              id="password_confirmation"
-              v-model="form.fields.password_confirmation"
-              :feedback="false"
-              for="password_confirmation"
-              :invalid="form.errors.hasOwnProperty('password_confirmation')"
-              toggle-mask
-            />
-            <div
-              v-if="form.errors.password_confirmation" class="mt-2 text-red-500"
-            >
-              {{ form.errors.password_confirmation }}
-            </div>
-          </div>
-          <div>
-            <PrimeVuePrimaryButton :disabled="form.processing" label="Reset Password" type="submit" />
-          </div>
-        </form>
-      </PrimeVueFluid>
-    </template>
-  </PrimeVueCard>
+          Reset password
+        </UButton>
+      </form>
+    </UCard>
+  </div>
 </template>
