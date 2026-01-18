@@ -1,11 +1,10 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
-import { PrimeVueResolver } from '@primevue/auto-import-resolver';
+import ui from '@nuxt/ui/vite';
 import hybridly from 'hybridly/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { defineConfig, loadEnv } from 'vite';
-import { primeVueVoltUiTypeImports } from './modules/Core/Resources/Components/volt/imports';
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd());
@@ -25,16 +24,24 @@ export default defineConfig(({ command, mode }) => {
       sourcemap: false,
     },
     plugins: [
-      hybridly({
-        autoImports: {
+      ui({
+        autoImport: {
           dirs: ['modules/**'],
+          dts: '.hybridly/auto-import.d.ts',
           imports: [
             {
+              from: 'hybridly/vue',
+              imports: ['router', 'route', 'useRoute', 'useForm', 'useProperty', 'useDialog'],
+            },
+            {
+              from: '@unhead/vue',
+              imports: ['useHead', 'useSeoMeta'],
+            },
+            {
               from: 'hybridly',
-              imports: ['NavigationResponse', 'RouteName'],
+              imports: ['NavigationResponse', 'RouteName', 'Method'],
               type: true,
             },
-            ...primeVueVoltUiTypeImports,
             {
               from: 'modules/Menus/Types/app-navigation-type',
               imports: ['AppNavigationType'],
@@ -42,16 +49,21 @@ export default defineConfig(({ command, mode }) => {
             },
           ],
         },
-        vueComponents: {
+        components: {
           dirs: ['modules/**'],
+          dts: '.hybridly/components.d.ts',
           resolvers: [
             IconsResolver({
               enabledCollections: ['heroicons'],
               prefix: false,
             }),
-            PrimeVueResolver(),
           ],
         },
+        router: false,
+      }),
+      hybridly({
+        autoImports: false,
+        vueComponents: false,
       }),
     ],
     resolve: {

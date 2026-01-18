@@ -1,9 +1,9 @@
 import type { VueHeadClient } from '@unhead/vue/types';
+import type { Method } from 'hybridly';
 import type { App } from 'vue';
+import ui from '@nuxt/ui/vue-plugin';
 import { createHead } from '@unhead/vue/client';
-import PrimeVue from 'primevue/config';
-import ConfirmationService from 'primevue/confirmationservice';
-import FocusTrap from 'primevue/focustrap';
+import { router } from 'hybridly';
 
 import { initializeHybridly } from 'virtual:hybridly/config';
 import './tailwind.css';
@@ -17,8 +17,28 @@ initializeHybridly({
     });
 
     vue.use(head)
-      .use(PrimeVue, { unstyled: true })
-      .use(ConfirmationService)
-      .directive('focustrap', FocusTrap);
+      .use(ui)
+      .directive('nuxt-ui-link', {
+        mounted() {
+          for (const link of document.getElementsByTagName('a') as unknown as HTMLAnchorElement[]) {
+            if (!link.dataset.slot) {
+              continue;
+            }
+
+            link.addEventListener('click', (event) => {
+              event.preventDefault();
+
+              const link = event.currentTarget as HTMLAnchorElement;
+              const method = link.dataset.method as Method || 'GET';
+
+              router.navigate({
+                method,
+                preserveState: (method !== 'GET'),
+                url: link.href,
+              });
+            });
+          }
+        },
+      });
   },
 }).then();

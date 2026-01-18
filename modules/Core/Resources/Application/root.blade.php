@@ -16,7 +16,7 @@
 
     @vite
 </head>
-<body class="font-sans antialiased h-full bg-surface-50 dark:bg-surface-950">
+<body class="font-sans antialiased h-full bg-surface-50 dark:bg-surface-950 isolate">
 @hybridly
 </body>
 </html>
