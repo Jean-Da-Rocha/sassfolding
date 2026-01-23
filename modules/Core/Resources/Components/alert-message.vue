@@ -1,25 +1,40 @@
 <script setup lang="ts">
-export type FlashMessageReturnType = Pick<Modules.Core.Data.FlashMessageData, 'message' | 'severity'> & {
-  key: `${string}-${string}-${string}-${string}-${string}`;
+export type FlashMessageReturnType = {
+  message: string;
+  severity: string;
 };
 
-function useFlashMessages(): FlashMessageReturnType[] {
-  const { flash } = useProperties();
+const properties = useProperties<Modules.Core.Data.SharedData>();
+const closedAlerts = ref<Set<string>>(new Set());
 
-  return flash?.messages.map((flashMessage: Modules.Core.Data.FlashMessageData) => ({
-    key: crypto.randomUUID(),
-    message: flashMessage.message,
-    severity: flashMessage.severity,
-  })) || [];
+const flashMessages = computed<FlashMessageReturnType[]>(() => {
+  if (!properties.flash) {
+    return [];
+  }
+
+  return (Object.entries(properties.flash) as [string, string | null][])
+    .filter(([severity, message]) =>
+      message !== null && message.length > 0 && !closedAlerts.value.has(severity),
+    )
+    .map(([severity, message]) => ({
+      message: message as string,
+      severity,
+    }));
+});
+
+function closeAlert(severity: string): void {
+  closedAlerts.value.add(severity);
 }
-
-const flashMessages = computed<FlashMessageReturnType[]>(useFlashMessages);
 </script>
 
 <template>
-  <div v-for="{ message, key, severity } in flashMessages" :key="key">
-    <PrimeVueMessage v-if="message" class="mb-5" closable :life="5000" :severity="severity" :sticky="false">
-      {{ message }}
-    </PrimeVueMessage>
+  <div v-for="{ message, severity } in flashMessages" :key="severity">
+    <UAlert
+      close
+      close-icon="i-heroicons-x-mark"
+      :color="severity"
+      :title="message"
+      @update:open="(isOpen: boolean) => !isOpen && closeAlert(severity)"
+    />
   </div>
 </template>

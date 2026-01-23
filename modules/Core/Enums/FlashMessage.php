@@ -9,10 +9,11 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 #[TypeScript]
 enum FlashMessage: string
 {
-    case Contrast = 'contrast';
     case Error = 'error';
     case Info = 'info';
+    case Neutral = 'neutral';
+    case Primary = 'primary';
     case Secondary = 'secondary';
     case Success = 'success';
-    case Warning = 'warn';
+    case Warning = 'warning';
 }
