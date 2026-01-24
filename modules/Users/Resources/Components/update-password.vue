@@ -8,6 +8,10 @@ const form = useForm<{ current_password: string; password: string; password_conf
   method: 'PUT',
   url: route('user-password.update'),
 });
+
+const showCurrentPassword = ref<boolean>(false);
+const showPassword = ref<boolean>(false);
+const showPasswordConfirmation = ref<boolean>(false);
 </script>
 
 <template layout="core::main">
@@ -21,110 +25,128 @@ const form = useForm<{ current_password: string; password: string; password_conf
     </template>
 
     <template #form>
-      <PrimeVueCard>
-        <template #content>
-          <form
-            class="
-              space-y-4
-              md:space-y-6
-            "
-            @submit.prevent="form.submit"
-          >
-            <div>
-              <label
-                class="
-                  dark:text-surface-0
-                  mb-2 block text-sm font-medium
-                "
-                for="current_password"
-              >
-                Current password
-              </label>
-              <PrimeVuePassword
-                id="current_password"
-                v-model="form.fields.current_password"
-                :feedback="false"
-                fluid
-                for="current_password"
-                :invalid="form.errors.hasOwnProperty('password')"
-                size="small"
-                toggle-mask
-              />
-              <div v-if="form.errors.current_password" class="mt-2 text-red-500">
-                {{ form.errors.current_password }}
-              </div>
-            </div>
-            <div>
-              <label
-                class="
-                  dark:text-surface-0
-                  mb-2 block text-sm font-medium
-                " for="password"
-              >
-                New Password
-              </label>
-              <PrimeVuePassword
-                id="password"
-                v-model="form.fields.password"
-                :feedback="false"
-                fluid
-                for="password"
-                :invalid="form.errors.hasOwnProperty('password')"
-                size="small"
-                toggle-mask
-              />
-              <div v-if="form.errors.password" class="mt-2 text-red-500">
-                {{ form.errors.password }}
-              </div>
-            </div>
-            <div>
-              <label
-                class="
-                  dark:text-surface-0
-                  mb-2 block text-sm font-medium
-                "
-                for="password_confirmation"
-              >
-                Confirm Password
-              </label>
-              <PrimeVuePassword
-                id="password_confirmation"
-                v-model="form.fields.password_confirmation"
-                autocomplete="off"
-                :feedback="false"
-                fluid
-                for="password_confirmation"
-                :invalid="form.errors.hasOwnProperty('password')"
-                size="small"
-                toggle-mask
-              />
-              <div
-                v-if="form.errors.password_confirmation"
-                class="mt-2 text-red-500"
-              >
-                {{ form.errors.password_confirmation }}
-              </div>
-            </div>
-            <div
+      <UCard>
+        <form class="space-y-6" @submit.prevent="form.submit">
+          <div class="space-y-2">
+            <label class="block text-sm font-medium" for="current_password">
+              Current password
+            </label>
+            <UInput
+              id="current_password"
+              v-model="form.fields.current_password"
+              autocomplete="current-password"
+              class="w-full"
+              :invalid="Boolean(form.errors.current_password)"
+              placeholder="Enter your current password"
+              size="lg"
+              :type="showCurrentPassword ? 'text' : 'password'"
+            >
+              <template #trailing>
+                <UButton
+                  :aria-label="showCurrentPassword ? 'Hide password' : 'Show password'"
+                  color="neutral"
+                  :icon="showCurrentPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                  size="sm"
+                  variant="link"
+                  @click="showCurrentPassword = !showCurrentPassword"
+                />
+              </template>
+            </UInput>
+            <p
+              v-if="form.errors.current_password"
               class="
-                mt-6
-                md:text-right
+                text-sm text-red-600
+                dark:text-red-400
               "
             >
-              <PrimeVuePrimaryButton
-                class="
-                  w-full
-                  md:w-auto
-                "
-                :disabled="form.processing"
-                label="Submit"
-                size="small"
-                type="submit"
-              />
-            </div>
-          </form>
-        </template>
-      </PrimeVueCard>
+              {{ form.errors.current_password }}
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-medium" for="password">
+              New password
+            </label>
+            <UInput
+              id="password"
+              v-model="form.fields.password"
+              autocomplete="new-password"
+              class="w-full"
+              :invalid="Boolean(form.errors.password)"
+              placeholder="Create a strong password"
+              size="lg"
+              :type="showPassword ? 'text' : 'password'"
+            >
+              <template #trailing>
+                <UButton
+                  :aria-label="showPassword ? 'Hide password' : 'Show password'"
+                  color="neutral"
+                  :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                  size="sm"
+                  variant="link"
+                  @click="showPassword = !showPassword"
+                />
+              </template>
+            </UInput>
+            <p
+              v-if="form.errors.password"
+              class="
+                text-sm text-red-600
+                dark:text-red-400
+              "
+            >
+              {{ form.errors.password }}
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-medium" for="password_confirmation">
+              Confirm password
+            </label>
+            <UInput
+              id="password_confirmation"
+              v-model="form.fields.password_confirmation"
+              autocomplete="new-password"
+              class="w-full"
+              :invalid="Boolean(form.errors.password_confirmation)"
+              placeholder="Re-enter your password"
+              size="lg"
+              :type="showPasswordConfirmation ? 'text' : 'password'"
+            >
+              <template #trailing>
+                <UButton
+                  :aria-label="showPasswordConfirmation ? 'Hide password' : 'Show password'"
+                  color="neutral"
+                  :icon="showPasswordConfirmation ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                  size="sm"
+                  variant="link"
+                  @click="showPasswordConfirmation = !showPasswordConfirmation"
+                />
+              </template>
+            </UInput>
+            <p
+              v-if="form.errors.password_confirmation"
+              class="
+                text-sm text-red-600
+                dark:text-red-400
+              "
+            >
+              {{ form.errors.password_confirmation }}
+            </p>
+          </div>
+
+          <div class="flex justify-end">
+            <UButton
+              color="primary"
+              :disabled="form.processing"
+              label="Submit"
+              :loading="form.processing"
+              size="lg"
+              type="submit"
+            />
+          </div>
+        </form>
+      </UCard>
     </template>
   </FormSection>
 </template>

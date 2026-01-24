@@ -25,65 +25,61 @@ useHead({ title: 'User Modification' });
     </template>
 
     <template #form>
-      <PrimeVueCard>
-        <template #content>
-          <form
-            class="
-              space-y-4
-              md:space-y-6
-            "
-            @keydown.enter.prevent="form.submit"
-            @submit.prevent="form.submit"
-          >
-            <div>
-              <label
-                class="
-                  text-surface-700 mb-2 block text-sm font-medium
-                  dark:text-surface-0
-                "
-                for="email"
-              >
-                Email
-              </label>
-              <PrimeVueInputText
-                id="email"
-                v-model="form.fields.email"
-                :autofocus="true"
-                fluid
-                :invalid="form.errors.hasOwnProperty('email')"
-                size="small"
-                type="text"
-              />
-              <div v-if="form.errors.email" class="mt-2 text-red-500">
-                {{ form.errors.email }}
-              </div>
-            </div>
-            <div>
-              <label
-                class="
-                  text-surface-700 mb-2 block text-sm font-medium
-                  dark:text-surface-0
-                "
-                for="name"
-              >
-                Name
-              </label>
-              <PrimeVueInputText
-                id="name"
-                v-model="form.fields.name"
-                fluid
-                :invalid="form.errors.hasOwnProperty('name')"
-                size="small"
-                type="text"
-              />
-              <div v-if="form.errors.name" class="mt-2 text-red-500">
-                {{ form.errors.name }}
-              </div>
-            </div>
-            <FormButtons :cancel-url="route('users.index')" :is-form-processing="form.processing" />
-          </form>
-        </template>
-      </PrimeVueCard>
+      <UCard>
+        <form class="space-y-6" @submit.prevent="form.submit">
+          <div class="space-y-2">
+            <label class="block text-sm font-medium" for="email">
+              Email address
+            </label>
+            <UInput
+              id="email"
+              v-model="form.fields.email"
+              autocomplete="email"
+              class="w-full"
+              :invalid="Boolean(form.errors.email)"
+              placeholder="user@example.com"
+              size="lg"
+              type="email"
+            />
+            <p
+              v-if="form.errors.email"
+              class="
+                text-sm text-red-600
+                dark:text-red-400
+              "
+            >
+              {{ form.errors.email }}
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-medium" for="name">
+              Full name
+            </label>
+            <UInput
+              id="name"
+              v-model="form.fields.name"
+              autocomplete="name"
+              class="w-full"
+              :invalid="Boolean(form.errors.name)"
+              placeholder="John Doe"
+              size="lg"
+              type="text"
+            />
+            <p
+              v-if="form.errors.name"
+              class="
+                text-sm text-red-600
+                dark:text-red-400
+              "
+            >
+              {{ form.errors.name }}
+            </p>
+          </div>
+
+          <FormButtons :cancel-url="route('users.index')" :is-form-processing="form.processing" />
+        </form>
+      </UCard>
     </template>
   </FormSection>
 </template>
