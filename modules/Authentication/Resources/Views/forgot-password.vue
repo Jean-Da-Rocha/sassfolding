@@ -59,7 +59,7 @@ useHead({ title: 'Forgot Password' });
           </div>
 
           <UButton
-            class="w-full"
+            block
             color="primary"
             :disabled="form.processing"
             :loading="form.processing"
