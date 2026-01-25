@@ -11,6 +11,7 @@ final class SharedData extends Data
 {
     /** @param array<string, string> $errors */
     public function __construct(
+        public readonly AppData $app,
         public readonly ?FlashData $flash,
         public readonly RouteData $route,
         public readonly ?UserData $user,

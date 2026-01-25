@@ -7,6 +7,7 @@ namespace Modules\Core\Http\Middleware;
 use Hybridly\Http\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Core\Data\AppData;
 use Modules\Core\Data\FlashData;
 use Modules\Core\Data\RouteData;
 use Modules\Core\Data\SharedData;
@@ -23,6 +24,7 @@ class HandleHybridRequests extends Middleware
     public function share(Request $request): SharedData
     {
         return new SharedData(
+            app: new AppData(name: config('app.name')),
             flash: new FlashData(
                 error: $request->session()->get(FlashMessage::Error->value),
                 info: $request->session()->get(FlashMessage::Info->value),
