@@ -24,7 +24,7 @@
     "@commitlint/config-conventional": "^20.3.1",
     "@iconify-json/heroicons": "^1.2.3",
     "@tailwindcss/forms": "^0.5.11",
-    "@tailwindcss/postcss": "^4.1.18",
+    "@tailwindcss/vite": "^4.1.18",
     "@types/node": "^24.10.9",
     "@unhead/vue": "^2.1.2",
     "@vue/runtime-core": "^3.5.26",
@@ -35,7 +35,6 @@
     "husky": "^9.1.7",
     "hybridly": "^0.9.0",
     "lint-staged": "^16.2.7",
-    "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
     "taze": "^19.9.2",
     "typescript": "^5.9.3",
@@ -45,11 +44,6 @@
     "vue": "^3.5.26",
     "vue-eslint-parser": "^10.2.0",
     "vue-tsc": "^3.2.2"
-  },
-  "postcss": {
-    "plugins": {
-      "@tailwindcss/postcss": {}
-    }
   },
   "lint-staged": {
     "**/*.{vue,ts}": "eslint --fix",

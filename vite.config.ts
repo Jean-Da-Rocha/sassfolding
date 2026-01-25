@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import ui from '@nuxt/ui/vite';
+import tailwindcss from '@tailwindcss/vite';
 import hybridly from 'hybridly/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { defineConfig, loadEnv } from 'vite';
@@ -97,6 +98,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
         autoImports: false,
         vueComponents: false,
       }),
+      tailwindcss(),
     ],
     resolve: {
       alias: {
