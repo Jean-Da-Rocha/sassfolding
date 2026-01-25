@@ -9,12 +9,12 @@ use Spatie\LaravelData\Data;
 final class FlashData extends Data
 {
     public function __construct(
-        public readonly ?string $error = null,
-        public readonly ?string $info = null,
-        public readonly ?string $neutral = null,
-        public readonly ?string $primary = null,
-        public readonly ?string $secondary = null,
-        public readonly ?string $success = null,
-        public readonly ?string $warning = null,
+        public readonly mixed $error,
+        public readonly mixed $info,
+        public readonly mixed $neutral,
+        public readonly mixed $primary,
+        public readonly mixed $secondary,
+        public readonly mixed $success,
+        public readonly mixed $warning,
     ) {}
 }
