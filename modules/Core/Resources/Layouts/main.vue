@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { NavigationMenuItem } from '@nuxt/ui';
-
 const { current } = useRoute();
 const appName = useProperty('app.name');
 const isOpen = ref<boolean>(false);

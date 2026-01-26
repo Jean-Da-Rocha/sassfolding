@@ -1,5 +1,4 @@
-import type { Options as AutoImportOptions } from 'unplugin-auto-import/types';
-import type { Options as ComponentsOptions } from 'unplugin-vue-components/types';
+import type { NuxtUIOptions } from '@nuxt/ui/unplugin';
 import type { UserConfig } from 'vite';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -23,7 +22,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
       }
     : undefined;
 
-  const autoImportConfig: Partial<AutoImportOptions> = {
+  const autoImportConfig = {
     dirs: ['modules/**'],
     dts: '.hybridly/auto-imports.d.ts',
     imports: [
@@ -59,15 +58,20 @@ export default defineConfig(({ command, mode }): UserConfig => {
         imports: ['router', 'route', 'can', 'getRouterContext'],
       },
       {
-        from: 'modules/Menus/Types/app-navigation-type',
-        imports: ['AppNavigationType'],
+        from: 'hybridly',
+        imports: ['NavigationResponse', 'RouteName'],
+        type: true,
+      },
+      {
+        from: '@nuxt/ui',
+        imports: ['NavigationMenuItem', 'DropdownMenuItem'],
         type: true,
       },
     ],
     vueTemplate: true,
-  };
+  } satisfies NuxtUIOptions['autoImport'];
 
-  const componentsConfig: Partial<ComponentsOptions> = {
+  const componentsConfig = {
     dirs: ['modules/**'],
     dts: '.hybridly/components.d.ts',
     resolvers: [
@@ -82,6 +86,12 @@ export default defineConfig(({ command, mode }): UserConfig => {
         }
       },
     ],
+  } satisfies NuxtUIOptions['components'];
+
+  const nuxtUIOptions: NuxtUIOptions = {
+    autoImport: autoImportConfig,
+    components: componentsConfig,
+    router: false,
   };
 
   return {
@@ -89,11 +99,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
       sourcemap: false,
     },
     plugins: [
-      ui({
-        autoImport: autoImportConfig,
-        components: componentsConfig,
-        router: false,
-      }),
+      ui(nuxtUIOptions),
       hybridly({
         autoImports: false,
         vueComponents: false,

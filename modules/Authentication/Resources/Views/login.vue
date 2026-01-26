@@ -9,7 +9,7 @@ const form = useForm<{ email: string; password: string; remember: boolean }>({
   url: route('login'),
 });
 
-const showPassword = ref(false);
+const showPassword = ref<boolean>(false);
 
 useHead({ title: 'Sign In' });
 </script>

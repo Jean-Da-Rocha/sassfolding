@@ -11,8 +11,8 @@ const form = useForm<{ email: string; name: string; password: string; password_c
   url: route('register'),
 });
 
-const showPassword = ref(false);
-const showPasswordConfirmation = ref(false);
+const showPassword = ref<boolean>(false);
+const showPasswordConfirmation = ref<boolean>(false);
 
 useHead({ title: 'Sign Up' });
 </script>
@@ -149,7 +149,8 @@ useHead({ title: 'Sign Up' });
             </template>
           </UInput>
           <p
-            v-if="form.errors.password_confirmation" class="
+            v-if="form.errors.password_confirmation"
+            class="
               text-sm text-red-600
               dark:text-red-400
             "

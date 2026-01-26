@@ -15,8 +15,8 @@ const form = useForm<{ email: string; password: string; password_confirmation: s
   url: route('password.update'),
 });
 
-const showPassword = ref(false);
-const showPasswordConfirmation = ref(false);
+const showPassword = ref<boolean>(false);
+const showPasswordConfirmation = ref<boolean>(false);
 
 useHead({ title: 'Reset Password' });
 </script>

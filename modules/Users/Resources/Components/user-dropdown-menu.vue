@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import type { DropdownMenuItem } from '@nuxt/ui';
-
 defineProps<{ collapsed: boolean }>();
 
 const { user } = useAuth();
 
 const appConfig = useAppConfig();
+
 const colorMode = useColorMode();
 
 const colors = [
@@ -28,9 +27,9 @@ const colors = [
   'rose',
 ] as const;
 
-type Color = typeof colors[number];
-
 const neutrals = ['slate', 'gray', 'zinc', 'neutral', 'stone'] as const;
+
+type Color = typeof colors[number];
 
 type NeutralColor = typeof neutrals[number];
 
