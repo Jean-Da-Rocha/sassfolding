@@ -14,7 +14,8 @@ defineProps<{ cancelLabel?: string; cancelUrl: string; isFormProcessing: boolean
         w-full
         md:w-auto
       "
-      :href="cancelUrl" method="get"
+      :href="cancelUrl"
+      method="get"
     >
       <UButton
         block
