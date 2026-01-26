@@ -1,6 +1,7 @@
 ignoredBuiltDependencies:
   - '@tailwindcss/oxide'
   - unrs-resolver
+  - vue-demi
 
 onlyBuiltDependencies:
   - esbuild

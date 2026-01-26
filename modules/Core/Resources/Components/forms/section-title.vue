@@ -6,21 +6,11 @@
     "
   >
     <div class="lg:px-4">
-      <h3
-        class="
-          dark:text-surface-0
-          text-lg font-medium
-        "
-      >
+      <h3 class="text-lg font-medium">
         <slot name="title" />
       </h3>
 
-      <p
-        class="
-          dark:text-surface-0
-          mt-1 text-sm
-        "
-      >
+      <p class="mt-1 text-sm">
         <slot name="description" />
       </p>
     </div>

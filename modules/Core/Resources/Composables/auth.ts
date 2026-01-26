@@ -5,5 +5,8 @@ export function useAuth(): {
   const user = useProperty<Modules.Users.Data.UserData | null>('user');
   const isAuthenticated = computed<boolean>(() => Boolean(user.value));
 
-  return { isAuthenticated, user };
+  return {
+    isAuthenticated,
+    user,
+  };
 }

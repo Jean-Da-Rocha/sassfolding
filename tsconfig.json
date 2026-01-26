@@ -2,7 +2,12 @@
   "extends": "./.hybridly/tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "@public/*": ["./public/*"]
+      "#build/ui": [
+        "./node_modules/.nuxt-ui/ui"
+      ],
+      "@public/*": [
+        "./public/*"
+      ]
     },
     "noEmit": true,
     "sourceMap": false,

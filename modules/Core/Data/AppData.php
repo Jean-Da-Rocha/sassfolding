@@ -6,10 +6,9 @@ namespace Modules\Core\Data;
 
 use Spatie\LaravelData\Data;
 
-class FlashMessageData extends Data
+class AppData extends Data
 {
     public function __construct(
-        public readonly mixed $message,
-        public readonly string $severity
+        public readonly string $name,
     ) {}
 }

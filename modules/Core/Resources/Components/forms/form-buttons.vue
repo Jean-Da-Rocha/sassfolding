@@ -1,33 +1,47 @@
 <script setup lang="ts">
-defineProps<{ cancelLabel?: string; cancelUrl: string; isFormProcessing: boolean; submitLabel?: string }>();
+defineProps<{
+  cancelLabel?: string;
+  cancelUrl: string;
+  isFormProcessing: boolean;
+  submitLabel?: string;
+}>();
 </script>
 
 <template>
   <div
     class="
-      mt-6
-      md:text-right
+      flex flex-col gap-3
+      md:flex-row md:justify-end
     "
   >
-    <RouterLink :href="cancelUrl" method="get">
-      <PrimeVueContrastButton
-        class="
-          w-full
-          md:mr-3 md:w-auto
-        "
-        :label="cancelLabel ?? 'Cancel'"
-        size="small"
-        type="button"
-      />
-    </RouterLink>
-    <PrimeVuePrimaryButton
+    <RouterLink
       class="
-        mt-3 w-full
+        w-full
         md:w-auto
       "
+      :href="cancelUrl"
+      method="get"
+    >
+      <UButton
+        block
+        color="neutral"
+        :label="cancelLabel ?? 'Cancel'"
+        size="lg"
+        type="button"
+        variant="outline"
+      />
+    </RouterLink>
+    <UButton
+      block
+      class="
+        w-full
+        md:w-auto
+      "
+      color="primary"
       :disabled="isFormProcessing"
       :label="submitLabel ?? 'Submit'"
-      size="small"
+      :loading="isFormProcessing"
+      size="lg"
       type="submit"
     />
   </div>

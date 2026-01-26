@@ -31,7 +31,7 @@ find useful ideas or inspiration within it.
 - 🧪 Preconfigured **.env** and **.env.testing** environments
 - 🔏 SSL certificates with **mkcert** + **.test** TLD with local DNS resolver
 - 🛠️ Built-in support for Husky Git hooks
-- 📦 Modern stack (Pnpm, Tailwind CSS, Laravel, Hybridly, PrimeVue Volt, etc.)
+- 📦 Modern stack (Pnpm, Tailwind CSS, Laravel, Hybridly, Nuxt UI, etc.)
 - ✨ Code linting and formatting preconfigured (ESLint, Pint, etc.)
 - 🔎 Robust types enforcement (Vue-TSC, PHPStan, Laravel Typescript-Transformer)
 - 🥦 Taze: modern CLI tool to keep front-end dependencies up-to-date
@@ -96,12 +96,6 @@ across the stack.
 MinIO entered maintenance mode in December 2025, with no new features and Docker images removed from public registries.
 RustFS is a Rust-based, S3-compatible alternative that offers better performance (2.3x throughput for small objects)
 and active development.
-
-**Why PrimeVue Volt?**
-
-Volt UI uses an on-demand component distribution model (`npx volt-vue add <Component>`) where components are copied
-into your project. This gives full control over styling and bundle size while leveraging PrimeVue's accessible,
-feature-rich components.
 
 ### Enforcing Boundaries
 

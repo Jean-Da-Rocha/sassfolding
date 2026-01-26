@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const form = useForm<{ email: string; name: string; password: string; password_confirmation: string }>({
+const form = useForm<{
+  email: string;
+  name: string;
+  password: string;
+  password_confirmation: string;
+}>({
   fields: {
     email: '',
     name: '',
@@ -10,6 +15,9 @@ const form = useForm<{ email: string; name: string; password: string; password_c
   preserveState: true,
   url: route('users.store'),
 });
+
+const showPassword = ref<boolean>(false);
+const showPasswordConfirmation = ref<boolean>(false);
 
 useHead({ title: 'User Creation' });
 </script>
@@ -25,104 +33,133 @@ useHead({ title: 'User Creation' });
     </template>
 
     <template #form>
-      <PrimeVueCard>
-        <template #content>
-          <form
-            class="
-              space-y-4
-              md:space-y-6
-            "
-            @keydown.enter.prevent="form.submit"
-            @submit.prevent="form.submit"
-          >
-            <div>
-              <label
-                class="
-                  text-surface-700 mb-2 block text-sm font-medium
-                  dark:text-surface-0
-                "
-                for="email"
-              >
-                Email
-              </label>
-              <PrimeVueInputText
-                id="email"
-                v-model="form.fields.email"
-                :autofocus="true"
-                fluid
-                :invalid="form.errors.hasOwnProperty('email')"
-                size="small"
-                type="text"
-              />
-              <div v-if="form.errors.email" class="mt-2 text-red-500">
-                {{ form.errors.email }}
-              </div>
-            </div>
-            <div>
-              <label
-                class="
-                  text-surface-700 mb-2 block text-sm font-medium
-                  dark:text-surface-0
-                "
-                for="name"
-              >
-                Name
-              </label>
-              <PrimeVueInputText
-                id="name"
-                v-model="form.fields.name"
-                fluid
-                :invalid="form.errors.hasOwnProperty('name')"
-                size="small"
-                type="text"
-              />
-              <div v-if="form.errors.name" class="mt-2 text-red-500">
-                {{ form.errors.name }}
-              </div>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium" for="password">
-                Password
-              </label>
-              <PrimeVuePassword
-                id="password"
-                v-model="form.fields.password"
-                :feedback="false"
-                fluid
-                for="password"
-                :invalid="form.errors.hasOwnProperty('password')"
-                size="small"
-                toggle-mask
-              />
-              <div v-if="form.errors.password" class="mt-2 text-red-500">
-                {{ form.errors.password }}
-              </div>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium" for="password_confirmation">
-                Confirm Password
-              </label>
-              <PrimeVuePassword
-                id="password_confirmation"
-                v-model="form.fields.password_confirmation"
-                :feedback="false"
-                fluid
-                for="password_confirmation"
-                :invalid="form.errors.hasOwnProperty('password_confirmation')"
-                size="small"
-                toggle-mask
-              />
-              <div
-                v-if="form.errors.password_confirmation"
-                class="mt-2 text-red-500"
-              >
-                {{ form.errors.password_confirmation }}
-              </div>
-            </div>
-            <FormButtons :cancel-url="route('users.index')" :is-form-processing="form.processing" />
-          </form>
-        </template>
-      </PrimeVueCard>
+      <UCard>
+        <form class="space-y-6" @submit.prevent="form.submit">
+          <div class="space-y-2">
+            <label class="block text-sm font-medium" for="email">
+              Email address
+            </label>
+            <UInput
+              id="email"
+              v-model="form.fields.email"
+              autocomplete="email"
+              class="w-full"
+              :invalid="Boolean(form.errors.email)"
+              placeholder="user@example.com"
+              size="lg"
+              type="email"
+            />
+            <p
+              v-if="form.errors.email"
+              class="
+                text-sm text-red-600
+                dark:text-red-400
+              "
+            >
+              {{ form.errors.email }}
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-medium" for="name">
+              Full name
+            </label>
+            <UInput
+              id="name"
+              v-model="form.fields.name"
+              autocomplete="name"
+              class="w-full"
+              :invalid="Boolean(form.errors.name)"
+              placeholder="John Doe"
+              size="lg"
+              type="text"
+            />
+            <p
+              v-if="form.errors.name"
+              class="
+                text-sm text-red-600
+                dark:text-red-400
+              "
+            >
+              {{ form.errors.name }}
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-medium" for="password">
+              Password
+            </label>
+            <UInput
+              id="password"
+              v-model="form.fields.password"
+              autocomplete="new-password"
+              class="w-full"
+              :invalid="Boolean(form.errors.password)"
+              placeholder="Create a strong password"
+              size="lg"
+              :type="showPassword ? 'text' : 'password'"
+            >
+              <template #trailing>
+                <UButton
+                  :aria-label="showPassword ? 'Hide password' : 'Show password'"
+                  color="neutral"
+                  :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                  size="sm"
+                  variant="link"
+                  @click="showPassword = !showPassword"
+                />
+              </template>
+            </UInput>
+            <p
+              v-if="form.errors.password"
+              class="
+                text-sm text-red-600
+                dark:text-red-400
+              "
+            >
+              {{ form.errors.password }}
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-medium" for="password_confirmation">
+              Confirm password
+            </label>
+            <UInput
+              id="password_confirmation"
+              v-model="form.fields.password_confirmation"
+              autocomplete="new-password"
+              class="w-full"
+              :invalid="Boolean(form.errors.password_confirmation)"
+              placeholder="Re-enter your password"
+              size="lg"
+              :type="showPasswordConfirmation ? 'text' : 'password'"
+            >
+              <template #trailing>
+                <UButton
+                  :aria-label="showPasswordConfirmation ? 'Hide password' : 'Show password'"
+                  color="neutral"
+                  :icon="showPasswordConfirmation ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                  size="sm"
+                  variant="link"
+                  @click="showPasswordConfirmation = !showPasswordConfirmation"
+                />
+              </template>
+            </UInput>
+            <p
+              v-if="form.errors.password_confirmation"
+              class="
+                text-sm text-red-600
+                dark:text-red-400
+              "
+            >
+              {{ form.errors.password_confirmation }}
+            </p>
+          </div>
+
+          <FormButtons :cancel-url="route('users.index')" :is-form-processing="form.processing" />
+        </form>
+      </UCard>
     </template>
   </FormSection>
 </template>

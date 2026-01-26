@@ -1,13 +1,15 @@
+import type { NuxtUIOptions } from '@nuxt/ui/unplugin';
+import type { UserConfig } from 'vite';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
-import { PrimeVueResolver } from '@primevue/auto-import-resolver';
+import ui from '@nuxt/ui/vite';
+import tailwindcss from '@tailwindcss/vite';
 import hybridly from 'hybridly/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { defineConfig, loadEnv } from 'vite';
-import { primeVueVoltUiTypeImports } from './modules/Core/Resources/Components/volt/imports';
 
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ command, mode }): UserConfig => {
   const env = loadEnv(mode, process.cwd());
   const composeProjectName = env.VITE_APP_NAME;
   const certPath = `/certs/${composeProjectName}`;
@@ -20,39 +22,92 @@ export default defineConfig(({ command, mode }) => {
       }
     : undefined;
 
+  const autoImportConfig = {
+    dirs: ['modules/**'],
+    dts: '.hybridly/auto-imports.d.ts',
+    imports: [
+      'vue',
+      '@vueuse/core',
+      {
+        from: 'hybridly/vue',
+        imports: [
+          'useProperty',
+          'setProperty',
+          'useRefinements',
+          'useTable',
+          'useBulkSelect',
+          'useProperties',
+          'useBackForward',
+          'useContext',
+          'useForm',
+          'useDialog',
+          'useHistoryState',
+          'usePaginator',
+          'registerHook',
+          'useRoute',
+          'useQueryParameter',
+          'useQueryParameters',
+        ],
+      },
+      {
+        from: '@unhead/vue',
+        imports: ['useHead', 'useSeoMeta'],
+      },
+      {
+        from: 'hybridly',
+        imports: ['router', 'route', 'can', 'getRouterContext'],
+      },
+      {
+        from: 'hybridly',
+        imports: ['NavigationResponse', 'RouteName'],
+        type: true,
+      },
+      {
+        from: '@nuxt/ui',
+        imports: ['NavigationMenuItem', 'DropdownMenuItem'],
+        type: true,
+      },
+    ],
+    vueTemplate: true,
+  } satisfies NuxtUIOptions['autoImport'];
+
+  const componentsConfig = {
+    dirs: ['modules/**'],
+    dts: '.hybridly/components.d.ts',
+    resolvers: [
+      IconsResolver({
+        enabledCollections: ['heroicons'],
+        prefix: false,
+      }),
+      // Custom resolver for RouterLink from hybridly
+      (componentName: string) => {
+        if (componentName === 'RouterLink') {
+          return {
+            from: 'hybridly/vue',
+            name: 'RouterLink',
+          };
+        }
+      },
+    ],
+  } satisfies NuxtUIOptions['components'];
+
+  const nuxtUIOptions: NuxtUIOptions = {
+    autoImport: autoImportConfig,
+    components: componentsConfig,
+    router: false,
+  };
+
   return {
     build: {
       sourcemap: false,
     },
     plugins: [
+      ui(nuxtUIOptions),
       hybridly({
-        autoImports: {
-          dirs: ['modules/**'],
-          imports: [
-            {
-              from: 'hybridly',
-              imports: ['NavigationResponse', 'RouteName'],
-              type: true,
-            },
-            ...primeVueVoltUiTypeImports,
-            {
-              from: 'modules/Menus/Types/app-navigation-type',
-              imports: ['AppNavigationType'],
-              type: true,
-            },
-          ],
-        },
-        vueComponents: {
-          dirs: ['modules/**'],
-          resolvers: [
-            IconsResolver({
-              enabledCollections: ['heroicons'],
-              prefix: false,
-            }),
-            PrimeVueResolver(),
-          ],
-        },
+        autoImports: false,
+        vueComponents: false,
       }),
+      tailwindcss(),
     ],
     resolve: {
       alias: {
@@ -60,7 +115,7 @@ export default defineConfig(({ command, mode }) => {
       },
     },
     server: {
-      https: httpsConfig,
+      ...(httpsConfig ? { https: httpsConfig } : {}),
       watch: {
         // Ignore directories that slow down Vite and cause 'file watchers limit' errors.
         ignored: [
@@ -69,6 +124,8 @@ export default defineConfig(({ command, mode }) => {
           '**/storage/**',
           '**/tests/**',
           '**/vendor/**',
+          '**/.pnpm-store/**',
+          '**/node_modules/**',
         ],
       },
     },

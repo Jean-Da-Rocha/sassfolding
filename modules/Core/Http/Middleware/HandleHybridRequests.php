@@ -7,8 +7,8 @@ namespace Modules\Core\Http\Middleware;
 use Hybridly\Http\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Core\Data\AppData;
 use Modules\Core\Data\FlashData;
-use Modules\Core\Data\FlashMessageData;
 use Modules\Core\Data\RouteData;
 use Modules\Core\Data\SharedData;
 use Modules\Core\Enums\FlashMessage;
@@ -23,26 +23,19 @@ class HandleHybridRequests extends Middleware
      */
     public function share(Request $request): SharedData
     {
+        /** @var string $appName */
+        $appName = config('app.name');
+
         return new SharedData(
+            app: new AppData(name: $appName),
             flash: new FlashData(
-                messages: [
-                    new FlashMessageData(
-                        message: $request->session()->get(FlashMessage::Error->value),
-                        severity: FlashMessage::Error->value,
-                    ),
-                    new FlashMessageData(
-                        message: $request->session()->get(FlashMessage::Info->value),
-                        severity: FlashMessage::Info->value,
-                    ),
-                    new FlashMessageData(
-                        message: $request->session()->get(FlashMessage::Success->value),
-                        severity: FlashMessage::Success->value
-                    ),
-                    new FlashMessageData(
-                        message: $request->session()->get(FlashMessage::Warning->value),
-                        severity: FlashMessage::Warning->value,
-                    ),
-                ],
+                error: $request->session()->get(FlashMessage::Error->value),
+                info: $request->session()->get(FlashMessage::Info->value),
+                neutral: $request->session()->get(FlashMessage::Neutral->value),
+                primary: $request->session()->get(FlashMessage::Primary->value),
+                secondary: $request->session()->get(FlashMessage::Secondary->value),
+                success: $request->session()->get(FlashMessage::Success->value),
+                warning: $request->session()->get(FlashMessage::Warning->value),
             ),
             route: new RouteData(name: Route::currentRouteName()),
             user: UserData::optional(auth()->user()),

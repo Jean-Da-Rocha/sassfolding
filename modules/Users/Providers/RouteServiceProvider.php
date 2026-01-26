@@ -10,9 +10,6 @@ class RouteServiceProvider extends \Illuminate\Foundation\Support\Providers\Rout
 {
     public function boot(): void
     {
-        $this->routes(function () {
-            Route::middleware('web')
-                ->group(__DIR__.'/../Routes/web.php');
-        });
+        $this->routes(fn () => Route::middleware('web')->group(__DIR__.'/../Routes/web.php'));
     }
 }

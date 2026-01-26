@@ -1,7 +1,10 @@
 <script setup lang="ts">
 const props = defineProps<{ user: Modules.Users.Data.UserData | null }>();
 
-const form = useForm<{ email: string; name: string }>({
+const form = useForm<{
+  email: string;
+  name: string;
+}>({
   fields: {
     email: props.user?.email ?? '',
     name: props.user?.name ?? '',
@@ -23,69 +26,70 @@ const form = useForm<{ email: string; name: string }>({
     </template>
 
     <template #form>
-      <PrimeVueCard>
-        <template #content>
-          <form
-            class="
-              space-y-4
-              md:space-y-6
-            "
-            @submit.prevent="form.submit"
-          >
-            <div>
-              <label class="mb-2 block text-sm font-medium" for="email">
-                Email
-              </label>
-              <PrimeVueInputText
-                id="email"
-                v-model="form.fields.email"
-                :autofocus="true"
-                fluid
-                :invalid="form.errors.hasOwnProperty('email')"
-                size="small"
-                type="text"
-              />
-              <div v-if="form.errors.email" class="mt-2 text-red-500">
-                {{ form.errors.email }}
-              </div>
-            </div>
-            <div>
-              <label class="mb-2 block text-sm font-medium" for="name">
-                Name
-              </label>
-              <PrimeVueInputText
-                id="name"
-                v-model="form.fields.name"
-                :autofocus="true"
-                fluid
-                :invalid="form.errors.hasOwnProperty('name')"
-                size="small"
-                type="text"
-              />
-              <div v-if="form.errors.name" class="mt-2 text-red-500">
-                {{ form.errors.name }}
-              </div>
-            </div>
-            <div
+      <UCard>
+        <form class="space-y-6" @submit.prevent="form.submit">
+          <div class="space-y-2">
+            <label class="block text-sm font-medium" for="email">
+              Email address
+            </label>
+            <UInput
+              id="email"
+              v-model="form.fields.email"
+              autocomplete="email"
+              class="w-full"
+              :invalid="Boolean(form.errors.email)"
+              placeholder="you@example.com"
+              size="lg"
+              type="email"
+            />
+            <p
+              v-if="form.errors.email"
               class="
-                mt-6
-                md:text-right
+                text-sm text-red-600
+                dark:text-red-400
               "
             >
-              <PrimeVuePrimaryButton
-                class="
-                  w-full
-                  md:w-auto
-                "
-                :disabled="form.processing"
-                label="Submit"
-                size="small"
-                type="submit"
-              />
-            </div>
-          </form>
-        </template>
-      </PrimeVueCard>
+              {{ form.errors.email }}
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-medium" for="name">
+              Full name
+            </label>
+            <UInput
+              id="name"
+              v-model="form.fields.name"
+              autocomplete="name"
+              class="w-full"
+              :invalid="Boolean(form.errors.name)"
+              placeholder="John Doe"
+              size="lg"
+              type="text"
+            />
+            <p
+              v-if="form.errors.name"
+              class="
+                text-sm text-red-600
+                dark:text-red-400
+              "
+            >
+              {{ form.errors.name }}
+            </p>
+          </div>
+
+          <div class="flex justify-end">
+            <UButton
+              color="primary"
+              :disabled="form.processing"
+              label="Submit"
+              :loading="form.processing"
+              size="lg"
+              type="submit"
+            />
+          </div>
+        </form>
+      </UCard>
     </template>
   </FormSection>
 </template>
