@@ -3,11 +3,16 @@ import type { Linter } from 'eslint';
 import { antfu } from '@antfu/eslint-config';
 import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss';
 
-type AntfuFirstArg = OptionsConfig & Omit<TypedFlatConfigItem, 'files' | 'ignores'>;
-
 const tailwindRules = eslintPluginBetterTailwindcss.configs['recommended-error'].rules as Linter.RulesRecord;
 
-const baseConfig = {
+const options = {
+  stylistic: {
+    semi: true,
+  } as OptionsConfig['stylistic'],
+  yaml: false,
+} satisfies OptionsConfig;
+
+const customRules = {
   plugins: {
     'better-tailwindcss': eslintPluginBetterTailwindcss,
   },
@@ -46,11 +51,7 @@ const baseConfig = {
       entryPoint: 'modules/Core/Resources/Application/tailwind.css',
     },
   },
-  stylistic: {
-    semi: true,
-  },
-  yaml: false,
-};
+} satisfies TypedFlatConfigItem;
 
 const vueConfig = {
   files: ['**/*.vue'],
@@ -60,4 +61,4 @@ const vueConfig = {
   },
 } satisfies TypedFlatConfigItem;
 
-export default antfu(baseConfig as AntfuFirstArg, vueConfig);
+export default antfu(options, customRules, vueConfig);
