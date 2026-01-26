@@ -4,7 +4,12 @@ const props = defineProps<{
   token: string;
 }>();
 
-const form = useForm<{ email: string; password: string; password_confirmation: string; token: string }>({
+const form = useForm<{
+  email: string;
+  password: string;
+  password_confirmation: string;
+  token: string;
+}>({
   fields: {
     email: props.email,
     password: '',

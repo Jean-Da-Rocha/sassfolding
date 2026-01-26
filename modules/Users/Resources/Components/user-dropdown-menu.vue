@@ -8,29 +8,28 @@ const appConfig = useAppConfig();
 const colorMode = useColorMode();
 
 const colors = [
-  'red',
-  'orange',
   'amber',
-  'yellow',
-  'lime',
-  'green',
-  'emerald',
-  'teal',
-  'cyan',
-  'sky',
   'blue',
-  'indigo',
-  'violet',
-  'purple',
+  'cyan',
+  'emerald',
   'fuchsia',
+  'green',
+  'indigo',
+  'lime',
+  'orange',
   'pink',
+  'purple',
+  'red',
   'rose',
+  'sky',
+  'teal',
+  'violet',
+  'yellow',
 ] as const;
 
-const neutrals = ['slate', 'gray', 'zinc', 'neutral', 'stone'] as const;
+const neutrals = ['gray', 'neutral', 'slate', 'stone', 'zinc'] as const;
 
 type Color = typeof colors[number];
-
 type NeutralColor = typeof neutrals[number];
 
 onMounted(() => {

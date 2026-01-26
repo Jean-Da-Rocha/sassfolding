@@ -1,7 +1,10 @@
 <script setup lang="ts">
 const { current } = useRoute();
+
 const appName = useProperty('app.name');
+
 const isOpen = ref<boolean>(false);
+
 const links = computed(() => [
   [
     {

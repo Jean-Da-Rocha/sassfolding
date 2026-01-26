@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const form = useForm<{ current_password: string; password: string; password_confirmation: string }>({
+const form = useForm<{
+  current_password: string;
+  password: string;
+  password_confirmation: string;
+}>({
   fields: {
     current_password: '',
     password: '',

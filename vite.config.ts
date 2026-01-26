@@ -82,7 +82,10 @@ export default defineConfig(({ command, mode }): UserConfig => {
       // Custom resolver for RouterLink from hybridly
       (componentName: string) => {
         if (componentName === 'RouterLink') {
-          return { from: 'hybridly/vue', name: 'RouterLink' };
+          return {
+            from: 'hybridly/vue',
+            name: 'RouterLink',
+          };
         }
       },
     ],

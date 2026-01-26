@@ -1,5 +1,10 @@
 <script setup lang="ts">
-defineProps<{ cancelLabel?: string; cancelUrl: string; isFormProcessing: boolean; submitLabel?: string }>();
+defineProps<{
+  cancelLabel?: string;
+  cancelUrl: string;
+  isFormProcessing: boolean;
+  submitLabel?: string;
+}>();
 </script>
 
 <template>

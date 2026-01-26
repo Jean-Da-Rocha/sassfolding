@@ -1,7 +1,10 @@
 <script setup lang="ts">
 const props = defineProps<{ user: Modules.Users.Data.UserData }>();
 
-const form = useForm<{ email: string; name: string }>({
+const form = useForm<{
+  email: string;
+  name: string;
+}>({
   fields: {
     email: props.user.email,
     name: props.user.name,
