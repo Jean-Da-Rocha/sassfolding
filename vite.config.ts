@@ -103,10 +103,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
     },
     plugins: [
       ui(nuxtUIOptions),
-      hybridly({
-        autoImports: false,
-        vueComponents: false,
-      }),
+      hybridly(),
       tailwindcss(),
     ],
     resolve: {
