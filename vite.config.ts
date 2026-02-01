@@ -31,22 +31,22 @@ export default defineConfig(({ command, mode }): UserConfig => {
       {
         from: 'hybridly/vue',
         imports: [
-          'useProperty',
+          'registerHook',
           'setProperty',
-          'useRefinements',
-          'useTable',
-          'useBulkSelect',
-          'useProperties',
           'useBackForward',
+          'useBulkSelect',
           'useContext',
-          'useForm',
           'useDialog',
+          'useForm',
           'useHistoryState',
           'usePaginator',
-          'registerHook',
-          'useRoute',
+          'useProperties',
+          'useProperty',
+          'useRefinements',
           'useQueryParameter',
           'useQueryParameters',
+          'useRoute',
+          'useTable',
         ],
       },
       {
@@ -55,7 +55,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
       },
       {
         from: 'hybridly',
-        imports: ['router', 'route', 'can', 'getRouterContext'],
+        imports: ['can', 'getRouterContext', 'route', 'router'],
       },
       {
         from: 'hybridly',
@@ -64,7 +64,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
       },
       {
         from: '@nuxt/ui',
-        imports: ['NavigationMenuItem', 'DropdownMenuItem', 'ColumnDef'],
+        imports: ['ColumnDef', 'DropdownMenuItem', 'NavigationMenuItem', 'ToastProps'],
         type: true,
       },
     ],

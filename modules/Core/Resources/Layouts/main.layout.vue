@@ -1,4 +1,6 @@
 <script setup lang="ts">
+useFlashToast();
+
 const { current } = useRoute();
 
 const appName = useProperty('app.name');
@@ -29,7 +31,6 @@ const links = computed(() => [
           onClick: () => router.get(route('users.index')),
         },
       ],
-      defaultOpen: true,
       icon: 'heroicons-users',
       label: 'Users',
     },
@@ -89,7 +90,6 @@ const links = computed(() => [
           </template>
         </UDashboardNavbar>
         <main class="flex-1 overflow-auto p-8">
-          <AlertMessage />
           <slot />
         </main>
       </UDashboardPanel>

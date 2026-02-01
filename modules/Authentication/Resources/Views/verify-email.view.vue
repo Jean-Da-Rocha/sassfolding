@@ -28,8 +28,6 @@ useHead({ title: 'Verify Email' });
       </template>
 
       <div class="space-y-6">
-        <AlertMessage />
-
         <div
           class="
             rounded-lg bg-blue-50 p-4 text-sm text-blue-800
