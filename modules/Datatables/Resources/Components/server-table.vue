@@ -10,18 +10,28 @@ export type TableAction<T> = {
   route?: string;
 };
 
+export type BulkAction<T> = {
+  color?: 'error' | 'info' | 'neutral' | 'primary' | 'secondary' | 'success' | 'warning';
+  icon?: string;
+  label: string;
+  onSelect: (selectedRows: T[]) => void;
+};
+
 type Props = {
   table: Table<T>;
   actions?: TableAction<T>[];
+  bulkActions?: BulkAction<T>[];
   columns?: ColumnDef<T>[];
-  searchable?: boolean;
   hiddenColumns?: string[];
   resourceName?: string;
+  searchable?: boolean;
+  selectable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   hiddenColumns: () => [],
   searchable: true,
+  selectable: false,
 });
 
 defineSlots<{
@@ -32,6 +42,46 @@ defineSlots<{
 
 // Hybridly table integration
 const datatable = useTable(props, 'table');
+
+// Row selection state for bulk actions
+const rowSelection = ref<Record<string, boolean>>({});
+
+// Track last selected index for shift-click range selection
+const lastSelectedIndex = ref<number | null>(null);
+
+// Computed selected rows - maps selection indices to actual data
+const selectedRows = computed<T[]>(() =>
+  Object.keys(rowSelection.value)
+    .filter(key => rowSelection.value[key])
+    .map(key => datatable.data[Number.parseInt(key)]),
+);
+
+// Handle row selection with shift-click support for range selection
+function handleRowSelection(rowIndex: number, isSelected: boolean, event?: MouseEvent): void {
+  const newSelection = { ...rowSelection.value };
+
+  if (event?.shiftKey && lastSelectedIndex.value !== null && lastSelectedIndex.value !== rowIndex) {
+    // Shift-click: select range between last selected and current
+    const start = Math.min(lastSelectedIndex.value, rowIndex);
+    const end = Math.max(lastSelectedIndex.value, rowIndex);
+
+    for (let i = start; i <= end; i++) {
+      newSelection[String(i)] = true;
+    }
+  } else {
+    // Regular click: toggle single row
+    newSelection[String(rowIndex)] = isSelected;
+  }
+
+  rowSelection.value = newSelection;
+  lastSelectedIndex.value = rowIndex;
+}
+
+// Clear selection (useful after bulk action)
+function clearSelection(): void {
+  rowSelection.value = {};
+  lastSelectedIndex.value = null;
+}
 
 // Search binding with debounce
 const search = datatable.bindFilter<string>('search', {
@@ -84,13 +134,38 @@ function onContextMenu(_event: Event, row: { original: T }): void {
   contextMenuItems.value = getRowActions(row.original);
 }
 
-// Resolve UButton for use in h() render functions
+// Resolve components for use in h() render functions
 const UButton = resolveComponent('UButton');
+const UCheckbox = resolveComponent('UCheckbox');
 const UDropdownMenu = resolveComponent('UDropdownMenu');
 
 // Auto-generate columns from Hybridly
 const generatedColumns = computed<ColumnDef<T>[]>(() => {
-  const cols: ColumnDef<T>[] = datatable.columns.map((column) => {
+  const cols: ColumnDef<T>[] = [];
+
+  // Add selection checkbox column if selectable
+  if (props.selectable) {
+    cols.push({
+      cell: ({ row }: { row: any }) => h(UCheckbox, {
+        modelValue: row.getIsSelected(),
+        onClick: (event: MouseEvent) => {
+          // Prevent default checkbox behavior, we handle it manually
+          event.preventDefault();
+          handleRowSelection(row.index, !row.getIsSelected(), event);
+        },
+      }),
+      header: ({ table }: { table: any }) => h(UCheckbox, {
+        'indeterminate': table.getIsSomePageRowsSelected(),
+        'modelValue': table.getIsAllPageRowsSelected(),
+        'onUpdate:modelValue': (value: boolean) => table.toggleAllPageRowsSelected(!!value),
+      }),
+      id: 'select',
+      meta: { class: { td: 'w-[50px]' } },
+    } as ColumnDef<T>);
+  }
+
+  // Add data columns from Hybridly
+  datatable.columns.forEach((column) => {
     const isSortable = column.isSortable ?? false;
 
     // Determine sort icon based on Hybridly's column state
@@ -104,7 +179,7 @@ const generatedColumns = computed<ColumnDef<T>[]>(() => {
       return undefined;
     };
 
-    return {
+    cols.push({
       accessorKey: column.name,
       enableSorting: isSortable,
       header: isSortable
@@ -123,13 +198,13 @@ const generatedColumns = computed<ColumnDef<T>[]>(() => {
             });
           }
         : column.label,
-    } as ColumnDef<T>;
+    } as ColumnDef<T>);
   });
 
   // Add actions column if actions are provided
   if (props.actions && props.actions.length > 0) {
     cols.push({
-      cell: ({ row }) => h(UDropdownMenu, {
+      cell: ({ row }: { row: any }) => h(UDropdownMenu, {
         items: getRowActions(row.original),
       }, () => h(UButton, {
         color: 'neutral',
@@ -274,10 +349,40 @@ const visibilityItems = computed(() =>
       </div>
     </template>
 
+    <!-- Bulk action bar (shows when rows selected) -->
+    <div
+      v-if="selectable && selectedRows.length > 0"
+      class="mb-4 flex items-center gap-4 rounded-lg bg-primary/10 p-4"
+    >
+      <span class="text-sm font-medium">
+        {{ selectedRows.length }} row(s) selected
+      </span>
+      <div class="flex gap-2">
+        <UButton
+          v-for="action in bulkActions"
+          :key="action.label"
+          :color="action.color ?? 'primary'"
+          :icon="action.icon"
+          :label="action.label"
+          size="sm"
+          @click="action.onSelect(selectedRows)"
+        />
+      </div>
+      <UButton
+        class="ml-auto"
+        color="neutral"
+        icon="i-heroicons-x-mark"
+        size="sm"
+        variant="ghost"
+        @click="clearSelection"
+      />
+    </div>
+
     <!-- Table with context menu for right-click actions -->
     <UContextMenu :items="contextMenuItems">
       <UTable
         v-model:column-visibility="columnVisibility"
+        v-model:row-selection="rowSelection"
         :columns="tableColumns"
         :data="datatable.data"
         @contextmenu="onContextMenu"
