@@ -1,21 +1,11 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
-export type TableAction<T> = {
-  color?: 'error' | 'info' | 'neutral' | 'primary' | 'secondary' | 'success' | 'warning';
-  confirm?: boolean;
-  confirmMessage?: string;
-  icon?: string;
-  label: string;
-  method?: 'get' | 'delete';
-  onSelect?: (record: T) => void;
-  route?: string;
-};
+import type { BulkAction, TableAction } from '../Types/table';
+import { useTableActions } from '../Composables/useTableActions';
+import { useTablePagination } from '../Composables/useTablePagination';
+import { useTableSearch } from '../Composables/useTableSearch';
+import { useTableSelection } from '../Composables/useTableSelection';
 
-export type BulkAction<T> = {
-  color?: 'error' | 'info' | 'neutral' | 'primary' | 'secondary' | 'success' | 'warning';
-  icon?: string;
-  label: string;
-  onSelect: (selectedRows: T[]) => void;
-};
+export type { BulkAction, TableAction };
 
 type Props = {
   table: Table<T>;
@@ -35,121 +25,70 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 defineSlots<{
-  create: () => void;
-  empty: () => void;
-  loading: () => void;
+  // UTable cell slots receive row and column props, other slots may not
+  [key: string]: (props?: {
+    row?: {
+      original: T;
+      index: number;
+    };
+    column?: ColumnDef<T>;
+  }) => unknown;
 }>();
 
 // Hybridly table integration
 const datatable = useTable(props, 'table');
 
-// Row selection state for bulk actions
-const rowSelection = ref<Record<string, boolean>>({});
+// Composables for logic extraction
+const { hasSearchFilter, search } = useTableSearch(datatable);
+const { goToPage, perPageItems } = useTablePagination(datatable);
+const { clearSelection, handleRowSelection, rowSelection, selectedRows } = useTableSelection<T>(() => datatable.data);
+const {
+  confirmModal,
+  contextMenuItems,
+  executeConfirmedAction,
+  getRowActions,
+  onContextMenu,
+  pendingAction,
+} = useTableActions<T>(props.actions, props.resourceName);
 
-// Track last selected index for shift-click range selection
-const lastSelectedIndex = ref<number | null>(null);
-
-// Computed selected rows - maps selection indices to actual data
-const selectedRows = computed<T[]>(() =>
-  Object.keys(rowSelection.value)
-    .filter(key => rowSelection.value[key])
-    .map(key => datatable.data[Number.parseInt(key)]),
-);
-
-// Handle row selection with shift-click support for range selection
-function handleRowSelection(rowIndex: number, isSelected: boolean, event?: MouseEvent): void {
-  const newSelection = { ...rowSelection.value };
-
-  if (event?.shiftKey && lastSelectedIndex.value !== null && lastSelectedIndex.value !== rowIndex) {
-    // Shift-click: select range between last selected and current
-    const start = Math.min(lastSelectedIndex.value, rowIndex);
-    const end = Math.max(lastSelectedIndex.value, rowIndex);
-
-    for (let i = start; i <= end; i++) {
-      newSelection[String(i)] = true;
-    }
-  } else {
-    // Regular click: toggle single row
-    newSelection[String(rowIndex)] = isSelected;
-  }
-
-  rowSelection.value = newSelection;
-  lastSelectedIndex.value = rowIndex;
-}
-
-// Clear selection (useful after bulk action)
-function clearSelection(): void {
-  rowSelection.value = {};
-  lastSelectedIndex.value = null;
-}
-
-// Search binding with debounce
-const search = datatable.bindFilter<string>('search', {
-  debounce: 50,
-  transformUrl: { query: { page: undefined } },
-});
-
-// Check if search filter is available
-const hasSearchFilter = computed(() =>
-  datatable.filters.some((f: { name: string }) => f.name === 'search'),
-);
-
-// Pagination navigation
-function goToPage(page: number): void {
-  router.reload({
-    transformUrl: {
-      query: {
-        page,
-        per_page: datatable.paginator.meta.per_page,
-      },
-    },
-  });
-}
-
-// Items per page options (standard pagination sizes)
-const perPageOptions = [10, 25, 50, 100];
-const perPageItems = computed(() =>
-  perPageOptions.map(size => ({
-    class: datatable.paginator.meta.per_page === size ? 'bg-primary text-inverted' : undefined,
-    label: String(size),
-    onSelect: () => changePerPage(size),
-  })),
-);
-
-function changePerPage(size: number): void {
-  router.reload({
-    transformUrl: {
-      query: {
-        page: 1,
-        per_page: size,
-      },
-    },
-  });
-}
-
-// Context menu for right-click actions
-const contextMenuItems = ref<ReturnType<typeof getRowActions>>([]);
-
-function onContextMenu(_event: Event, row: { original: T }): void {
-  contextMenuItems.value = getRowActions(row.original);
-}
-
-// Resolve components for use in h() render functions
+// Resolve components for h() render functions (must be in setup context)
 const UButton = resolveComponent('UButton');
 const UCheckbox = resolveComponent('UCheckbox');
 const UDropdownMenu = resolveComponent('UDropdownMenu');
 
-// Auto-generate columns from Hybridly
+// Column visibility state
+const columnVisibility = ref<Record<string, boolean>>(
+  Object.fromEntries([
+    ...datatable.columns.map(col => [String(col.name), true]),
+    ...props.hiddenColumns.map(col => [col, false]),
+  ]),
+);
+
+// Column visibility dropdown items
+const visibilityItems = computed(() =>
+  datatable.columns.map(col => ({
+    icon: columnVisibility.value[String(col.name)] ? 'i-heroicons-check' : undefined,
+    label: col.label,
+    onSelect: () => {
+      const colName = String(col.name);
+      columnVisibility.value = {
+        ...columnVisibility.value,
+        [colName]: !columnVisibility.value[colName],
+      };
+    },
+  })),
+);
+
+// Auto-generate columns from Hybridly (must be in component for resolveComponent)
 const generatedColumns = computed<ColumnDef<T>[]>(() => {
   const cols: ColumnDef<T>[] = [];
 
-  // Add selection checkbox column if selectable
+  // Selection checkbox column
   if (props.selectable) {
     cols.push({
       cell: ({ row }: { row: any }) => h(UCheckbox, {
         modelValue: row.getIsSelected(),
         onClick: (event: MouseEvent) => {
-          // Prevent default checkbox behavior, we handle it manually
           event.preventDefault();
           handleRowSelection(row.index, !row.getIsSelected(), event);
         },
@@ -164,45 +103,35 @@ const generatedColumns = computed<ColumnDef<T>[]>(() => {
     } as ColumnDef<T>);
   }
 
-  // Add data columns from Hybridly
+  // Data columns from Hybridly
   datatable.columns.forEach((column) => {
     const isSortable = column.isSortable ?? false;
-
-    // Determine sort icon based on Hybridly's column state
-    const getSortIcon = () => {
-      if (column.isSorting('asc')) {
-        return 'i-heroicons-bars-arrow-up';
-      }
-      if (column.isSorting('desc')) {
-        return 'i-heroicons-bars-arrow-down';
-      }
-      return undefined;
-    };
+    const colName = String(column.name);
 
     cols.push({
-      accessorKey: column.name,
+      accessorKey: colName,
       enableSorting: isSortable,
       header: isSortable
-        ? () => {
-            const sortIcon = getSortIcon();
-            return h(UButton, {
-              class: '-mx-2.5',
-              color: 'neutral',
-              label: column.label,
-              // Only show icon when column is actively sorted (using Hybridly state)
-              ...(sortIcon && { 'trailing-icon': sortIcon }),
-              onClick: () => {
-                column.toggleSort({ direction: column.isSorting('asc') ? 'desc' : 'asc' });
-              },
-              variant: 'ghost',
-            });
-          }
+        ? () => h(UButton, {
+            'class': '-mx-2.5',
+            'color': 'neutral',
+            'label': column.label,
+            'onClick': () => column.toggleSort({
+              direction: column.isSorting('asc') ? 'desc' : 'asc',
+            }),
+            'trailing-icon': column.isSorting('asc')
+              ? 'i-heroicons-bars-arrow-up'
+              : column.isSorting('desc')
+                ? 'i-heroicons-bars-arrow-down'
+                : undefined,
+            'variant': 'ghost',
+          })
         : column.label,
     } as ColumnDef<T>);
   });
 
-  // Add actions column if actions are provided
-  if (props.actions && props.actions.length > 0) {
+  // Actions column
+  if (props.actions?.length) {
     cols.push({
       cell: ({ row }: { row: any }) => h(UDropdownMenu, {
         items: getRowActions(row.original),
@@ -220,103 +149,8 @@ const generatedColumns = computed<ColumnDef<T>[]>(() => {
   return cols;
 });
 
-// Confirmation modal state
-const confirmModal = ref(false);
-const pendingAction = ref<{
-  url: string;
-  method: 'get' | 'delete';
-  message?: string;
-} | null>(null);
-
-function executeConfirmedAction() {
-  if (!pendingAction.value) {
-    return;
-  }
-
-  // TODO: dynamic router.{method} call.
-  if (pendingAction.value.method === 'delete') {
-    router.delete(pendingAction.value.url);
-  } else {
-    router.get(pendingAction.value.url);
-  }
-
-  confirmModal.value = false;
-  pendingAction.value = null;
-}
-
-// Build row actions from props
-function getRowActions(record: T) {
-  if (!props.actions?.length) {
-    return [];
-  }
-
-  return props.actions.map(action => ({
-    color: action.color,
-    icon: action.icon,
-    label: action.label,
-    onSelect: () => {
-      // Custom handler takes priority
-      if (action.onSelect) {
-        action.onSelect(record);
-        return;
-      }
-
-      // Route-based action
-      if (action.route) {
-        // Build route params using resourceName or 'id' as fallback
-        const routeParams = props.resourceName
-          ? { [props.resourceName]: record.id }
-          : { id: record.id };
-        const url = route(action.route, routeParams);
-
-        // Show confirmation modal if required
-        if (action.confirm) {
-          pendingAction.value = {
-            message: action.confirmMessage,
-            method: action.method ?? 'get',
-            url,
-          };
-          confirmModal.value = true;
-          return;
-        }
-
-        // Execute directly
-        if (action.method === 'delete') {
-          router.delete(url);
-        } else {
-          router.get(url);
-        }
-      }
-    },
-  }));
-}
-
-// Use auto-generated columns if no custom columns provided
+// Use custom columns if provided
 const tableColumns = computed(() => props.columns ?? generatedColumns.value);
-
-// Column visibility state - initialize all columns as visible except hiddenColumns
-const columnVisibility = ref<Record<string, boolean>>(
-  Object.fromEntries([
-    // All columns visible by default
-    ...datatable.columns.map(col => [col.name, true]),
-    // Override with hidden columns
-    ...props.hiddenColumns.map(col => [col, false]),
-  ]),
-);
-
-// Column visibility dropdown items - always show all columns
-const visibilityItems = computed(() =>
-  datatable.columns.map(col => ({
-    icon: columnVisibility.value[col.name] ? 'i-heroicons-check' : undefined,
-    label: col.label,
-    onSelect: () => {
-      columnVisibility.value = {
-        ...columnVisibility.value,
-        [col.name]: !columnVisibility.value[col.name],
-      };
-    },
-  })),
-);
 </script>
 
 <template>
@@ -331,7 +165,7 @@ const visibilityItems = computed(() =>
             placeholder="Search..."
           />
         </div>
-        <div v-else /><!-- Spacer when no search -->
+        <div v-else />
 
         <div class="flex items-center gap-2">
           <!-- Column visibility toggle -->
@@ -349,7 +183,7 @@ const visibilityItems = computed(() =>
       </div>
     </template>
 
-    <!-- Bulk action bar (shows when rows selected) -->
+    <!-- Bulk action bar -->
     <div
       v-if="selectable && selectedRows.length > 0"
       class="mb-4 flex items-center gap-4 rounded-lg bg-primary/10 p-4"
@@ -378,7 +212,7 @@ const visibilityItems = computed(() =>
       />
     </div>
 
-    <!-- Table with context menu for right-click actions -->
+    <!-- Table -->
     <UContextMenu :items="contextMenuItems">
       <UTable
         v-model:column-visibility="columnVisibility"
@@ -387,7 +221,6 @@ const visibilityItems = computed(() =>
         :data="datatable.data"
         @contextmenu="onContextMenu"
       >
-        <!-- Pass through slots for cell overrides -->
         <template v-for="(_, slotName) in $slots" :key="slotName" #[slotName]="slotProps">
           <slot :name="slotName" v-bind="slotProps" />
         </template>
@@ -401,20 +234,17 @@ const visibilityItems = computed(() =>
           md:flex-row md:justify-between
         "
       >
-        <!-- Shown on all sizes, centered on mobile, left on md+ -->
         <span class="text-sm text-muted">
           Showing {{ datatable.paginator.meta.from ?? 0 }} to {{ datatable.paginator.meta.to ?? 0 }}
           of {{ datatable.paginator.meta.total ?? 0 }} results
         </span>
         <div class="flex items-center gap-3">
-          <!-- Pagination -->
           <UPagination
             :default-page="datatable.paginator.meta.current_page"
             :items-per-page="datatable.paginator.meta.per_page"
             :total="datatable.paginator.meta.total"
             @update:page="goToPage"
           />
-          <!-- Items per page selector -->
           <UDropdownMenu :items="perPageItems">
             <UButton
               color="neutral"

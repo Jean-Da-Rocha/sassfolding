@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import type { BulkAction } from '../../../Datatables/Resources/Types/table';
+
 type UserData = Modules.Users.Data.UserData;
 
 const props = defineProps<{ users: Table<UserData> }>();
 
 useHead({ title: 'Users Listing' });
 
-const bulkActions = [
+const bulkActions: BulkAction<UserData>[] = [
   {
     color: 'error',
     icon: 'i-heroicons-trash',
@@ -55,7 +57,7 @@ const bulkActions = [
         <UAvatar
           :alt="row.original.name"
           size="lg"
-          :text="row.original.nameInitial"
+          :text="row.original.name_initial"
         />
         <span class="font-medium text-highlighted" v-text="row.original.name" />
       </div>
