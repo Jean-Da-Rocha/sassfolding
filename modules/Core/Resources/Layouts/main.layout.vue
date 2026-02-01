@@ -19,20 +19,10 @@ const links = computed(() => [
       label: 'Inbox',
     },
     {
-      children: [
-        {
-          active: current.value === 'users.create',
-          label: 'Create',
-          onClick: () => router.get(route('users.create')),
-        },
-        {
-          active: current.value === 'users.index',
-          label: 'List',
-          onClick: () => router.get(route('users.index')),
-        },
-      ],
+      active: current.value === 'users.index',
       icon: 'heroicons-users',
       label: 'Users',
+      onClick: () => router.get(route('users.index')),
     },
     {
       icon: 'heroicons-cog-6-tooth',

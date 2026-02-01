@@ -27,7 +27,7 @@ final class UserTable extends Table
             TextColumn::make('email')->label('Email'),
             TextColumn::make('email_verified_at')
                 ->label('Email Verified At')
-                ->transformValueUsing(fn (User $user) => $user->email_verified_at?->format('Y-m-d H:i:s')),
+                ->transformValueUsing(fn (User $user) => $user->email_verified_at?->format('Y-m-d H:i:s') ?? '-'),
             TextColumn::make('name')->label('Name'),
             TextColumn::make('created_at')
                 ->label('Creation Date')

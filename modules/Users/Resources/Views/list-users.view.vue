@@ -48,7 +48,7 @@ const bulkActions: BulkAction<UserData>[] = [
       <UButton
         icon="i-heroicons-plus"
         label="Create User"
-        :to="route('users.create')"
+        @click="router.get(route('users.create'))"
       />
     </template>
 

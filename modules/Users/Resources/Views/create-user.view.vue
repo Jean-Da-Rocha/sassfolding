@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { close } = useDialog();
+
 const form = useForm<{
   email: string;
   name: string;
@@ -11,92 +13,64 @@ const form = useForm<{
     password: '',
     password_confirmation: '',
   },
+  hooks: {
+    success: () => close(),
+  },
   method: 'POST',
-  preserveState: true,
   url: route('users.store'),
 });
 
 const showPassword = ref<boolean>(false);
 const showPasswordConfirmation = ref<boolean>(false);
 
-useHead({ title: 'User Creation' });
+useHead({ title: 'Create User' });
 </script>
 
-<template layout="core::main">
-  <FormSection>
-    <template #title>
-      User Creation
-    </template>
-
-    <template #description>
-      Create a new user for your application.
-    </template>
-
-    <template #form>
+<template>
+  <HybridlyModal description="Add a new user to your application" title="Create User">
+    <template #default="{ close: closeModal }">
       <UCard>
-        <form class="space-y-6" @submit.prevent="form.submit">
-          <div class="space-y-2">
-            <label class="block text-sm font-medium" for="email">
-              Email address
-            </label>
+        <template #header>
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold">
+              Create User
+            </h2>
+            <UButton
+              color="neutral"
+              icon="i-heroicons-x-mark"
+              variant="ghost"
+              @click="closeModal"
+            />
+          </div>
+        </template>
+
+        <form class="space-y-4" @submit.prevent="form.submit">
+          <UFormField :error="form.errors.email" label="Email address">
             <UInput
-              id="email"
               v-model="form.fields.email"
               autocomplete="email"
               class="w-full"
-              :invalid="Boolean(form.errors.email)"
               placeholder="user@example.com"
-              size="lg"
               type="email"
             />
-            <p
-              v-if="form.errors.email"
-              class="
-                text-sm text-red-600
-                dark:text-red-400
-              "
-            >
-              {{ form.errors.email }}
-            </p>
-          </div>
+          </UFormField>
 
-          <div class="space-y-2">
-            <label class="block text-sm font-medium" for="name">
-              Full name
-            </label>
+          <UFormField :error="form.errors.name" label="Full name">
             <UInput
-              id="name"
               v-model="form.fields.name"
               autocomplete="name"
               class="w-full"
-              :invalid="Boolean(form.errors.name)"
               placeholder="John Doe"
-              size="lg"
               type="text"
             />
-            <p
-              v-if="form.errors.name"
-              class="
-                text-sm text-red-600
-                dark:text-red-400
-              "
-            >
-              {{ form.errors.name }}
-            </p>
-          </div>
+          </UFormField>
 
-          <div class="space-y-2">
-            <label class="block text-sm font-medium" for="password">
-              Password
-            </label>
+          <UFormField :error="form.errors.password" label="Password">
             <UInput
-              id="password"
               v-model="form.fields.password"
               autocomplete="new-password"
               class="w-full"
-              :invalid="Boolean(form.errors.password)"
               placeholder="Create a strong password"
-              size="lg"
               :type="showPassword ? 'text' : 'password'"
             >
               <template #trailing>
@@ -110,29 +84,14 @@ useHead({ title: 'User Creation' });
                 />
               </template>
             </UInput>
-            <p
-              v-if="form.errors.password"
-              class="
-                text-sm text-red-600
-                dark:text-red-400
-              "
-            >
-              {{ form.errors.password }}
-            </p>
-          </div>
+          </UFormField>
 
-          <div class="space-y-2">
-            <label class="block text-sm font-medium" for="password_confirmation">
-              Confirm password
-            </label>
+          <UFormField :error="form.errors.password_confirmation" label="Confirm password">
             <UInput
-              id="password_confirmation"
               v-model="form.fields.password_confirmation"
               autocomplete="new-password"
               class="w-full"
-              :invalid="Boolean(form.errors.password_confirmation)"
               placeholder="Re-enter your password"
-              size="lg"
               :type="showPasswordConfirmation ? 'text' : 'password'"
             >
               <template #trailing>
@@ -146,20 +105,25 @@ useHead({ title: 'User Creation' });
                 />
               </template>
             </UInput>
-            <p
-              v-if="form.errors.password_confirmation"
-              class="
-                text-sm text-red-600
-                dark:text-red-400
-              "
-            >
-              {{ form.errors.password_confirmation }}
-            </p>
-          </div>
-
-          <FormButtons :cancel-url="route('users.index')" :is-form-processing="form.processing" />
+          </UFormField>
         </form>
+
+        <template #footer>
+          <div class="flex justify-end gap-2">
+            <UButton
+              color="neutral"
+              label="Cancel"
+              variant="outline"
+              @click="closeModal"
+            />
+            <UButton
+              label="Create User"
+              :loading="form.processing"
+              @click="form.submit"
+            />
+          </div>
+        </template>
       </UCard>
     </template>
-  </FormSection>
+  </HybridlyModal>
 </template>

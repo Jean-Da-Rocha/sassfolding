@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{ user: Modules.Users.Data.UserData }>();
+const props = defineProps<{
+  user: Modules.Users.Data.UserData;
+}>();
+
+const { close } = useDialog();
 
 const form = useForm<{
   email: string;
@@ -9,80 +13,72 @@ const form = useForm<{
     email: props.user.email,
     name: props.user.name,
   },
+  hooks: {
+    success: () => close(),
+  },
   method: 'PUT',
-  preserveState: true,
   url: route('users.update', { user: props.user.id }),
 });
 
-useHead({ title: 'User Modification' });
+useHead({ title: 'Edit User' });
 </script>
 
-<template layout="core::main">
-  <FormSection>
-    <template #title>
-      User Modification
-    </template>
-
-    <template #description>
-      Edit <span class="font-bold">{{ user.name }}</span> information.
-    </template>
-
-    <template #form>
+<template>
+  <HybridlyModal description="Modify user information" title="Edit User">
+    <template #default="{ close: closeModal }">
       <UCard>
-        <form class="space-y-6" @submit.prevent="form.submit">
-          <div class="space-y-2">
-            <label class="block text-sm font-medium" for="email">
-              Email address
-            </label>
+        <template #header>
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold">
+              Edit User
+            </h2>
+            <UButton
+              color="neutral"
+              icon="i-heroicons-x-mark"
+              variant="ghost"
+              @click="closeModal"
+            />
+          </div>
+        </template>
+
+        <form class="space-y-4" @submit.prevent="form.submit()">
+          <UFormField :error="form.errors.email" label="Email address">
             <UInput
-              id="email"
               v-model="form.fields.email"
               autocomplete="email"
               class="w-full"
-              :invalid="Boolean(form.errors.email)"
               placeholder="user@example.com"
-              size="lg"
               type="email"
             />
-            <p
-              v-if="form.errors.email"
-              class="
-                text-sm text-red-600
-                dark:text-red-400
-              "
-            >
-              {{ form.errors.email }}
-            </p>
-          </div>
+          </UFormField>
 
-          <div class="space-y-2">
-            <label class="block text-sm font-medium" for="name">
-              Full name
-            </label>
+          <UFormField :error="form.errors.name" label="Full name">
             <UInput
-              id="name"
               v-model="form.fields.name"
               autocomplete="name"
               class="w-full"
-              :invalid="Boolean(form.errors.name)"
               placeholder="John Doe"
-              size="lg"
               type="text"
             />
-            <p
-              v-if="form.errors.name"
-              class="
-                text-sm text-red-600
-                dark:text-red-400
-              "
-            >
-              {{ form.errors.name }}
-            </p>
-          </div>
-
-          <FormButtons :cancel-url="route('users.index')" :is-form-processing="form.processing" />
+          </UFormField>
         </form>
+
+        <template #footer>
+          <div class="flex justify-end gap-2">
+            <UButton
+              color="neutral"
+              label="Cancel"
+              variant="outline"
+              @click="closeModal"
+            />
+            <UButton
+              label="Save Changes"
+              :loading="form.processing"
+              @click="form.submit()"
+            />
+          </div>
+        </template>
       </UCard>
     </template>
-  </FormSection>
+  </HybridlyModal>
 </template>

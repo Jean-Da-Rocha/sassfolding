@@ -32,7 +32,7 @@ export function useTableActions<T extends Record<string, any>>(
     if (pendingAction.value.method === 'delete') {
       router.delete(pendingAction.value.url);
     } else {
-      router.get(pendingAction.value.url);
+      router.navigate({ url: pendingAction.value.url });
     }
 
     confirmModal.value = false;
@@ -58,7 +58,6 @@ export function useTableActions<T extends Record<string, any>>(
         // Route-based action
         if (action.route) {
           // Build route params dynamically using resourceName or 'id' as fallback
-          // Dynamic params can't be statically typed since route is determined at runtime
           const routeParams = resourceName
             ? { [resourceName]: record.id }
             : { id: record.id };
@@ -79,7 +78,7 @@ export function useTableActions<T extends Record<string, any>>(
           if (action.method === 'delete') {
             router.delete(url);
           } else {
-            router.get(url);
+            router.navigate({ url });
           }
         }
       },

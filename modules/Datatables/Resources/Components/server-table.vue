@@ -7,21 +7,32 @@ import { useTableSelection } from '../Composables/useTableSelection';
 
 export type { BulkAction, TableAction };
 
+type LoadingAnimation = 'carousel' | 'carousel-inverse' | 'elastic' | 'swing';
+
 type Props = {
   table: Table<T>;
   actions?: TableAction<T>[];
   bulkActions?: BulkAction<T>[];
   columns?: ColumnDef<T>[];
+  emptyIcon?: string;
+  emptyText?: string;
   hiddenColumns?: string[];
+  loadingAnimation?: LoadingAnimation;
   resourceName?: string;
   searchable?: boolean;
   selectable?: boolean;
+  stickyHeader?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  emptyIcon: 'i-heroicons-circle-stack',
+  emptyText: 'No data available',
   hiddenColumns: () => [],
+  loadingAnimation: 'carousel',
+  maxHeight: undefined,
   searchable: true,
   selectable: false,
+  stickyHeader: false,
 });
 
 defineSlots<{
@@ -50,6 +61,9 @@ const {
   onContextMenu,
   pendingAction,
 } = useTableActions<T>(props.actions, props.resourceName);
+
+// Loading state from Hybridly router events
+const isLoading = useHybridlyLoading();
 
 // Resolve components for h() render functions (must be in setup context)
 const UButton = resolveComponent('UButton');
@@ -154,39 +168,34 @@ const tableColumns = computed(() => props.columns ?? generatedColumns.value);
 </script>
 
 <template>
-  <UCard>
-    <template #header>
-      <div class="flex items-center justify-between gap-4">
-        <!-- Search input -->
-        <div v-if="searchable && hasSearchFilter" class="max-w-sm">
-          <UInput
-            v-model="search"
-            icon="i-heroicons-magnifying-glass"
-            placeholder="Search..."
-          />
-        </div>
-        <div v-else />
-
-        <div class="flex items-center gap-2">
-          <!-- Column visibility toggle -->
-          <UDropdownMenu :items="visibilityItems">
-            <UButton
-              color="neutral"
-              icon="i-heroicons-view-columns"
-              variant="outline"
-            />
-          </UDropdownMenu>
-
-          <!-- Create button slot -->
-          <slot name="create" />
-        </div>
+  <div class="flex flex-col gap-4">
+    <!-- Header: Search + Actions -->
+    <div class="flex items-center justify-between gap-4">
+      <div v-if="searchable && hasSearchFilter" class="max-w-sm">
+        <UInput
+          v-model="search"
+          icon="i-heroicons-magnifying-glass"
+          placeholder="Search..."
+        />
       </div>
-    </template>
+      <div v-else />
+
+      <div class="flex items-center gap-2">
+        <UDropdownMenu :items="visibilityItems">
+          <UButton
+            color="neutral"
+            icon="i-heroicons-view-columns"
+            variant="outline"
+          />
+        </UDropdownMenu>
+        <slot name="create" />
+      </div>
+    </div>
 
     <!-- Bulk action bar -->
     <div
       v-if="selectable && selectedRows.length > 0"
-      class="mb-4 flex items-center gap-4 rounded-lg bg-primary/10 p-4"
+      class="flex items-center gap-4 rounded-lg bg-primary/10 p-4"
     >
       <span class="text-sm font-medium">
         {{ selectedRows.length }} row(s) selected
@@ -219,47 +228,67 @@ const tableColumns = computed(() => props.columns ?? generatedColumns.value);
         v-model:row-selection="rowSelection"
         :columns="tableColumns"
         :data="datatable.data"
+        :loading="isLoading"
+        :loading-animation="loadingAnimation"
+        :sticky="stickyHeader ? 'header' : undefined"
+        :ui="{
+          base: 'table-fixed border-separate border-spacing-0',
+          thead: '[&>tr]:bg-elevated/50 [&>tr]:after:content-none',
+          tbody: '[&>tr]:last:[&>td]:border-b-0',
+          th: 'py-2 first:rounded-l-lg last:rounded-r-lg border-y border-default first:border-l last:border-r',
+          td: 'border-b border-default',
+          separator: 'h-0',
+        }"
         @contextmenu="onContextMenu"
       >
+        <template #empty>
+          <slot name="empty">
+            <div class="flex flex-col items-center justify-center gap-3 py-12">
+              <UIcon class="size-12 text-muted" :name="emptyIcon" />
+              <p class="text-sm text-muted">
+                {{ emptyText }}
+              </p>
+            </div>
+          </slot>
+        </template>
         <template v-for="(_, slotName) in $slots" :key="slotName" #[slotName]="slotProps">
           <slot :name="slotName" v-bind="slotProps" />
         </template>
       </UTable>
     </UContextMenu>
 
-    <template #footer>
-      <div
-        class="
-          flex flex-col items-center gap-3
-          md:flex-row md:justify-between
-        "
-      >
-        <span class="text-sm text-muted">
-          Showing {{ datatable.paginator.meta.from ?? 0 }} to {{ datatable.paginator.meta.to ?? 0 }}
-          of {{ datatable.paginator.meta.total ?? 0 }} results
-        </span>
-        <div class="flex items-center gap-3">
-          <UPagination
-            :default-page="datatable.paginator.meta.current_page"
-            :items-per-page="datatable.paginator.meta.per_page"
-            :total="datatable.paginator.meta.total"
-            @update:page="goToPage"
-          />
-          <UDropdownMenu :items="perPageItems">
-            <UButton
-              color="neutral"
-              :label="String(datatable.paginator.meta.per_page)"
-              variant="outline"
-            >
-              <template #trailing>
-                <UIcon class="text-primary" name="i-heroicons-chevron-down" />
-              </template>
-            </UButton>
-          </UDropdownMenu>
-        </div>
+    <!-- Footer: Pagination -->
+    <div
+      class="
+        flex flex-col items-center gap-3
+        md:flex-row md:justify-between
+      "
+    >
+      <span class="text-sm text-muted">
+        Showing {{ datatable.paginator.meta.from ?? 0 }} to {{ datatable.paginator.meta.to ?? 0 }}
+        of {{ datatable.paginator.meta.total ?? 0 }} results
+      </span>
+      <div class="flex items-center gap-3">
+        <UPagination
+          :default-page="datatable.paginator.meta.current_page"
+          :items-per-page="datatable.paginator.meta.per_page"
+          :total="datatable.paginator.meta.total"
+          @update:page="goToPage"
+        />
+        <UDropdownMenu :items="perPageItems">
+          <UButton
+            color="neutral"
+            :label="String(datatable.paginator.meta.per_page)"
+            variant="outline"
+          >
+            <template #trailing>
+              <UIcon class="text-primary" name="i-heroicons-chevron-down" />
+            </template>
+          </UButton>
+        </UDropdownMenu>
       </div>
-    </template>
-  </UCard>
+    </div>
+  </div>
 
   <!-- Confirmation Modal -->
   <UModal v-model:open="confirmModal">
