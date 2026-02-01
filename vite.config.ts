@@ -64,7 +64,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
       },
       {
         from: '@nuxt/ui',
-        imports: ['NavigationMenuItem', 'DropdownMenuItem'],
+        imports: ['NavigationMenuItem', 'DropdownMenuItem', 'ColumnDef'],
         type: true,
       },
     ],

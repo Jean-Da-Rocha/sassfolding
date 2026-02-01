@@ -88,7 +88,7 @@ const links = computed(() => [
             <UDashboardSidebarCollapse />
           </template>
         </UDashboardNavbar>
-        <main class="p-8">
+        <main class="flex-1 overflow-auto p-8">
           <AlertMessage />
           <slot />
         </main>
