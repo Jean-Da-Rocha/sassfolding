@@ -1,11 +1,27 @@
 <script setup lang="ts">
-import type { BulkAction } from '../../../Datatables/Resources/Types/table';
+import type { BulkAction, InlineAction } from '../../../Datatables/Resources/Types/table';
 
 type UserData = Modules.Users.Data.UserData;
 
 const props = defineProps<{ users: Table<UserData> }>();
 
 useHead({ title: 'Users Listing' });
+
+const inlineActions: InlineAction<UserData>[] = [
+  {
+    icon: 'i-heroicons-pencil-square',
+    label: 'Edit',
+    route: 'users.edit',
+  },
+  {
+    color: 'error',
+    confirm: true,
+    icon: 'i-heroicons-trash',
+    label: 'Delete',
+    method: 'delete',
+    route: 'users.destroy',
+  },
+];
 
 const bulkActions: BulkAction<UserData>[] = [
   {
@@ -35,11 +51,8 @@ const bulkActions: BulkAction<UserData>[] = [
 
 <template layout="core::main">
   <ServerTable
-    :actions="[
-      { label: 'Edit', icon: 'i-heroicons-pencil-square', route: 'users.edit' },
-      { label: 'Delete', icon: 'i-heroicons-trash', route: 'users.destroy', method: 'delete', color: 'error', confirm: true },
-    ]"
     :bulk-actions="bulkActions"
+    :inline-actions="inlineActions"
     resource-name="user"
     selectable
     :table="props.users"

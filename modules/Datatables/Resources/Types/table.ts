@@ -11,6 +11,8 @@ export type TableAction<T> = {
   route?: RouteName;
 };
 
+export type InlineAction<T> = TableAction<T>;
+
 export type BulkAction<T> = {
   color?: TableActionColor;
   icon?: string;

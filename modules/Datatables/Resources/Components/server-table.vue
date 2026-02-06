@@ -1,22 +1,22 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
-import type { BulkAction, TableAction } from '../Types/table';
+import type { BulkAction, InlineAction, TableAction } from '../Types/table';
 import { useTableActions } from '../Composables/useTableActions';
 import { useTablePagination } from '../Composables/useTablePagination';
 import { useTableSearch } from '../Composables/useTableSearch';
 import { useTableSelection } from '../Composables/useTableSelection';
 
-export type { BulkAction, TableAction };
+export type { BulkAction, InlineAction, TableAction };
 
 type LoadingAnimation = 'carousel' | 'carousel-inverse' | 'elastic' | 'swing';
 
 type Props = {
   table: Table<T>;
-  actions?: TableAction<T>[];
   bulkActions?: BulkAction<T>[];
   columns?: ColumnDef<T>[];
   emptyIcon?: string;
   emptyText?: string;
   hiddenColumns?: string[];
+  inlineActions?: TableAction<T>[];
   loadingAnimation?: LoadingAnimation;
   resourceName?: string;
   searchable?: boolean;
@@ -60,7 +60,7 @@ const {
   getRowActions,
   onContextMenu,
   pendingAction,
-} = useTableActions<T>(props.actions, props.resourceName);
+} = useTableActions<T>(props.inlineActions, props.resourceName);
 
 // Loading state from Hybridly router events
 const isLoading = useHybridlyLoading();
@@ -145,7 +145,7 @@ const generatedColumns = computed<ColumnDef<T>[]>(() => {
   });
 
   // Actions column
-  if (props.actions?.length) {
+  if (props.inlineActions?.length) {
     cols.push({
       cell: ({ row }: { row: any }) => h(UDropdownMenu, {
         items: getRowActions(row.original),

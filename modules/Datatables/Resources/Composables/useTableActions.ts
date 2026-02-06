@@ -17,7 +17,7 @@ type UseTableActionsReturn<T> = {
 };
 
 export function useTableActions<T extends Record<string, any>>(
-  actions: TableAction<T>[] | undefined,
+  inlineActions: TableAction<T>[] | undefined,
   resourceName?: string,
 ): UseTableActionsReturn<T> {
   const confirmModal = ref(false);
@@ -40,11 +40,11 @@ export function useTableActions<T extends Record<string, any>>(
   }
 
   function getRowActions(record: T): RowActionItem[] {
-    if (!actions?.length) {
+    if (!inlineActions?.length) {
       return [];
     }
 
-    return actions.map(action => ({
+    return inlineActions.map(action => ({
       color: action.color,
       icon: action.icon,
       label: action.label,

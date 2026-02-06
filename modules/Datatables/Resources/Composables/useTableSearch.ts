@@ -8,7 +8,8 @@ export function useTableSearch(
   options?: { debounce?: number },
 ): UseTableSearchReturn {
   const search = datatable.bindFilter('search', {
-    debounce: options?.debounce ?? 50,
+    debounce: options?.debounce ?? 300,
+    syncDebounce: 0,
     transformUrl: { query: { page: undefined } },
   }) as Ref<string>;
 
