@@ -13,7 +13,7 @@ const form = useForm<{
   url: route('login'),
 });
 
-const showPassword = ref<boolean>(false);
+const showPassword = ref(false);
 
 useHead({ title: 'Sign In' });
 </script>

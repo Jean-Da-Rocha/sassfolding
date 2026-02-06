@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import type { BulkAction, InlineAction } from '../../../Datatables/Resources/Types/table';
-
 type UserData = Modules.Users.Data.UserData;
 
-const props = defineProps<{ users: Table<UserData> }>();
+defineProps<{ users: Table<UserData> }>();
 
 useHead({ title: 'Users Listing' });
 
-const inlineActions: InlineAction<UserData>[] = [
+const inlineActions = [
   {
     icon: 'i-heroicons-pencil-square',
     label: 'Edit',
@@ -21,32 +19,32 @@ const inlineActions: InlineAction<UserData>[] = [
     method: 'delete',
     route: 'users.destroy',
   },
-];
+] satisfies InlineAction<UserData>[];
 
-const bulkActions: BulkAction<UserData>[] = [
+const bulkActions = [
   {
     color: 'error',
     icon: 'i-heroicons-trash',
     label: 'Delete Selected',
-    onSelect: () => { /* delete */ },
+    onSelect: () => {},
   },
   {
     icon: 'i-heroicons-envelope',
     label: 'Send Email',
-    onSelect: () => { /* open email modal */ },
+    onSelect: () => {},
   },
   {
     icon: 'i-heroicons-arrow-down-tray',
     label: 'Export CSV',
-    onSelect: () => { /* download CSV */ },
+    onSelect: () => {},
   },
   {
     color: 'warning',
     icon: 'i-heroicons-no-symbol',
     label: 'Deactivate',
-    onSelect: () => { /* bulk status change */ },
+    onSelect: () => {},
   },
-];
+] satisfies BulkAction<UserData>[];
 </script>
 
 <template layout="core::main">
@@ -55,7 +53,7 @@ const bulkActions: BulkAction<UserData>[] = [
     :inline-actions="inlineActions"
     resource-name="user"
     selectable
-    :table="props.users"
+    :table="users"
   >
     <template #create>
       <UButton
@@ -65,14 +63,14 @@ const bulkActions: BulkAction<UserData>[] = [
       />
     </template>
 
-    <template #name-cell="{ row }">
-      <div class="flex items-center gap-3">
+    <template #name-cell="slotProps">
+      <div v-if="slotProps?.row" class="flex items-center gap-3">
         <UAvatar
-          :alt="row.original.name"
+          :alt="slotProps.row.original.name"
           size="lg"
-          :text="row.original.name_initial"
+          :text="slotProps.row.original.name_initial"
         />
-        <span class="font-medium text-highlighted" v-text="row.original.name" />
+        <span class="font-medium text-highlighted" v-text="slotProps.row.original.name" />
       </div>
     </template>
   </ServerTable>

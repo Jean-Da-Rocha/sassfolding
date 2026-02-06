@@ -11,8 +11,7 @@ withDefaults(defineProps<Props>(), {
 
 const { close, show, unmount } = useDialog();
 
-// show is Computed<boolean> from Hybridly
-// Create a writable computed that syncs with Hybridly's dialog state
+// Writable computed to sync UModal's v-model with Hybridly's dialog state
 const isOpen = computed({
   get: () => show.value,
   set: (value: boolean) => {

@@ -1,35 +1,10 @@
 <script setup lang="ts">
 useFlashToast();
 
-const { current } = useRoute();
-
 const appName = useProperty('app.name');
+const isOpen = ref(false);
 
-const isOpen = ref<boolean>(false);
-
-const links = computed(() => [
-  [
-    {
-      icon: 'heroicons-home',
-      label: 'Home',
-    },
-    {
-      badge: '4',
-      icon: 'heroicons-inbox',
-      label: 'Inbox',
-    },
-    {
-      active: current.value === 'users.index',
-      icon: 'heroicons-users',
-      label: 'Users',
-      onClick: () => router.get(route('users.index')),
-    },
-    {
-      icon: 'heroicons-cog-6-tooth',
-      label: 'Settings',
-    },
-  ],
-] satisfies NavigationMenuItem[][]);
+const { footerItems, mainItems, pageTitle } = useNavigation();
 </script>
 
 <template>
@@ -53,16 +28,17 @@ const links = computed(() => [
         <template #default="{ collapsed }">
           <UNavigationMenu
             :collapsed="collapsed"
-            :items="links[0]"
+            :items="mainItems"
             orientation="vertical"
             popover
             tooltip
           />
 
           <UNavigationMenu
+            v-if="footerItems.length"
             class="mt-auto"
             :collapsed="collapsed"
-            :items="links[1]"
+            :items="footerItems"
             orientation="vertical"
             tooltip
           />
@@ -74,7 +50,7 @@ const links = computed(() => [
       </UDashboardSidebar>
 
       <UDashboardPanel>
-        <UDashboardNavbar title="Users">
+        <UDashboardNavbar :title="pageTitle">
           <template #leading>
             <UDashboardSidebarCollapse />
           </template>

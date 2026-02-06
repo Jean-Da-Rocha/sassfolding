@@ -29,9 +29,6 @@ const colors = [
 
 const neutrals = ['slate', 'gray', 'zinc', 'neutral', 'stone'] as const;
 
-type Color = typeof colors[number];
-type NeutralColor = typeof neutrals[number];
-
 onMounted(() => {
   const savedPrimary = localStorage.getItem('theme-primary');
   const savedNeutral = localStorage.getItem('theme-neutral');
@@ -58,7 +55,7 @@ const items = computed(() => {
       {
         children: [
           {
-            children: colors.map((color: Color) => ({
+            children: colors.map(color => ({
               checked: appConfig.ui.colors.primary === color,
               chip: color,
               label: color,
@@ -81,7 +78,7 @@ const items = computed(() => {
             slot: 'chip',
           },
           {
-            children: neutrals.map((color: NeutralColor) => ({
+            children: neutrals.map(color => ({
               checked: appConfig.ui.colors.neutral === color,
               chip: color === 'neutral' ? 'old-neutral' : color,
               label: color,

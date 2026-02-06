@@ -1,12 +1,4 @@
-type UseTableSearchReturn = {
-  hasSearchFilter: ComputedRef<boolean>;
-  search: Ref<string>;
-};
-
-export function useTableSearch(
-  datatable: ReturnType<typeof useTable>,
-  options?: { debounce?: number },
-): UseTableSearchReturn {
+export function useTableSearch(datatable: ReturnType<typeof useTable>, options?: SearchOptions): UseTableSearchReturn {
   const search = datatable.bindFilter('search', {
     debounce: options?.debounce ?? 300,
     syncDebounce: 0,
@@ -14,7 +6,7 @@ export function useTableSearch(
   }) as Ref<string>;
 
   const hasSearchFilter = computed(() =>
-    datatable.filters.some((f: { name: string }) => f.name === 'search'),
+    datatable.filters.some((filter: { name: string }) => filter.name === 'search'),
   );
 
   return {

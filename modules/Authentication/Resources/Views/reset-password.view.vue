@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
-  email: string;
-  token: string;
+  readonly email: string;
+  readonly token: string;
 }>();
 
 const form = useForm<{
@@ -20,8 +20,8 @@ const form = useForm<{
   url: route('password.update'),
 });
 
-const showPassword = ref<boolean>(false);
-const showPasswordConfirmation = ref<boolean>(false);
+const showPassword = ref(false);
+const showPasswordConfirmation = ref(false);
 
 useHead({ title: 'Reset Password' });
 </script>

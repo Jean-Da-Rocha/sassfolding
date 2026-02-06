@@ -13,9 +13,9 @@ const form = useForm<{
   url: route('user-password.update'),
 });
 
-const showCurrentPassword = ref<boolean>(false);
-const showPassword = ref<boolean>(false);
-const showPasswordConfirmation = ref<boolean>(false);
+const showCurrentPassword = ref(false);
+const showPassword = ref(false);
+const showPasswordConfirmation = ref(false);
 </script>
 
 <template layout="core::main">

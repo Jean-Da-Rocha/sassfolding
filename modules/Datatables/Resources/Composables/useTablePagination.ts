@@ -1,34 +1,23 @@
-type PerPageItem = {
-  class?: string;
-  label: string;
-  onSelect: () => void;
-};
+export function useTablePagination(datatable: ReturnType<typeof useTable>, options?: PaginationOptions): UseTablePaginationReturn {
+  const perPageChoices = options?.perPageOptions ?? [10, 25, 50, 100];
 
-type UseTablePaginationReturn = {
-  changePerPage: (size: number) => void;
-  goToPage: (page: number) => void;
-  perPageItems: ComputedRef<PerPageItem[]>;
-};
+  const paginatorMeta = computed(
+    () => datatable.paginator.meta as TablePaginatorMeta,
+  );
 
-export function useTablePagination(
-  datatable: ReturnType<typeof useTable>,
-  options?: { perPageOptions?: number[] },
-): UseTablePaginationReturn {
-  const perPageOptions = options?.perPageOptions ?? [10, 25, 50, 100];
-
-  function goToPage(page: number): void {
-    router.reload({
+  const goToPage = (page: number): void => {
+    void router.reload({
       transformUrl: {
         query: {
           page,
-          per_page: datatable.paginator.meta.per_page,
+          per_page: paginatorMeta.value.per_page,
         },
       },
     });
-  }
+  };
 
-  function changePerPage(size: number): void {
-    router.reload({
+  const changePerPage = (size: number): void => {
+    void router.reload({
       transformUrl: {
         query: {
           page: 1,
@@ -36,11 +25,11 @@ export function useTablePagination(
         },
       },
     });
-  }
+  };
 
   const perPageItems = computed<PerPageItem[]>(() =>
-    perPageOptions.map(size => ({
-      class: datatable.paginator.meta.per_page === size ? 'bg-primary text-inverted' : undefined,
+    perPageChoices.map((size: number) => ({
+      class: paginatorMeta.value.per_page === size ? 'bg-primary text-inverted' : undefined,
       label: String(size),
       onSelect: () => changePerPage(size),
     })),
@@ -49,6 +38,7 @@ export function useTablePagination(
   return {
     changePerPage,
     goToPage,
+    paginatorMeta,
     perPageItems,
   };
 }

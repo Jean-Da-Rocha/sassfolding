@@ -1,23 +1,13 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
-import type { BulkAction, InlineAction, TableAction } from '../Types/table';
-import { useTableActions } from '../Composables/useTableActions';
-import { useTablePagination } from '../Composables/useTablePagination';
-import { useTableSearch } from '../Composables/useTableSearch';
-import { useTableSelection } from '../Composables/useTableSelection';
-
-export type { BulkAction, InlineAction, TableAction };
-
-type LoadingAnimation = 'carousel' | 'carousel-inverse' | 'elastic' | 'swing';
-
 type Props = {
   table: Table<T>;
-  bulkActions?: BulkAction<T>[];
+  bulkActions?: readonly BulkAction<T>[];
   columns?: ColumnDef<T>[];
   emptyIcon?: string;
   emptyText?: string;
-  hiddenColumns?: string[];
-  inlineActions?: TableAction<T>[];
-  loadingAnimation?: LoadingAnimation;
+  hiddenColumns?: readonly string[];
+  inlineActions?: readonly TableAction<T>[];
+  loadingAnimation?: 'carousel' | 'carousel-inverse' | 'elastic' | 'swing';
   resourceName?: string;
   searchable?: boolean;
   selectable?: boolean;
@@ -29,14 +19,12 @@ const props = withDefaults(defineProps<Props>(), {
   emptyText: 'No data available',
   hiddenColumns: () => [],
   loadingAnimation: 'carousel',
-  maxHeight: undefined,
   searchable: true,
   selectable: false,
   stickyHeader: false,
 });
 
 defineSlots<{
-  // UTable cell slots receive row and column props, other slots may not
   [key: string]: (props?: {
     row?: {
       original: T;
@@ -46,13 +34,13 @@ defineSlots<{
   }) => unknown;
 }>();
 
-// Hybridly table integration
 const datatable = useTable(props, 'table');
+const isLoading = useHybridlyLoading();
 
-// Composables for logic extraction
 const { hasSearchFilter, search } = useTableSearch(datatable);
-const { goToPage, perPageItems } = useTablePagination(datatable);
+const { goToPage, paginatorMeta, perPageItems } = useTablePagination(datatable);
 const { clearSelection, handleRowSelection, rowSelection, selectedRows } = useTableSelection<T>(() => datatable.data);
+const { columnVisibility, visibilityItems } = useTableColumnVisibility(datatable, props.hiddenColumns as readonly string[]);
 const {
   confirmModal,
   contextMenuItems,
@@ -62,108 +50,22 @@ const {
   pendingAction,
 } = useTableActions<T>(props.inlineActions, props.resourceName);
 
-// Loading state from Hybridly router events
-const isLoading = useHybridlyLoading();
-
-// Resolve components for h() render functions (must be in setup context)
-const UButton = resolveComponent('UButton');
-const UCheckbox = resolveComponent('UCheckbox');
-const UDropdownMenu = resolveComponent('UDropdownMenu');
-
-// Column visibility state
-const columnVisibility = ref<Record<string, boolean>>(
-  Object.fromEntries([
-    ...datatable.columns.map(col => [String(col.name), true]),
-    ...props.hiddenColumns.map(col => [col, false]),
-  ]),
+// resolveComponent must be called in setup context
+const { columns: generatedColumns } = useTableColumns<T>(
+  {
+    datatable,
+    getRowActions,
+    handleRowSelection,
+    hasInlineActions: Boolean(props.inlineActions?.length),
+    selectable: props.selectable,
+  },
+  {
+    UButton: resolveComponent('UButton') as Component,
+    UCheckbox: resolveComponent('UCheckbox') as Component,
+    UDropdownMenu: resolveComponent('UDropdownMenu') as Component,
+  },
 );
 
-// Column visibility dropdown items
-const visibilityItems = computed(() =>
-  datatable.columns.map(col => ({
-    icon: columnVisibility.value[String(col.name)] ? 'i-heroicons-check' : undefined,
-    label: col.label,
-    onSelect: () => {
-      const colName = String(col.name);
-      columnVisibility.value = {
-        ...columnVisibility.value,
-        [colName]: !columnVisibility.value[colName],
-      };
-    },
-  })),
-);
-
-// Auto-generate columns from Hybridly (must be in component for resolveComponent)
-const generatedColumns = computed<ColumnDef<T>[]>(() => {
-  const cols: ColumnDef<T>[] = [];
-
-  // Selection checkbox column
-  if (props.selectable) {
-    cols.push({
-      cell: ({ row }: { row: any }) => h(UCheckbox, {
-        modelValue: row.getIsSelected(),
-        onClick: (event: MouseEvent) => {
-          event.preventDefault();
-          handleRowSelection(row.index, !row.getIsSelected(), event);
-        },
-      }),
-      header: ({ table }: { table: any }) => h(UCheckbox, {
-        'indeterminate': table.getIsSomePageRowsSelected(),
-        'modelValue': table.getIsAllPageRowsSelected(),
-        'onUpdate:modelValue': (value: boolean) => table.toggleAllPageRowsSelected(!!value),
-      }),
-      id: 'select',
-      meta: { class: { td: 'w-[50px]' } },
-    } as ColumnDef<T>);
-  }
-
-  // Data columns from Hybridly
-  datatable.columns.forEach((column) => {
-    const isSortable = column.isSortable ?? false;
-    const colName = String(column.name);
-
-    cols.push({
-      accessorKey: colName,
-      enableSorting: isSortable,
-      header: isSortable
-        ? () => h(UButton, {
-            'class': '-mx-2.5',
-            'color': 'neutral',
-            'label': column.label,
-            'onClick': () => column.toggleSort({
-              direction: column.isSorting('asc') ? 'desc' : 'asc',
-            }),
-            'trailing-icon': column.isSorting('asc')
-              ? 'i-heroicons-bars-arrow-up'
-              : column.isSorting('desc')
-                ? 'i-heroicons-bars-arrow-down'
-                : undefined,
-            'variant': 'ghost',
-          })
-        : column.label,
-    } as ColumnDef<T>);
-  });
-
-  // Actions column
-  if (props.inlineActions?.length) {
-    cols.push({
-      cell: ({ row }: { row: any }) => h(UDropdownMenu, {
-        items: getRowActions(row.original),
-      }, () => h(UButton, {
-        color: 'neutral',
-        icon: 'i-heroicons-ellipsis-vertical',
-        variant: 'ghost',
-      })),
-      header: '',
-      id: 'actions',
-      meta: { class: { td: 'w-[50px]' } },
-    } as ColumnDef<T>);
-  }
-
-  return cols;
-});
-
-// Use custom columns if provided
 const tableColumns = computed(() => props.columns ?? generatedColumns.value);
 </script>
 
@@ -265,20 +167,20 @@ const tableColumns = computed(() => props.columns ?? generatedColumns.value);
       "
     >
       <span class="text-sm text-muted">
-        Showing {{ datatable.paginator.meta.from ?? 0 }} to {{ datatable.paginator.meta.to ?? 0 }}
-        of {{ datatable.paginator.meta.total ?? 0 }} results
+        Showing {{ paginatorMeta.from ?? 0 }} to {{ paginatorMeta.to ?? 0 }}
+        of {{ paginatorMeta.total ?? 0 }} results
       </span>
       <div class="flex items-center gap-3">
         <UPagination
-          :default-page="datatable.paginator.meta.current_page"
-          :items-per-page="datatable.paginator.meta.per_page"
-          :total="datatable.paginator.meta.total"
+          :default-page="paginatorMeta.current_page"
+          :items-per-page="paginatorMeta.per_page"
+          :total="paginatorMeta.total"
           @update:page="goToPage"
         />
         <UDropdownMenu :items="perPageItems">
           <UButton
             color="neutral"
-            :label="String(datatable.paginator.meta.per_page)"
+            :label="String(paginatorMeta.per_page)"
             variant="outline"
           >
             <template #trailing>

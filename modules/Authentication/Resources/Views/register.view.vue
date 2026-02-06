@@ -16,8 +16,8 @@ const form = useForm<{
   url: route('register'),
 });
 
-const showPassword = ref<boolean>(false);
-const showPasswordConfirmation = ref<boolean>(false);
+const showPassword = ref(false);
+const showPasswordConfirmation = ref(false);
 
 useHead({ title: 'Sign Up' });
 </script>
