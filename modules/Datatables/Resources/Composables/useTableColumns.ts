@@ -29,6 +29,7 @@ export function useTableColumns<T extends Record<string, any>>(
         modelValue: row.getIsSelected(),
         onClick: (event: MouseEvent) => {
           event.preventDefault();
+
           handleRowSelection(row.index, !row.getIsSelected(), event);
         },
       }),
@@ -68,9 +69,11 @@ export function useTableColumns<T extends Record<string, any>>(
     if (column.isSorting('asc')) {
       return 'i-lucide-arrow-up-narrow-wide';
     }
+
     if (column.isSorting('desc')) {
       return 'i-lucide-arrow-down-wide-narrow';
     }
+
     return undefined;
   }
 

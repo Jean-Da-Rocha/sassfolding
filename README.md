@@ -10,6 +10,7 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Documentation](#documentation)
 - [Contributing](#contributing)
 
 ## Introduction
@@ -166,6 +167,10 @@ remain protected and scoped*
 
 > [!CAUTION]
 > To make Laravel Horizon work with the docker setup, the HORIZON_PATH= variable in your .env should stay empty.
+
+## Documentation
+
+- [Datatables](docs/datatable.md) — how to build server-side tables with inline actions, bulk actions, sorting, and more
 
 ## Contributing
 
