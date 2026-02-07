@@ -1,7 +1,7 @@
 export type ModuleNavigationItem = NavigationMenuItem & {
   readonly routeName?: string;
   readonly order: number;
-  readonly group: 'main' | 'footer';
+  readonly group: 'main' | 'footer' | 'hidden';
 };
 
 export type UseNavigationReturn = {

@@ -8,5 +8,11 @@ export function useUsersNavigation(): ModuleNavigationItem[] {
       order: 20,
       routeName: 'users.index',
     },
+    {
+      group: 'hidden',
+      label: 'Profile',
+      order: 0,
+      routeName: 'profile',
+    },
   ];
 }
