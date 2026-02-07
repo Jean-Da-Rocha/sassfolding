@@ -170,7 +170,7 @@ remain protected and scoped*
 
 ## Documentation
 
-- [Datatables](docs/datatable.md) — how to build server-side tables with inline actions, bulk actions, sorting, and more
+- [Datatables](docs/DATATABLE.md) — how to build server-side tables with inline actions, bulk actions, sorting, and more
 
 ## Contributing
 
