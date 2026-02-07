@@ -84,13 +84,11 @@ const tableColumns = computed(() => props.columns ?? generatedColumns.value);
 
       <div class="flex items-center gap-2">
         <UDropdownMenu :items="visibilityItems">
-          <UTooltip text="Columns Visibility">
-            <UButton
-              color="neutral"
-              icon="i-lucide-columns-3"
-              variant="outline"
-            />
-          </UTooltip>
+          <UButton
+            color="neutral"
+            icon="i-lucide-columns-3"
+            variant="outline"
+          />
         </UDropdownMenu>
         <slot name="create" />
       </div>

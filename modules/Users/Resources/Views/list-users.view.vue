@@ -56,12 +56,10 @@ const bulkActions = [
     :table="users"
   >
     <template #create>
-      <UTooltip text="Create User">
-        <UButton
-          icon="i-lucide-plus"
-          @click="router.get(route('users.create'))"
-        />
-      </UTooltip>
+      <UButton
+        icon="i-lucide-plus"
+        @click="router.get(route('users.create'))"
+      />
     </template>
 
     <template #name-cell="slotProps">
