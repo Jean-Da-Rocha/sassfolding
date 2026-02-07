@@ -2,7 +2,7 @@ export function useUsersNavigation(): ModuleNavigationItem[] {
   return [
     {
       group: 'main',
-      icon: 'heroicons-users',
+      icon: 'i-lucide-users',
       label: 'Users',
       onClick: () => router.get(route('users.index')),
       order: 20,

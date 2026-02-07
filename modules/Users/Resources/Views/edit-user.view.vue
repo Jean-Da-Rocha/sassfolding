@@ -34,7 +34,7 @@ useHead({ title: 'Edit User' });
             </h2>
             <UButton
               color="neutral"
-              icon="i-heroicons-x-mark"
+              icon="i-lucide-x"
               variant="ghost"
               @click="closeModal"
             />

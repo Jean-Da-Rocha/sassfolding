@@ -37,7 +37,7 @@ useHead({ title: 'Create User' });
             </h2>
             <UButton
               color="neutral"
-              icon="i-heroicons-x-mark"
+              icon="i-lucide-x"
               variant="ghost"
               @click="closeModal"
             />
@@ -77,7 +77,7 @@ useHead({ title: 'Create User' });
                 <UButton
                   :aria-label="showPassword ? 'Hide password' : 'Show password'"
                   color="neutral"
-                  :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                  :icon="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                   size="sm"
                   variant="link"
                   @click="showPassword = !showPassword"
@@ -98,7 +98,7 @@ useHead({ title: 'Create User' });
                 <UButton
                   :aria-label="showPasswordConfirmation ? 'Hide password' : 'Show password'"
                   color="neutral"
-                  :icon="showPasswordConfirmation ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                  :icon="showPasswordConfirmation ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                   size="sm"
                   variant="link"
                   @click="showPasswordConfirmation = !showPasswordConfirmation"

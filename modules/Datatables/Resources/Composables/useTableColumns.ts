@@ -35,7 +35,7 @@ export function useTableColumns<T extends Record<string, any>>(
       header: ({ table }: TableHeaderContext) => h(UCheckbox, {
         'indeterminate': table.getIsSomePageRowsSelected(),
         'modelValue': table.getIsAllPageRowsSelected(),
-        'onUpdate:modelValue': (value: boolean) => table.toggleAllPageRowsSelected(!!value),
+        'onUpdate:modelValue': (value: boolean) => table.toggleAllPageRowsSelected(value),
       }),
       id: 'select',
       meta: { class: { td: 'w-[50px]' } },
@@ -66,10 +66,10 @@ export function useTableColumns<T extends Record<string, any>>(
 
   function getSortIcon(column: HybridlyTableColumn): string | undefined {
     if (column.isSorting('asc')) {
-      return 'i-heroicons-bars-arrow-up';
+      return 'i-lucide-arrow-up-narrow-wide';
     }
     if (column.isSorting('desc')) {
-      return 'i-heroicons-bars-arrow-down';
+      return 'i-lucide-arrow-down-wide-narrow';
     }
     return undefined;
   }
@@ -80,7 +80,7 @@ export function useTableColumns<T extends Record<string, any>>(
         items: getRowActions(row.original),
       }, () => h(UButton, {
         color: 'neutral',
-        icon: 'i-heroicons-ellipsis-vertical',
+        icon: 'i-lucide-ellipsis-vertical',
         variant: 'ghost',
       })),
       header: '',

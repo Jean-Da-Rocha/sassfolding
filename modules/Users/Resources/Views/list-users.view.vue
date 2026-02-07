@@ -7,14 +7,14 @@ useHead({ title: 'Users Listing' });
 
 const inlineActions = [
   {
-    icon: 'i-heroicons-pencil-square',
+    icon: 'i-lucide-square-pen',
     label: 'Edit',
     route: 'users.edit',
   },
   {
     color: 'error',
     confirm: true,
-    icon: 'i-heroicons-trash',
+    icon: 'i-lucide-trash-2',
     label: 'Delete',
     method: 'delete',
     route: 'users.destroy',
@@ -24,23 +24,23 @@ const inlineActions = [
 const bulkActions = [
   {
     color: 'error',
-    icon: 'i-heroicons-trash',
+    icon: 'i-lucide-trash-2',
     label: 'Delete Selected',
     onSelect: () => {},
   },
   {
-    icon: 'i-heroicons-envelope',
+    icon: 'i-lucide-mail',
     label: 'Send Email',
     onSelect: () => {},
   },
   {
-    icon: 'i-heroicons-arrow-down-tray',
+    icon: 'i-lucide-download',
     label: 'Export CSV',
     onSelect: () => {},
   },
   {
     color: 'warning',
-    icon: 'i-heroicons-no-symbol',
+    icon: 'i-lucide-ban',
     label: 'Deactivate',
     onSelect: () => {},
   },
@@ -48,7 +48,7 @@ const bulkActions = [
 </script>
 
 <template layout="core::main">
-  <ServerTable
+  <Datatable
     :bulk-actions="bulkActions"
     :inline-actions="inlineActions"
     resource-name="user"
@@ -56,11 +56,12 @@ const bulkActions = [
     :table="users"
   >
     <template #create>
-      <UButton
-        icon="i-heroicons-plus"
-        label="Create User"
-        @click="router.get(route('users.create'))"
-      />
+      <UTooltip text="Create User">
+        <UButton
+          icon="i-lucide-plus"
+          @click="router.get(route('users.create'))"
+        />
+      </UTooltip>
     </template>
 
     <template #name-cell="slotProps">
@@ -73,5 +74,5 @@ const bulkActions = [
         <span class="font-medium text-highlighted" v-text="slotProps.row.original.name" />
       </div>
     </template>
-  </ServerTable>
+  </Datatable>
 </template>

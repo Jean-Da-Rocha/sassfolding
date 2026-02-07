@@ -5,9 +5,13 @@ export function useTableColumnVisibility(datatable: ReturnType<typeof useTable>,
 
   const visibilityItems = computed<VisibilityItem[]>(() =>
     datatable.columns.map((column: HybridlyTableColumn) => ({
-      icon: columnVisibility.value[String(column.name)] ? 'i-heroicons-check' : undefined,
+      icon: columnVisibility.value[String(column.name)] ? 'i-lucide-check' : undefined,
       label: column.label,
-      onSelect: () => toggleColumnVisibility(String(column.name)),
+      onSelect: (event: Event) => {
+        event.preventDefault();
+
+        toggleColumnVisibility(String(column.name));
+      },
     })),
   );
 

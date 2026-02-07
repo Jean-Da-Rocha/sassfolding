@@ -48,7 +48,7 @@ export type UseTableColumnsReturn<T extends Record<string, any>> = {
 export type VisibilityItem = {
   readonly icon?: string;
   readonly label: string;
-  readonly onSelect: () => void;
+  readonly onSelect: (event: Event) => void;
 };
 
 export type UseTableColumnVisibilityReturn = {

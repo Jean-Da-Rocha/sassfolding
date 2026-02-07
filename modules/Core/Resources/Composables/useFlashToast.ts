@@ -1,11 +1,11 @@
 const iconMap = {
-  error: 'i-heroicons-x-circle',
-  info: 'i-heroicons-information-circle',
-  neutral: 'i-heroicons-chat-bubble-left',
-  primary: 'i-heroicons-bell',
-  secondary: 'i-heroicons-bell',
-  success: 'i-heroicons-check-circle',
-  warning: 'i-heroicons-exclamation-triangle',
+  error: 'i-lucide-circle-x',
+  info: 'i-lucide-info',
+  neutral: 'i-lucide-message-circle',
+  primary: 'i-lucide-bell',
+  secondary: 'i-lucide-bell',
+  success: 'i-lucide-circle-check',
+  warning: 'i-lucide-triangle-alert',
 } as const satisfies Record<Modules.Core.Enums.FlashMessage, string>;
 
 const durationMap = {

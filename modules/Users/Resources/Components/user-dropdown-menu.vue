@@ -46,7 +46,7 @@ const items = computed(() => {
   return [
     [
       {
-        icon: 'i-heroicons-user',
+        icon: 'i-lucide-user',
         label: 'Profile',
         onSelect: () => router.get(route('profile')),
       },
@@ -101,14 +101,14 @@ const items = computed(() => {
             slot: 'chip',
           },
         ],
-        icon: 'i-heroicons-swatch',
+        icon: 'i-lucide-palette',
         label: 'Theme',
       },
       {
         children: [
           {
             checked: colorMode.value === 'light',
-            icon: 'i-heroicons-sun',
+            icon: 'i-lucide-sun',
             label: 'Light',
             onSelect(event: Event) {
               event.preventDefault();
@@ -119,7 +119,7 @@ const items = computed(() => {
           },
           {
             checked: colorMode.value === 'dark',
-            icon: 'i-heroicons-moon',
+            icon: 'i-lucide-moon',
             label: 'Dark',
             onSelect(event: Event) {
               event.preventDefault();
@@ -129,13 +129,13 @@ const items = computed(() => {
             type: 'checkbox',
           },
         ],
-        icon: 'i-heroicons-computer-desktop',
+        icon: 'i-lucide-monitor',
         label: 'Appearance',
       },
     ],
     [
       {
-        icon: 'i-heroicons-arrow-left-on-rectangle',
+        icon: 'i-lucide-log-out',
         label: 'Logout',
         onSelect: () => router.post(route('logout')),
       },
@@ -156,7 +156,7 @@ const items = computed(() => {
           text: user?.name_initial,
         },
         label: collapsed ? undefined : user?.name,
-        trailingIcon: collapsed ? undefined : 'i-heroicons-chevron-up-down',
+        trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down',
       }"
       block
       class="data-[state=open]:bg-elevated"

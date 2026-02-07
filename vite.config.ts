@@ -76,7 +76,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
     dts: '.hybridly/components.d.ts',
     resolvers: [
       IconsResolver({
-        enabledCollections: ['heroicons'],
+        enabledCollections: ['lucide'],
         prefix: false,
       }),
       // Custom resolver for RouterLink from hybridly

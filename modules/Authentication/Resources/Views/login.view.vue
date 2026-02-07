@@ -81,7 +81,7 @@ useHead({ title: 'Sign In' });
               <UButton
                 :aria-label="showPassword ? 'Hide password' : 'Show password'"
                 color="neutral"
-                :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                :icon="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                 size="sm"
                 variant="link"
                 @click="showPassword = !showPassword"

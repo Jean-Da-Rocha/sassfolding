@@ -15,7 +15,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  emptyIcon: 'i-heroicons-circle-stack',
+  emptyIcon: 'i-lucide-database',
   emptyText: 'No data available',
   hiddenColumns: () => [],
   loadingAnimation: 'carousel',
@@ -76,7 +76,7 @@ const tableColumns = computed(() => props.columns ?? generatedColumns.value);
       <div v-if="searchable && hasSearchFilter" class="max-w-sm">
         <UInput
           v-model="search"
-          icon="i-heroicons-magnifying-glass"
+          icon="i-lucide-search"
           placeholder="Search..."
         />
       </div>
@@ -84,11 +84,13 @@ const tableColumns = computed(() => props.columns ?? generatedColumns.value);
 
       <div class="flex items-center gap-2">
         <UDropdownMenu :items="visibilityItems">
-          <UButton
-            color="neutral"
-            icon="i-heroicons-view-columns"
-            variant="outline"
-          />
+          <UTooltip text="Columns Visibility">
+            <UButton
+              color="neutral"
+              icon="i-lucide-columns-3"
+              variant="outline"
+            />
+          </UTooltip>
         </UDropdownMenu>
         <slot name="create" />
       </div>
@@ -116,7 +118,7 @@ const tableColumns = computed(() => props.columns ?? generatedColumns.value);
       <UButton
         class="ml-auto"
         color="neutral"
-        icon="i-heroicons-x-mark"
+        icon="i-lucide-x"
         size="sm"
         variant="ghost"
         @click="clearSelection"
@@ -184,7 +186,7 @@ const tableColumns = computed(() => props.columns ?? generatedColumns.value);
             variant="outline"
           >
             <template #trailing>
-              <UIcon class="text-primary" name="i-heroicons-chevron-down" />
+              <UIcon class="text-primary" name="i-lucide-chevron-down" />
             </template>
           </UButton>
         </UDropdownMenu>

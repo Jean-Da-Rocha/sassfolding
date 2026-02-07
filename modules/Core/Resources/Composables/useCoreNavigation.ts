@@ -2,20 +2,20 @@ export function useCoreNavigation(): ModuleNavigationItem[] {
   return [
     {
       group: 'main',
-      icon: 'heroicons-home',
+      icon: 'i-lucide-house',
       label: 'Home',
       order: 0,
     },
     {
       badge: '4',
       group: 'main',
-      icon: 'heroicons-inbox',
+      icon: 'i-lucide-inbox',
       label: 'Inbox',
       order: 10,
     },
     {
       group: 'main',
-      icon: 'heroicons-cog-6-tooth',
+      icon: 'i-lucide-settings',
       label: 'Settings',
       order: 900,
     },
