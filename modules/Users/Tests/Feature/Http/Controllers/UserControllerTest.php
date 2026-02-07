@@ -32,8 +32,8 @@ describe('users listing', function () {
             ->get('/users/create')
             ->assertOk()
             ->assertHybrid()
-            ->assertHybridView('users::create-user')
-            ->assertHybridProperties([]);
+            ->assertHybridView('users::list-users')
+            ->assertHybridDialog(view: 'users::create-user');
     });
 
     it('stores a new user in storage and returns a success message', function () {
@@ -46,8 +46,7 @@ describe('users listing', function () {
                 'password' => 'dummy_password',
                 'password_confirmation' => 'dummy_password',
             ])
-            ->assertStatus(Response::HTTP_SEE_OTHER)
-            ->assertRedirect('/users')
+            ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(FlashMessage::Success->value, 'User "Dummy User" successfully created');
 
         assertDatabaseHas('users', ['email' => 'dummy@user.com', 'name' => 'Dummy User']);
@@ -61,11 +60,14 @@ describe('users listing', function () {
             ->get(sprintf('users/%d/edit', $existingUser->id))
             ->assertOk()
             ->assertHybrid()
-            ->assertHybridView('users::edit-user')
-            ->assertHybridProperties([
-                'user.email' => $existingUser->email,
-                'user.name' => $existingUser->name,
-            ]);
+            ->assertHybridView('users::list-users')
+            ->assertHybridDialog(
+                view: 'users::edit-user',
+                properties: [
+                    'user.email' => $existingUser->email,
+                    'user.name' => $existingUser->name,
+                ],
+            );
     });
 
     it('updates an existing user and returns a success message', function () {
@@ -76,8 +78,7 @@ describe('users listing', function () {
 
         actingAs($authenticatedUser)
             ->put(sprintf('/users/%d', $userToUpdate->id), $updatedAttributes)
-            ->assertStatus(Response::HTTP_SEE_OTHER)
-            ->assertRedirect('/users')
+            ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(FlashMessage::Success->value, 'User "Dummy User Updated" successfully updated');
 
         assertDatabaseMissing('users', ['name' => 'Dummy User']);
@@ -90,8 +91,7 @@ describe('users listing', function () {
 
         actingAs($authenticatedUser)
             ->delete(sprintf('users/%d', $userToDelete->id))
-            ->assertStatus(Response::HTTP_SEE_OTHER)
-            ->assertRedirect('/users')
+            ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHas(FlashMessage::Success->value, 'User "Dummy User" successfully deleted');
     });
 });
