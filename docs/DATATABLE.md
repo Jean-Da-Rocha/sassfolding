@@ -88,7 +88,7 @@ defineProps<{ users: Table<UserData> }>();
 </script>
 
 <template layout="core::main">
-  <Datatable :table="users" resource-name="user" />
+  <Datatable resource-name="user" :table="users" />
 </template>
 ```
 
@@ -101,8 +101,19 @@ confirmation modal and `method: 'delete'` for destructive actions:
 
 ```ts
 const inlineActions = [
-  { icon: 'i-lucide-square-pen', label: 'Edit', route: 'users.edit' },
-  { color: 'error', confirm: true, icon: 'i-lucide-trash-2', label: 'Delete', method: 'delete', route: 'users.destroy' },
+  {
+    icon: 'i-lucide-square-pen',
+    label: 'Edit',
+    route: 'users.edit'
+  },
+  {
+    color: 'error',
+    confirm: true,
+    icon: 'i-lucide-trash-2',
+    label: 'Delete',
+    method: 'delete',
+    route: 'users.destroy'
+  },
 ] satisfies InlineAction<UserData>[];
 ```
 
@@ -110,7 +121,11 @@ const inlineActions = [
 
 ```ts
 const inlineActions = [
-  { icon: 'i-lucide-copy', label: 'Duplicate', onSelect: (user) => duplicateUser(user) },
+  {
+    icon: 'i-lucide-copy',
+    label: 'Duplicate',
+    onSelect: user => duplicateUser(user)
+  },
 ] satisfies InlineAction<UserData>[];
 ```
 
@@ -120,7 +135,12 @@ Bulk actions appear in a bar above the table when rows are selected. Requires th
 
 ```ts
 const bulkActions = [
-  { color: 'error', icon: 'i-lucide-trash-2', label: 'Delete Selected', onSelect: (rows) => {} },
+  {
+    color: 'error',
+    icon: 'i-lucide-trash-2',
+    label: 'Delete Selected',
+    onSelect: (rows) => {}
+  },
 ] satisfies BulkAction<UserData>[];
 ```
 
