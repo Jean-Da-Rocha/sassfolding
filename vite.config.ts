@@ -31,22 +31,22 @@ export default defineConfig(({ command, mode }): UserConfig => {
       {
         from: 'hybridly/vue',
         imports: [
-          'useProperty',
+          'registerHook',
           'setProperty',
-          'useRefinements',
-          'useTable',
-          'useBulkSelect',
-          'useProperties',
           'useBackForward',
+          'useBulkSelect',
           'useContext',
-          'useForm',
           'useDialog',
+          'useForm',
           'useHistoryState',
           'usePaginator',
-          'registerHook',
-          'useRoute',
+          'useProperties',
+          'useProperty',
+          'useRefinements',
           'useQueryParameter',
           'useQueryParameters',
+          'useRoute',
+          'useTable',
         ],
       },
       {
@@ -55,7 +55,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
       },
       {
         from: 'hybridly',
-        imports: ['router', 'route', 'can', 'getRouterContext'],
+        imports: ['can', 'getRouterContext', 'route', 'router'],
       },
       {
         from: 'hybridly',
@@ -64,7 +64,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
       },
       {
         from: '@nuxt/ui',
-        imports: ['NavigationMenuItem', 'DropdownMenuItem'],
+        imports: ['ColumnDef', 'DropdownMenuItem', 'NavigationMenuItem', 'ToastProps'],
         type: true,
       },
     ],
@@ -76,7 +76,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
     dts: '.hybridly/components.d.ts',
     resolvers: [
       IconsResolver({
-        enabledCollections: ['heroicons'],
+        enabledCollections: ['lucide'],
         prefix: false,
       }),
       // Custom resolver for RouterLink from hybridly
@@ -103,10 +103,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
     },
     plugins: [
       ui(nuxtUIOptions),
-      hybridly({
-        autoImports: false,
-        vueComponents: false,
-      }),
+      hybridly(),
       tailwindcss(),
     ],
     resolve: {

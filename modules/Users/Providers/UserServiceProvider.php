@@ -46,7 +46,6 @@ class UserServiceProvider extends ServiceProvider
 
         $this->app->register(RouteServiceProvider::class);
 
-        $hybridly->loadComponentsFrom(base_path('modules/Users/Resources/Components'), self::MODULE_NAMESPACE);
         $hybridly->loadViewsFrom(base_path('modules/Users/Resources/Views'), self::MODULE_NAMESPACE);
     }
 }

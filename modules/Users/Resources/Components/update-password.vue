@@ -13,9 +13,9 @@ const form = useForm<{
   url: route('user-password.update'),
 });
 
-const showCurrentPassword = ref<boolean>(false);
-const showPassword = ref<boolean>(false);
-const showPasswordConfirmation = ref<boolean>(false);
+const showCurrentPassword = ref(false);
+const showPassword = ref(false);
+const showPasswordConfirmation = ref(false);
 </script>
 
 <template layout="core::main">
@@ -49,7 +49,7 @@ const showPasswordConfirmation = ref<boolean>(false);
                 <UButton
                   :aria-label="showCurrentPassword ? 'Hide password' : 'Show password'"
                   color="neutral"
-                  :icon="showCurrentPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                  :icon="showCurrentPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                   size="sm"
                   variant="link"
                   @click="showCurrentPassword = !showCurrentPassword"
@@ -85,7 +85,7 @@ const showPasswordConfirmation = ref<boolean>(false);
                 <UButton
                   :aria-label="showPassword ? 'Hide password' : 'Show password'"
                   color="neutral"
-                  :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                  :icon="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                   size="sm"
                   variant="link"
                   @click="showPassword = !showPassword"
@@ -121,7 +121,7 @@ const showPasswordConfirmation = ref<boolean>(false);
                 <UButton
                   :aria-label="showPasswordConfirmation ? 'Hide password' : 'Show password'"
                   color="neutral"
-                  :icon="showPasswordConfirmation ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                  :icon="showPasswordConfirmation ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                   size="sm"
                   variant="link"
                   @click="showPasswordConfirmation = !showPasswordConfirmation"

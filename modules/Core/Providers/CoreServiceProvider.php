@@ -27,7 +27,6 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__.'/../Routes/web.php');
 
-        $hybridly->loadComponentsFrom(base_path('modules/Core/Resources/Components'), self::MODULE_NAMESPACE);
         $hybridly->loadLayoutsFrom(base_path('modules/Core/Resources/Layouts'), self::MODULE_NAMESPACE);
     }
 }

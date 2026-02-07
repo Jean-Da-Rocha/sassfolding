@@ -29,9 +29,6 @@ const colors = [
 
 const neutrals = ['slate', 'gray', 'zinc', 'neutral', 'stone'] as const;
 
-type Color = typeof colors[number];
-type NeutralColor = typeof neutrals[number];
-
 onMounted(() => {
   const savedPrimary = localStorage.getItem('theme-primary');
   const savedNeutral = localStorage.getItem('theme-neutral');
@@ -49,7 +46,7 @@ const items = computed(() => {
   return [
     [
       {
-        icon: 'i-heroicons-user',
+        icon: 'i-lucide-user',
         label: 'Profile',
         onSelect: () => router.get(route('profile')),
       },
@@ -58,7 +55,7 @@ const items = computed(() => {
       {
         children: [
           {
-            children: colors.map((color: Color) => ({
+            children: colors.map(color => ({
               checked: appConfig.ui.colors.primary === color,
               chip: color,
               label: color,
@@ -81,7 +78,7 @@ const items = computed(() => {
             slot: 'chip',
           },
           {
-            children: neutrals.map((color: NeutralColor) => ({
+            children: neutrals.map(color => ({
               checked: appConfig.ui.colors.neutral === color,
               chip: color === 'neutral' ? 'old-neutral' : color,
               label: color,
@@ -104,14 +101,14 @@ const items = computed(() => {
             slot: 'chip',
           },
         ],
-        icon: 'i-heroicons-swatch',
+        icon: 'i-lucide-palette',
         label: 'Theme',
       },
       {
         children: [
           {
             checked: colorMode.value === 'light',
-            icon: 'i-heroicons-sun',
+            icon: 'i-lucide-sun',
             label: 'Light',
             onSelect(event: Event) {
               event.preventDefault();
@@ -122,7 +119,7 @@ const items = computed(() => {
           },
           {
             checked: colorMode.value === 'dark',
-            icon: 'i-heroicons-moon',
+            icon: 'i-lucide-moon',
             label: 'Dark',
             onSelect(event: Event) {
               event.preventDefault();
@@ -132,13 +129,13 @@ const items = computed(() => {
             type: 'checkbox',
           },
         ],
-        icon: 'i-heroicons-computer-desktop',
+        icon: 'i-lucide-monitor',
         label: 'Appearance',
       },
     ],
     [
       {
-        icon: 'i-heroicons-arrow-left-on-rectangle',
+        icon: 'i-lucide-log-out',
         label: 'Logout',
         onSelect: () => router.post(route('logout')),
       },
@@ -159,7 +156,7 @@ const items = computed(() => {
           text: user?.name_initial,
         },
         label: collapsed ? undefined : user?.name,
-        trailingIcon: collapsed ? undefined : 'i-heroicons-chevron-up-down',
+        trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down',
       }"
       block
       class="data-[state=open]:bg-elevated"

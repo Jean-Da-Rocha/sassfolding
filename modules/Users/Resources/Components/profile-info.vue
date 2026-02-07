@@ -9,8 +9,15 @@ const form = useForm<{
     email: props.user?.email ?? '',
     name: props.user?.name ?? '',
   },
+  hooks: {
+    success: () => {
+      if (props.user) {
+        form.fields.email = props.user.email;
+        form.fields.name = props.user.name;
+      }
+    },
+  },
   method: 'PUT',
-  preserveState: false,
   url: route('user-profile-information.update'),
 });
 </script>

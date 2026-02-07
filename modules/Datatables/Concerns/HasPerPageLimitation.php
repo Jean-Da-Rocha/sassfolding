@@ -8,6 +8,6 @@ trait HasPerPageLimitation
 {
     protected function getRecordsPerPage(): int
     {
-        return $this->getRequest()->integer('per_page', 5);
+        return $this->getRequest()->integer('per_page', 10);
     }
 }

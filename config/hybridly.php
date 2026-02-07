@@ -40,9 +40,8 @@ return [
     'architecture' => [
         'load_default_module' => false,
         'eager_load_views' => true,
-        'root_directory' => 'modules/Core/Resources',
-        'application_directory' => 'Application',
-        'application_main' => Architecture::APPLICATION_MAIN,
+        'root_directory' => 'modules/Core/Resources/Application',
+        'application_main' => 'main.ts',
         'root_view' => Architecture::ROOT_VIEW,
         'extensions' => ['vue', 'tsx'],
         'excluded_views_directories' => [],
@@ -52,7 +51,7 @@ return [
     |--------------------------------------------------------------------------
     | Refining
     |--------------------------------------------------------------------------
-    | When refininig queries, the `sorts_key` and `filters_key` options
+    | When refining queries, the `sorts_key` and `filters_key` options
     | define the names of the query parameters that will be generated
     | using the provided front-end utilities.
     |

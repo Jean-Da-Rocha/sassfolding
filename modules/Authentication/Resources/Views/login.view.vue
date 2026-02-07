@@ -1,25 +1,21 @@
 <script setup lang="ts">
 const form = useForm<{
   email: string;
-  name: string;
   password: string;
-  password_confirmation: string;
+  remember: boolean;
 }>({
   fields: {
     email: '',
-    name: '',
     password: '',
-    password_confirmation: '',
+    remember: false,
   },
   method: 'POST',
-  reset: true,
-  url: route('register'),
+  url: route('login'),
 });
 
-const showPassword = ref<boolean>(false);
-const showPasswordConfirmation = ref<boolean>(false);
+const showPassword = ref(false);
 
-useHead({ title: 'Sign Up' });
+useHead({ title: 'Sign In' });
 </script>
 
 <template layout="core::guest">
@@ -28,7 +24,7 @@ useHead({ title: 'Sign Up' });
       <template #header>
         <div class="text-center">
           <h2 class="text-2xl font-bold tracking-tight">
-            Create an account
+            Welcome back
           </h2>
           <p
             class="
@@ -36,37 +32,12 @@ useHead({ title: 'Sign Up' });
               dark:text-gray-400
             "
           >
-            Get started by filling in the information below
+            Sign in to your account to continue
           </p>
         </div>
       </template>
 
       <form class="space-y-6" @submit.prevent="form.submit">
-        <div class="space-y-2">
-          <label class="block text-sm font-medium" for="name">
-            Full name
-          </label>
-          <UInput
-            id="name"
-            v-model="form.fields.name"
-            autocomplete="name"
-            class="w-full"
-            :invalid="Boolean(form.errors.name)"
-            placeholder="John Doe"
-            size="lg"
-            type="text"
-          />
-          <p
-            v-if="form.errors.name"
-            class="
-              text-sm text-red-600
-              dark:text-red-400
-            "
-          >
-            {{ form.errors.name }}
-          </p>
-        </div>
-
         <div class="space-y-2">
           <label class="block text-sm font-medium" for="email">
             Email address
@@ -99,10 +70,10 @@ useHead({ title: 'Sign Up' });
           <UInput
             id="password"
             v-model="form.fields.password"
-            autocomplete="new-password"
+            autocomplete="current-password"
             class="w-full"
             :invalid="Boolean(form.errors.password)"
-            placeholder="Create a strong password"
+            placeholder="Enter your password"
             size="lg"
             :type="showPassword ? 'text' : 'password'"
           >
@@ -110,7 +81,7 @@ useHead({ title: 'Sign Up' });
               <UButton
                 :aria-label="showPassword ? 'Hide password' : 'Show password'"
                 color="neutral"
-                :icon="showPassword ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
+                :icon="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                 size="sm"
                 variant="link"
                 @click="showPassword = !showPassword"
@@ -128,40 +99,23 @@ useHead({ title: 'Sign Up' });
           </p>
         </div>
 
-        <div class="space-y-2">
-          <label class="block text-sm font-medium" for="password_confirmation">
-            Confirm password
+        <div class="flex items-center justify-between">
+          <label class="flex cursor-pointer items-center gap-2">
+            <UCheckbox id="remember" v-model="form.fields.remember" />
+            <span class="text-sm">Remember me</span>
           </label>
-          <UInput
-            id="password_confirmation"
-            v-model="form.fields.password_confirmation"
-            autocomplete="new-password"
-            class="w-full"
-            :invalid="Boolean(form.errors.password_confirmation)"
-            placeholder="Re-enter your password"
-            size="lg"
-            :type="showPasswordConfirmation ? 'text' : 'password'"
-          >
-            <template #trailing>
-              <UButton
-                :aria-label="showPasswordConfirmation ? 'Hide password' : 'Show password'"
-                color="neutral"
-                :icon="showPasswordConfirmation ? 'i-heroicons-eye-slash' : 'i-heroicons-eye'"
-                size="sm"
-                variant="link"
-                @click="showPasswordConfirmation = !showPasswordConfirmation"
-              />
-            </template>
-          </UInput>
-          <p
-            v-if="form.errors.password_confirmation"
+
+          <RouterLink
             class="
-              text-sm text-red-600
-              dark:text-red-400
+              text-sm font-medium text-primary-600
+              hover:text-primary-500
+              dark:text-primary-400
+              dark:hover:text-primary-300
             "
+            :href="route('password.request')"
           >
-            {{ form.errors.password_confirmation }}
-          </p>
+            Forgot password?
+          </RouterLink>
         </div>
 
         <UButton
@@ -172,7 +126,7 @@ useHead({ title: 'Sign Up' });
           size="lg"
           type="submit"
         >
-          Create account
+          Sign in
         </UButton>
       </form>
 
@@ -184,7 +138,7 @@ useHead({ title: 'Sign Up' });
               dark:text-gray-400
             "
           >
-            Already have an account?
+            Don't have an account?
           </span>
           <RouterLink
             class="
@@ -193,9 +147,9 @@ useHead({ title: 'Sign Up' });
               dark:text-primary-400
               dark:hover:text-primary-300
             "
-            :href="route('login')"
+            :href="route('register')"
           >
-            Sign in
+            Sign up
           </RouterLink>
         </div>
       </template>

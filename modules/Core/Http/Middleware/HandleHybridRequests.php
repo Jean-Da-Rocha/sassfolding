@@ -28,6 +28,7 @@ class HandleHybridRequests extends Middleware
 
         return new SharedData(
             app: new AppData(name: $appName),
+            authenticatedUser: UserData::optional(auth()->user()),
             flash: new FlashData(
                 error: $request->session()->get(FlashMessage::Error->value),
                 info: $request->session()->get(FlashMessage::Info->value),
@@ -38,7 +39,6 @@ class HandleHybridRequests extends Middleware
                 warning: $request->session()->get(FlashMessage::Warning->value),
             ),
             route: new RouteData(name: Route::currentRouteName()),
-            user: UserData::optional(auth()->user()),
             // The errors array is used to type hint the 'error' property on the front-end.
             // This property will be overwritten by Hybridly automatically.
             errors: [],

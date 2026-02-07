@@ -29,47 +29,43 @@ useHead({ title: 'Forgot Password' });
         </div>
       </template>
 
-      <div class="space-y-6">
-        <AlertMessage />
-
-        <form class="space-y-6" @submit.prevent="form.submit">
-          <div class="space-y-2">
-            <label class="block text-sm font-medium" for="email">
-              Email address
-            </label>
-            <UInput
-              id="email"
-              v-model="form.fields.email"
-              autocomplete="email"
-              class="w-full"
-              :invalid="Boolean(form.errors.email)"
-              placeholder="you@example.com"
-              size="lg"
-              type="email"
-            />
-            <p
-              v-if="form.errors.email"
-              class="
-                text-sm text-red-600
-                dark:text-red-400
-              "
-            >
-              {{ form.errors.email }}
-            </p>
-          </div>
-
-          <UButton
-            block
-            color="primary"
-            :disabled="form.processing"
-            :loading="form.processing"
+      <form class="space-y-6" @submit.prevent="form.submit">
+        <div class="space-y-2">
+          <label class="block text-sm font-medium" for="email">
+            Email address
+          </label>
+          <UInput
+            id="email"
+            v-model="form.fields.email"
+            autocomplete="email"
+            class="w-full"
+            :invalid="Boolean(form.errors.email)"
+            placeholder="you@example.com"
             size="lg"
-            type="submit"
+            type="email"
+          />
+          <p
+            v-if="form.errors.email"
+            class="
+              text-sm text-red-600
+              dark:text-red-400
+            "
           >
-            Send reset link
-          </UButton>
-        </form>
-      </div>
+            {{ form.errors.email }}
+          </p>
+        </div>
+
+        <UButton
+          block
+          color="primary"
+          :disabled="form.processing"
+          :loading="form.processing"
+          size="lg"
+          type="submit"
+        >
+          Send reset link
+        </UButton>
+      </form>
 
       <template #footer>
         <div class="text-center text-sm">
