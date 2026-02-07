@@ -145,6 +145,20 @@ The following are **globally auto-imported** via `unplugin-auto-import` in `vite
 - **Forms**: use `useForm<T>({ fields, method, url, hooks })` from Hybridly
 - **Tables**: controller passes `Table<T>` via `hybridly('view', ['table' => TableClass::make()])`
 
+### Sidebar & Navbar Navigation
+
+The dashboard layout (`main.layout.vue`) uses Nuxt UI's `UDashboardGroup`, `UDashboardSidebar`, `UDashboardPanel`,
+and `UDashboardNavbar`. The navigation system is modular:
+
+- Each module defines a composable (e.g., `useUsersNavigation()`) returning `ModuleNavigationItem[]`
+- `useNavigation()` in Core aggregates all module composables, sorts by `order`, and splits by `group`
+- `ModuleNavigationItem` extends Nuxt UI's `NavigationMenuItem` with three custom properties:
+  - **`group`**: `'main'` (top sidebar), `'footer'` (bottom sidebar), or `'hidden'` (not in sidebar)
+  - **`order`**: numeric sort key across all modules
+  - **`routeName`**: matched against `useRoute().current` for active state and navbar `pageTitle`
+- The navbar title is auto-derived from the active navigation item's `label`
+- Use `group: 'hidden'` for pages that need a navbar title but no sidebar entry (e.g., profile page)
+
 ### Known Gotchas
 
 - `TablePaginatorMeta`: use this explicit type instead of extracting from `ReturnType<typeof useTable>` (conditional types are unresolvable)
