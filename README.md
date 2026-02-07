@@ -10,7 +10,6 @@
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Known Issues](#known-issues)
 - [Contributing](#contributing)
 
 ## Introduction
@@ -167,11 +166,6 @@ remain protected and scoped*
 
 > [!CAUTION]
 > To make Laravel Horizon work with the docker setup, the HORIZON_PATH= variable in your .env should stay empty.
-
-## Known issues
-
-- The datatable module does not fully support Hybridly [inline](https://hybridly.dev/guide/tables.html#inline-actions)
-  and [bulk](https://hybridly.dev/guide/tables.html#bulk-actions) actions yet
 
 ## Contributing
 
