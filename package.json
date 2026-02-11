@@ -50,7 +50,7 @@
     "**/*.php": "vendor/bin/pint"
   },
   "validate-branch-name": {
-    "pattern": "^(build|bugfix|bump|docs|experimental|feature|hotfix|merge|release|test)(/[A-Z]+\\-\\d+)?/[a-z0-9]+(-[a-z0-9]+)*(?:-\\d+)?$",
+    "pattern": "^(build|bugfix|bump|docs|experimental|feature|hotfix|merge|refactor|release|test)(/[A-Z]+\\-\\d+)?/[a-z0-9]+(-[a-z0-9]+)*(?:-\\d+)?$",
     "errorMsg": "Incorrect branch name, please refer to the regex documentation -> https://extendsclass.com/regex/f92c0fc"
   }
 }
