@@ -23,11 +23,8 @@ class HandleHybridRequests extends Middleware
      */
     public function share(Request $request): SharedData
     {
-        /** @var string $appName */
-        $appName = config('app.name');
-
         return new SharedData(
-            app: new AppData(name: $appName),
+            app: new AppData(name: str(config()->string('app.name'))->title()->toString()),
             authenticatedUser: UserData::optional(auth()->user()),
             flash: new FlashData(
                 error: $request->session()->get(FlashMessage::Error->value),

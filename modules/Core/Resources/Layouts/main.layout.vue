@@ -1,5 +1,6 @@
 <script setup lang="ts">
 useFlashToast();
+useDynamicFavicon();
 
 const appName = useProperty('app.name');
 const isOpen = ref(false);
@@ -19,11 +20,11 @@ const { footerItems, mainItems, pageTitle } = useNavigation();
         :ui="{ footer: 'lg:border-t lg:border-default' }"
       >
         <template #header="{ collapsed }">
-          <div v-if="!collapsed" class="flex items-center">
-            <Logo />
-            <span class="text-primary capitalize">{{ appName }}</span>
+          <div v-if="!collapsed" class="ms-2.5 flex items-center gap-2">
+            <Logo class="h-7 w-auto" />
+            <span class="text-primary">{{ appName }}</span>
           </div>
-          <Logo v-else />
+          <Logo v-else class="ms-1.5 size-5" />
         </template>
         <template #default="{ collapsed }">
           <UNavigationMenu

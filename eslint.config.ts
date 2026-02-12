@@ -53,12 +53,15 @@ const customRules = {
   },
 } satisfies TypedFlatConfigItem;
 
+const globalIgnores = {
+  ignores: ['storage/**'],
+} satisfies TypedFlatConfigItem;
+
 const vueConfig = {
   files: ['**/*.vue'],
-  ignores: ['tsconfig.json', 'storage/**'],
   languageOptions: {
     parser: await import('vue-eslint-parser'),
   },
 } satisfies TypedFlatConfigItem;
 
-export default antfu(options, customRules, vueConfig);
+export default antfu(options, globalIgnores, customRules, vueConfig);

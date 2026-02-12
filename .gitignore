@@ -27,3 +27,7 @@ _ide_helper*
 # Docker folders and files will not be tracked as their purpose is only for local development.
 docker
 docker-compose.yml
+
+**/caddy
+frankenphp
+frankenphp-worker.php

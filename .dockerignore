@@ -1,0 +1,46 @@
+# Version control
+.git
+.gitattributes
+.github/
+
+# IDE and editor
+.idea/
+.vscode/
+.editorconfig
+.phpstorm.meta.php
+
+# Dependencies (installed in Docker)
+node_modules/
+vendor/
+.pnpm-store/
+
+# Build artifacts
+public/build/
+public/hot
+
+# Environment files (injected at runtime)
+.env
+.env.*
+!.env.example
+!.env.testing.example
+
+# Framework generated
+.hybridly/
+storage/logs/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+
+# AI and documentation
+.claude/
+docs/
+
+# Testing
+tests/
+
+# Git hooks
+.husky/
+
+# Docker (avoid recursive context)
+docker-compose.yml
+Makefile

@@ -1,19 +1,31 @@
+<script setup lang="ts">
+const appName = useProperty<string>('app.name');
+const initial = computed(() => appName.value?.charAt(0).toUpperCase() ?? 'S');
+</script>
+
 <template>
   <svg
-    class="h-8 w-auto shrink-0"
-    viewBox="0 0 512.000000 512.000000"
+    class="shrink-0"
+    viewBox="0 0 128 128"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g
-      stroke="none"
-      transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+    <rect
+      fill="var(--ui-primary)"
+      height="128"
+      rx="24"
+      width="128"
+    />
+    <text
+      dominant-baseline="central"
+      fill="white"
+      font-family="system-ui, -apple-system, sans-serif"
+      font-size="64"
+      font-weight="700"
+      text-anchor="middle"
+      x="64"
+      y="64"
     >
-      <path
-        d="M2190 3675 l0 -375 -375 0 -375 0 0 -370 0 -370 745 0 745 0 0 375 0 375 375 0 375 0 0 370 0 370 -745 0 -745 0 0 -375z"
-        fill="var(--ui-primary)"
-      />
-      <path d="M2940 2180 l0 -370 370 0 370 0 0 370 0 370 -370 0 -370 0 0 -370z" fill="var(--ui-primary)" />
-      <path d="M1440 1430 l0 -370 745 0 745 0 0 370 0 370 -745 0 -745 0 0 -370z" fill="var(--ui-primary)" />
-    </g>
+      {{ initial }}
+    </text>
   </svg>
 </template>

@@ -37,6 +37,7 @@ find useful ideas or inspiration within it.
 - 🥦 Taze: modern CLI tool to keep front-end dependencies up-to-date
 - 📱 Fully responsive
 - 🌓 Light & Dark Mode
+- 🎨 Dynamic logo & favicon derived from **APP_NAME** and theme color
 
 ## Architecture
 
@@ -157,16 +158,9 @@ You can always run ```make help``` in your console to see which commands are ava
 Once the docker containers are running, you can access the following URL:
 
 - **https://app.sassfolding.test** - The main application
-- **https://horizon.sassfolding.test** - The Laravel Horizon dashboard to monitor your Redis queues
 - **https://mail.sassfolding.test** - The Mailpit dashboard to receive your emails locally
 - **https://rustfs.sassfolding.test** - The RustFS dashboard to manage files, folders and buckets
 - **https://traefik.sassfolding.test** - The Traefik dashboard to view your entrypoints, routes etc.
-
-*Note: There is a middleware called **EnsureValidHorizonUri** to make sure Horizon dashboard and its API
-remain protected and scoped*
-
-> [!CAUTION]
-> To make Laravel Horizon work with the docker setup, the HORIZON_PATH= variable in your .env should stay empty.
 
 ## Documentation
 

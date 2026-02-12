@@ -8,10 +8,11 @@ import './tailwind.css';
 
 initializeHybridly({
   enhanceVue: (vue: App<Element>): void => {
+    const appName = useProperty('app.name');
     const head: VueHeadClient = createHead();
 
     head.push({
-      titleTemplate: (title?: string): string => title ? `Sassfolding - ${title}` : 'Sassfolding',
+      titleTemplate: (title?: string): string => title ? `${appName.value} - ${title}` : appName.value,
     });
 
     vue.use(head).use(ui);
