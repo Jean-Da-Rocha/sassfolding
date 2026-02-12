@@ -29,7 +29,7 @@
 
 | Container       | Purpose                                               |
 |-----------------|-------------------------------------------------------|
-| **dnsmasq**     | Wildcard DNS for `*.{project}.{tld}` domains          |
+| **dnsmasq**     | Wildcard DNS for `*.{project}.test` domains          |
 | **Hybridly**    | FrankenPHP + Octane + Node.js (PHP server + Vite dev) |
 | **Mailpit**     | Local SMTP server and email inbox                     |
 | **MySQL**       | Relational database (local and testing)               |
@@ -85,13 +85,14 @@ XDEBUG_VERSION = 3.5.0
 
 ### DNS Resolution
 
-A dnsmasq container provides wildcard DNS for all `*.{project}.{tld}` domains. The OS resolver is configured
-once (via `make setup-dns`) to forward queries for the TLD to dnsmasq:
+A dnsmasq container provides wildcard DNS for all `*.{project}.test` domains. The OS resolver is configured
+once (via `make setup-dns`) to forward queries for `.test` to dnsmasq:
 
-- **Linux**: systemd-resolved drop-in at `/etc/systemd/resolved.conf.d/{tld}.conf`
-- **macOS**: Resolver file at `/etc/resolver/{tld}`
+- **Linux**: systemd-resolved drop-in at `/etc/systemd/resolved.conf.d/test.conf` using a routing domain
+  (`~test`) so only `.test` queries go to dnsmasq — all other DNS uses the system default
+- **macOS**: Resolver file at `/etc/resolver/test`
 
-The TLD is configurable via `DNS_DOMAIN` in `make/infra.mk` (default: `test`).
+The TLD is `.test` (IETF-reserved, RFC 6761), defined as `DNS_DOMAIN` in `make/infra.mk`.
 
 ## CI Environment (GitHub Actions)
 
