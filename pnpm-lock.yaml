@@ -55,8 +55,8 @@ importers:
         specifier: ^9.1.7
         version: 9.1.7
       hybridly:
-        specifier: ^0.10.0-beta.1
-        version: 0.10.0-beta.4(axios@1.13.2)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.17.0)(yaml@2.8.2))(vue@3.5.26(typescript@5.9.3))
+        specifier: ^0.10.0-beta.11
+        version: 0.10.0-beta.11(axios@1.13.2)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.17.0)(yaml@2.8.2))(vue@3.5.26(typescript@5.9.3))
       lint-staged:
         specifier: ^16.2.7
         version: 16.2.7
@@ -863,22 +863,22 @@ packages:
     resolution: {integrity: sha512-xeO57FpIu4p1Ri3Jq/EXq4ClRm86dVF2z/+kvFnyqVYRavTZmaFaUBbWCOuuTh0o/g7DSsk6kc2vrS4Vl5oPOQ==}
     engines: {node: '>=18.18'}
 
-  '@hybridly/core@0.10.0-beta.4':
-    resolution: {integrity: sha512-c3r7mtP7pHdd1MXuqBVfbrLwO1ovxXqN37IxTm5GmBtpNxK5gA2FbpYv9c2qjuMR2fXgc4VPmt6LvjIErukvbQ==}
+  '@hybridly/core@0.10.0-beta.11':
+    resolution: {integrity: sha512-FRKYXkUc06ICKYOlFboCXJCTccPvxEMap95Hn8JORClHbsxWjEriMOMopFRQCZKyejie8LBZ1jsTzn38Pdrjrg==}
     peerDependencies:
       axios: ^1.7.2
 
-  '@hybridly/utils@0.10.0-beta.4':
-    resolution: {integrity: sha512-F7Kh79s4k4o6x7wcvAeNMEf1kn9ieekf2Aw+F5UhReh/LeWWixp0Q8fEwkigB7zbuZkIqs7s9NEUQOdAly+TjA==}
+  '@hybridly/utils@0.10.0-beta.11':
+    resolution: {integrity: sha512-7A2jt8DKgje6ynbnlUoA0XGF+SXICbw+n2MfXyKapPfZCWpogT5nAsBFxBxwqIwNqOHBqVRK/b5uPC/fq1x2Vw==}
 
-  '@hybridly/vite@0.10.0-beta.4':
-    resolution: {integrity: sha512-qdB8SeNCarlmV99gzLAe05DgWrG+GUZYgZqL5BhHirHTKc4PgghnSAbGG65J/lwG2Fyfgk7TI1Licl0oj44uQA==}
+  '@hybridly/vite@0.10.0-beta.11':
+    resolution: {integrity: sha512-xpE6WtSZRCNfCGDPvb2Fh0mQe0kqPtREjS+B6INOvx8Rc5M3c+mtOKjQI+PHNswqi+PN/AUSvygdxol8TB/i7Q==}
     peerDependencies:
       vite: ^7.3.0
       vue: ^3.5.0
 
-  '@hybridly/vue@0.10.0-beta.4':
-    resolution: {integrity: sha512-vLh5aGhQT7hyL1eepA3PbU74VVM+aBy48Nu2ewg7JedAp2UW4Ri3vT8HcpOUXZOyk621pvotPzvbUXeF5Cu2dg==}
+  '@hybridly/vue@0.10.0-beta.11':
+    resolution: {integrity: sha512-DCbUhNmAot5cgRbQi4BeW1NSuREwoQMivTIFz9SS8R8j5FDvWkfpuQCIrtln0AjfGtk9lK5m9dWiqEcVDbbHpA==}
     peerDependencies:
       vue: ^3.2.45
 
@@ -2769,8 +2769,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  hybridly@0.10.0-beta.4:
-    resolution: {integrity: sha512-wxiLokF00he1bWSkUoGjAe9iwWWLzDpSbVVbLPzyiyWK0rkq12dfVq7OEXVMQXNL6pvxKzsW7n21qaLztuXfKA==}
+  hybridly@0.10.0-beta.11:
+    resolution: {integrity: sha512-NV+/MBIK8QB9pjYyYLvUmRZHQG4I+JlIlhc4ZhOvV0NJi/L8Z9zCBd5Z2iD7LYPH7NKfgoq5ve6BJ3UMWimelA==}
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -4893,16 +4893,16 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.2': {}
 
-  '@hybridly/core@0.10.0-beta.4(axios@1.13.2)':
+  '@hybridly/core@0.10.0-beta.11(axios@1.13.2)':
     dependencies:
-      '@hybridly/utils': 0.10.0-beta.4
+      '@hybridly/utils': 0.10.0-beta.11
       axios: 1.13.2
       qs: 6.14.0
       superjson: 2.2.2
     transitivePeerDependencies:
       - supports-color
 
-  '@hybridly/utils@0.10.0-beta.4':
+  '@hybridly/utils@0.10.0-beta.11':
     dependencies:
       debug: 4.4.3
       deepmerge: 4.3.1
@@ -4912,9 +4912,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@hybridly/vite@0.10.0-beta.4(axios@1.13.2)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.17.0)(yaml@2.8.2))(vue@3.5.26(typescript@5.9.3))':
+  '@hybridly/vite@0.10.0-beta.11(axios@1.13.2)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.17.0)(yaml@2.8.2))(vue@3.5.26(typescript@5.9.3))':
     dependencies:
-      '@hybridly/core': 0.10.0-beta.4(axios@1.13.2)
+      '@hybridly/core': 0.10.0-beta.11(axios@1.13.2)
       '@vitejs/plugin-vue': 5.2.4(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.17.0)(yaml@2.8.2))(vue@3.5.26(typescript@5.9.3))
       fast-glob: 3.3.3
       local-pkg: 1.1.2
@@ -4927,11 +4927,11 @@ snapshots:
       - axios
       - supports-color
 
-  '@hybridly/vue@0.10.0-beta.4(axios@1.13.2)(vue@3.5.26(typescript@5.9.3))':
+  '@hybridly/vue@0.10.0-beta.11(axios@1.13.2)(vue@3.5.26(typescript@5.9.3))':
     dependencies:
       '@clickbar/dot-diver': 1.0.7
-      '@hybridly/core': 0.10.0-beta.4(axios@1.13.2)
-      '@hybridly/utils': 0.10.0-beta.4
+      '@hybridly/core': 0.10.0-beta.11(axios@1.13.2)
+      '@hybridly/utils': 0.10.0-beta.11
       '@vue/devtools-api': 7.7.7
       defu: 6.1.4
       lodash.isequal: 4.5.0
@@ -7172,11 +7172,11 @@ snapshots:
 
   husky@9.1.7: {}
 
-  hybridly@0.10.0-beta.4(axios@1.13.2)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.17.0)(yaml@2.8.2))(vue@3.5.26(typescript@5.9.3)):
+  hybridly@0.10.0-beta.11(axios@1.13.2)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.17.0)(yaml@2.8.2))(vue@3.5.26(typescript@5.9.3)):
     dependencies:
-      '@hybridly/core': 0.10.0-beta.4(axios@1.13.2)
-      '@hybridly/vite': 0.10.0-beta.4(axios@1.13.2)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.17.0)(yaml@2.8.2))(vue@3.5.26(typescript@5.9.3))
-      '@hybridly/vue': 0.10.0-beta.4(axios@1.13.2)(vue@3.5.26(typescript@5.9.3))
+      '@hybridly/core': 0.10.0-beta.11(axios@1.13.2)
+      '@hybridly/vite': 0.10.0-beta.11(axios@1.13.2)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.17.0)(yaml@2.8.2))(vue@3.5.26(typescript@5.9.3))
+      '@hybridly/vue': 0.10.0-beta.11(axios@1.13.2)(vue@3.5.26(typescript@5.9.3))
     transitivePeerDependencies:
       - axios
       - supports-color
