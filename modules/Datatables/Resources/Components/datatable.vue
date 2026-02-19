@@ -1,14 +1,11 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
 type Props = {
   table: Table<T>;
-  bulkActions?: readonly BulkAction<T>[];
   columns?: ColumnDef<T>[];
   emptyIcon?: string;
   emptyText?: string;
   hiddenColumns?: readonly string[];
-  inlineActions?: readonly TableAction<T>[];
   loadingAnimation?: 'carousel' | 'carousel-inverse' | 'elastic' | 'swing';
-  resourceName?: string;
   searchable?: boolean;
   selectable?: boolean;
   stickyHeader?: boolean;
@@ -34,29 +31,50 @@ defineSlots<{
   }) => unknown;
 }>();
 
-const datatable = useTable(props, 'table');
+const datatable = useTable(() => props.table);
 const isLoading = useHybridlyLoading();
 
 const { hasSearchFilter, search } = useTableSearch(datatable);
 const { goToPage, paginatorMeta, perPageItems } = useTablePagination(datatable);
-const { clearSelection, handleRowSelection, rowSelection, selectedRows } = useTableSelection<T>(() => datatable.data);
-const { columnVisibility, visibilityItems } = useTableColumnVisibility(datatable, props.hiddenColumns as readonly string[]);
+const { columnVisibility, visibilityItems } = useTableColumnVisibility(datatable, props.hiddenColumns);
 const {
   confirmModal,
-  contextMenuItems,
   executeConfirmedAction,
-  getRowActions,
-  onContextMenu,
   pendingAction,
-} = useTableActions<T>(props.inlineActions, props.resourceName);
+  requestConfirmation,
+} = useTableConfirmation();
+const {
+  clearAllFilters,
+  displayFilters,
+  getFilterIcon,
+  getFilterItems,
+  getFilterLabel,
+  hasActiveFilters,
+} = useTableFilters(datatable);
+const {
+  bulkActions,
+  contextMenuItems,
+  executeBulkAction,
+  getRowActions,
+  hasBulkActions,
+  hasInlineActions,
+  onContextMenu,
+} = useTableActions(datatable, requestConfirmation);
+const {
+  deselectAll,
+  handleCheckboxClick,
+  handleRowSelectionChange,
+  rowSelection,
+  selectedCount,
+} = useTableSelection(datatable);
 
 // resolveComponent must be called in setup context
 const { columns: generatedColumns } = useTableColumns<T>(
   {
     datatable,
     getRowActions,
-    handleRowSelection,
-    hasInlineActions: Boolean(props.inlineActions?.length),
+    handleCheckboxClick,
+    hasInlineActions: hasInlineActions.value,
     selectable: props.selectable,
   },
   {
@@ -71,16 +89,52 @@ const tableColumns = computed(() => props.columns ?? generatedColumns.value);
 
 <template>
   <div class="flex flex-col gap-4">
-    <!-- Header: Search + Actions -->
+    <!-- Header: Search + Filters + Actions -->
     <div class="flex items-center justify-between gap-4">
-      <div v-if="searchable && hasSearchFilter" class="max-w-sm">
-        <UInput
-          v-model="search"
-          icon="i-lucide-search"
-          placeholder="Search..."
+      <div class="flex items-center gap-3">
+        <div v-if="searchable && hasSearchFilter" class="max-w-sm">
+          <UInput
+            v-model="search"
+            icon="i-lucide-search"
+            placeholder="Search..."
+            size="sm"
+            :ui="{ trailing: 'pe-1' }"
+          >
+            <template v-if="search?.length" #trailing>
+              <UButton
+                aria-label="Clear search"
+                color="neutral"
+                icon="i-lucide-circle-x"
+                size="sm"
+                variant="link"
+                @click="search = ''"
+              />
+            </template>
+          </UInput>
+        </div>
+        <UDropdownMenu
+          v-for="filter in displayFilters"
+          :key="filter.name"
+          :items="getFilterItems(filter)"
+        >
+          <UButton
+            :color="filter.is_active ? 'primary' : 'neutral'"
+            :icon="getFilterIcon(filter)"
+            :label="getFilterLabel(filter)"
+            size="sm"
+            :variant="filter.is_active ? 'subtle' : 'outline'"
+          />
+        </UDropdownMenu>
+        <UButton
+          v-if="hasActiveFilters"
+          color="neutral"
+          icon="i-lucide-x"
+          label="Clear filters"
+          size="sm"
+          variant="ghost"
+          @click="clearAllFilters"
         />
       </div>
-      <div v-else />
 
       <div class="flex items-center gap-2">
         <UDropdownMenu :items="visibilityItems">
@@ -96,21 +150,21 @@ const tableColumns = computed(() => props.columns ?? generatedColumns.value);
 
     <!-- Bulk action bar -->
     <div
-      v-if="selectable && selectedRows.length > 0"
+      v-if="selectable && hasBulkActions && selectedCount > 0"
       class="flex items-center gap-4 rounded-lg bg-primary/10 p-4"
     >
       <span class="text-sm font-medium">
-        {{ selectedRows.length }} row(s) selected
+        {{ selectedCount }} row(s) selected
       </span>
       <div class="flex gap-2">
         <UButton
           v-for="action in bulkActions"
-          :key="action.label"
-          :color="action.color ?? 'primary'"
-          :icon="action.icon"
+          :key="action.name"
+          :color="action.metadata?.color ?? 'primary'"
+          :icon="action.metadata?.icon"
           :label="action.label"
           size="sm"
-          @click="action.onSelect(selectedRows)"
+          @click="executeBulkAction(action)"
         />
       </div>
       <UButton
@@ -119,7 +173,7 @@ const tableColumns = computed(() => props.columns ?? generatedColumns.value);
         icon="i-lucide-x"
         size="sm"
         variant="ghost"
-        @click="clearSelection"
+        @click="deselectAll"
       />
     </div>
 
@@ -127,11 +181,11 @@ const tableColumns = computed(() => props.columns ?? generatedColumns.value);
     <UContextMenu :items="contextMenuItems">
       <UTable
         v-model:column-visibility="columnVisibility"
-        v-model:row-selection="rowSelection"
         :columns="tableColumns"
         :data="datatable.data"
         :loading="isLoading"
         :loading-animation="loadingAnimation"
+        :row-selection="rowSelection"
         :sticky="stickyHeader ? 'header' : undefined"
         :ui="{
           base: 'table-fixed border-separate border-spacing-0',
@@ -142,6 +196,7 @@ const tableColumns = computed(() => props.columns ?? generatedColumns.value);
           separator: 'h-0',
         }"
         @contextmenu="onContextMenu"
+        @update:row-selection="handleRowSelectionChange"
       >
         <template #empty>
           <slot name="empty">

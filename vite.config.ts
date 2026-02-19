@@ -63,6 +63,21 @@ export default defineConfig(({ command, mode }): UserConfig => {
         type: true,
       },
       {
+        from: 'hybridly/vue',
+        imports: [
+          'BaseFilterRefinement',
+          'BoundFilterRefinement',
+          'BulkAction',
+          'DateFilterRefinement',
+          'FilterRefinement',
+          'InlineAction',
+          'SortDirection',
+          'TimeSuggestion',
+          'TimeframeSuggestion',
+        ],
+        type: true,
+      },
+      {
         from: '@nuxt/ui',
         imports: ['ColumnDef', 'DropdownMenuItem', 'NavigationMenuItem', 'ToastProps'],
         type: true,
