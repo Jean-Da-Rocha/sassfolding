@@ -4,54 +4,11 @@ type UserData = Modules.Users.Data.UserData;
 defineProps<{ users: Table<UserData> }>();
 
 useHead({ title: 'Users Listing' });
-
-const inlineActions = [
-  {
-    icon: 'i-lucide-square-pen',
-    label: 'Edit',
-    route: 'users.edit',
-  },
-  {
-    color: 'error',
-    confirm: true,
-    icon: 'i-lucide-trash-2',
-    label: 'Delete',
-    method: 'delete',
-    route: 'users.destroy',
-  },
-] satisfies InlineAction<UserData>[];
-
-const bulkActions = [
-  {
-    color: 'error',
-    icon: 'i-lucide-trash-2',
-    label: 'Delete Selected',
-    onSelect: () => {},
-  },
-  {
-    icon: 'i-lucide-mail',
-    label: 'Send Email',
-    onSelect: () => {},
-  },
-  {
-    icon: 'i-lucide-download',
-    label: 'Export CSV',
-    onSelect: () => {},
-  },
-  {
-    color: 'warning',
-    icon: 'i-lucide-ban',
-    label: 'Deactivate',
-    onSelect: () => {},
-  },
-] satisfies BulkAction<UserData>[];
 </script>
 
 <template layout="core::main">
   <Datatable
-    :bulk-actions="bulkActions"
-    :inline-actions="inlineActions"
-    resource-name="user"
+    :hidden-columns="['updated_at']"
     selectable
     :table="users"
   >
