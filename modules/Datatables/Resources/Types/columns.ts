@@ -1,22 +1,14 @@
 /**
  * Structural type for Hybridly table columns.
  * Defined explicitly because ReturnType<typeof useTable>['columns'][number]
- * is unresolvable due to unresolved generic type parameters.
+ * is unresolvable due to generic type parameters.
  */
 export type HybridlyTableColumn = {
-  readonly name: string | number | symbol;
-  readonly label: string;
   readonly isSortable: boolean;
-  readonly isSorting: (direction?: string) => boolean;
-  readonly toggleSort: (options?: { direction?: string }) => Promise<unknown>;
-};
-
-export type TableRowContext<T> = {
-  readonly row: {
-    readonly original: T;
-    readonly index: number;
-    readonly getIsSelected: () => boolean;
-  };
+  readonly isSorting: (direction?: SortDirection) => boolean;
+  readonly label: string;
+  readonly name: string | number | symbol;
+  readonly toggleSort: (options?: { direction?: SortDirection }) => Promise<unknown>;
 };
 
 export type TableHeaderContext = {
@@ -27,10 +19,21 @@ export type TableHeaderContext = {
   };
 };
 
-export type ColumnGeneratorConfig<T extends Record<string, any>> = {
-  readonly datatable: ReturnType<typeof useTable>;
-  readonly getRowActions: (record: T) => readonly RowActionItem[];
-  readonly handleRowSelection: (rowIndex: number, isSelected: boolean, event?: MouseEvent) => void;
+export type TableRowContext<T> = {
+  readonly row: {
+    readonly getIsSelected: () => boolean;
+    readonly index: number;
+    readonly original: T;
+    readonly toggleSelected: (value: boolean) => void;
+  };
+};
+
+export type ColumnGeneratorConfig = {
+  // Typed as `any` because ReturnType<typeof useTable> produces
+  // unresolvable conditional types across generic boundaries.
+  readonly datatable: any;
+  readonly getRowActions: (rowIndex: number) => readonly DropdownMenuItem[];
+  readonly handleCheckboxClick: (index: number, event: MouseEvent) => void;
   readonly hasInlineActions: boolean;
   readonly selectable: boolean;
 };

@@ -1,55 +1,46 @@
-type HttpMethod = 'get' | 'delete';
-
-type BaseAction = {
+export type TableActionMetadata = {
   readonly color?: Modules.Core.Enums.FlashMessage;
-  readonly icon?: string;
-  readonly label: string;
-};
-
-type RouteBasedAction = BaseAction & {
   readonly confirm?: boolean;
   readonly confirmMessage?: string;
-  readonly method?: HttpMethod;
-  readonly onSelect?: never;
-  readonly route: RouteName;
-};
-
-type CustomHandlerAction<T extends Record<string, any>> = BaseAction & {
-  readonly confirm?: never;
-  readonly confirmMessage?: never;
-  readonly method?: never;
-  readonly onSelect: (record: T) => void;
-  readonly route?: never;
-};
-
-export type TableAction<T extends Record<string, any>>
-  = | RouteBasedAction
-    | CustomHandlerAction<T>;
-
-export type InlineAction<T extends Record<string, any>> = TableAction<T>;
-
-export type BulkAction<T extends Record<string, any>> = BaseAction & {
-  readonly onSelect: (selectedRows: readonly T[]) => void;
-};
-
-export type PendingAction = {
-  readonly message?: string;
-  readonly method: HttpMethod;
-  readonly url: string;
-};
-
-export type RowActionItem = {
-  readonly color?: string;
   readonly icon?: string;
-  readonly label: string;
-  readonly onSelect: () => void;
 };
 
-export type UseTableActionsReturn<T extends Record<string, any>> = {
+export type TableAction = {
+  readonly execute?: () => void;
+  readonly label: string;
+  readonly metadata?: TableActionMetadata;
+  readonly name: string;
+};
+
+/**
+ * Structural type for a Hybridly table record.
+ * Defined explicitly because the record shape from useTable
+ * is unresolvable due to generic type parameters.
+ */
+export type TableRecord = {
+  readonly actions: readonly TableAction[];
+  readonly deselect: () => void;
+  readonly execute: (name: string) => void;
+  readonly select: () => void;
+  readonly selected: boolean;
+};
+
+export type PendingConfirmation = {
+  readonly message?: string;
+  readonly onConfirm: () => void;
+};
+
+export type UseTableConfirmationReturn = {
   readonly confirmModal: Ref<boolean>;
-  readonly contextMenuItems: Ref<RowActionItem[]>;
   readonly executeConfirmedAction: () => void;
-  readonly getRowActions: (record: T) => RowActionItem[];
-  readonly onContextMenu: (event: Event, row: { original: T }) => void;
-  readonly pendingAction: Ref<PendingAction | null>;
+  readonly pendingAction: Ref<PendingConfirmation | null>;
+  readonly requestConfirmation: (message: string | undefined, onConfirm: () => void) => void;
+};
+
+export type UseTableSelectionReturn = {
+  readonly deselectAll: () => void;
+  readonly handleCheckboxClick: (index: number, event: MouseEvent) => void;
+  readonly handleRowSelectionChange: (newSelection: Record<string, boolean> | undefined) => void;
+  readonly rowSelection: ComputedRef<Record<string, boolean>>;
+  readonly selectedCount: ComputedRef<number>;
 };
