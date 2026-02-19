@@ -1,41 +1,82 @@
-export function useTableSelection<T extends Record<string, any>>(getData: () => T[]): UseTableSelectionReturn<T> {
-  const rowSelection = ref<Record<string, boolean>>({});
-  const lastSelectedIndex = ref<number | null>(null);
+// Datatable parameter typed as `any` because ReturnType<typeof useTable>
+// produces unresolvable conditional types across generic boundaries.
 
-  const selectedRows = computed<readonly T[]>(() => {
-    const data = getData();
-    return Object.keys(rowSelection.value)
-      .filter(key => rowSelection.value[key])
-      .map(key => data[Number.parseInt(key)]);
-  });
+export function useTableSelection(datatable: any): UseTableSelectionReturn {
+  const lastClickedIndex = ref<number | null>(null);
 
-  const handleRowSelection = (rowIndex: number, isSelected: boolean, event?: MouseEvent): void => {
-    const newSelection = { ...rowSelection.value };
+  const rowSelection = computed<Record<string, boolean>>(() =>
+    Object.fromEntries(
+      (datatable.records as TableRecord[])
+        .map((record, index) => [String(index), record.selected] as const)
+        .filter(([, isSelected]) => isSelected),
+    ),
+  );
 
-    if (event?.shiftKey && lastSelectedIndex.value !== null && lastSelectedIndex.value !== rowIndex) {
-      const start = Math.min(lastSelectedIndex.value, rowIndex);
-      const end = Math.max(lastSelectedIndex.value, rowIndex);
+  const selectedCount = computed<number>(() =>
+    (datatable.records as TableRecord[]).filter(record => record.selected).length,
+  );
 
-      for (let i = start; i <= end; i++) {
-        newSelection[String(i)] = true;
-      }
-    } else {
-      newSelection[String(rowIndex)] = isSelected;
+  const deselectAll = (): void => datatable.deselectAll();
+
+  const setRecordSelection = (index: number, shouldSelect: boolean): void => {
+    const record: TableRecord | undefined = datatable.records[index];
+
+    if (!record || record.selected === shouldSelect) {
+      return;
     }
 
-    rowSelection.value = newSelection;
-    lastSelectedIndex.value = rowIndex;
+    if (shouldSelect) {
+      record.select();
+    } else {
+      record.deselect();
+    }
   };
 
-  const clearSelection = (): void => {
-    rowSelection.value = {};
-    lastSelectedIndex.value = null;
+  const handleCheckboxClick = (index: number, event: MouseEvent): void => {
+    const record: TableRecord | undefined = datatable.records[index];
+    if (!record) {
+      return;
+    }
+
+    const willSelect = !record.selected;
+
+    if (event.shiftKey && lastClickedIndex.value !== null) {
+      const rangeStart = Math.min(lastClickedIndex.value, index);
+      const rangeEnd = Math.max(lastClickedIndex.value, index);
+
+      for (let i = rangeStart; i <= rangeEnd; i++) {
+        setRecordSelection(i, willSelect);
+      }
+    } else {
+      setRecordSelection(index, willSelect);
+    }
+
+    lastClickedIndex.value = index;
+  };
+
+  const handleRowSelectionChange = (newSelection: Record<string, boolean> | undefined): void => {
+    if (!newSelection) {
+      return;
+    }
+
+    (datatable.records as TableRecord[]).forEach((record, index) => {
+      const shouldBeSelected = Boolean(newSelection[String(index)]);
+
+      if (shouldBeSelected !== record.selected) {
+        if (shouldBeSelected) {
+          record.select();
+        } else {
+          record.deselect();
+        }
+      }
+    });
   };
 
   return {
-    clearSelection,
-    handleRowSelection,
+    deselectAll,
+    handleCheckboxClick,
+    handleRowSelectionChange,
     rowSelection,
-    selectedRows,
+    selectedCount,
   };
 }

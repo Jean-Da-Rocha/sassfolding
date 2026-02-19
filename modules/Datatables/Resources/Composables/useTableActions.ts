@@ -1,75 +1,60 @@
-export function useTableActions<T extends Record<string, any>>(inlineActions: readonly TableAction<T>[] | undefined, resourceName?: string): UseTableActionsReturn<T> {
-  const confirmModal = ref(false);
-  const pendingAction = ref<PendingAction | null>(null);
-  const contextMenuItems = ref<RowActionItem[]>([]);
+// Datatable parameter typed as `any` because ReturnType<typeof useTable>
+// produces unresolvable conditional types across generic boundaries.
+// No explicit return type: known TS2589 with deeply nested Hybridly generics.
 
-  const executeConfirmedAction = (): void => {
-    if (!pendingAction.value) {
+export function useTableActions(
+  datatable: any,
+  requestConfirmation: (message: string | undefined, onConfirm: () => void) => void,
+) {
+  const bulkActions = computed<readonly TableAction[]>(() => datatable.bulkActions);
+  const hasInlineActions = computed<boolean>(() => datatable.inlineActions.length > 0);
+  const hasBulkActions = computed<boolean>(() => bulkActions.value.length > 0);
+
+  const executeWithConfirmation = (action: TableAction, onExecute: () => void): void => {
+    if (action.metadata?.confirm) {
+      requestConfirmation(action.metadata.confirmMessage, onExecute);
       return;
     }
 
-    if (pendingAction.value.method === 'delete') {
-      void router.delete(pendingAction.value.url);
-    } else {
-      void router.navigate({ url: pendingAction.value.url });
-    }
-
-    confirmModal.value = false;
-    pendingAction.value = null;
+    onExecute();
   };
 
-  const getRowActions = (record: T): RowActionItem[] => {
-    if (!inlineActions?.length) {
+  const executeInlineAction = (action: TableAction, record: TableRecord): void => {
+    executeWithConfirmation(action, () => record.execute(action.name));
+  };
+
+  const executeBulkAction = (action: TableAction): void => {
+    executeWithConfirmation(action, () => action.execute?.());
+  };
+
+  const getRowActions = (rowIndex: number): DropdownMenuItem[] => {
+    const record: TableRecord | undefined = datatable.records[rowIndex];
+
+    if (!record) {
       return [];
     }
 
-    return inlineActions.map(action => ({
-      color: action.color,
-      icon: action.icon,
+    return record.actions.map((action: TableAction) => ({
+      color: action.metadata?.color,
+      icon: action.metadata?.icon,
       label: action.label,
-      onSelect: () => {
-        if (action.onSelect) {
-          action.onSelect(record);
-
-          return;
-        }
-
-        if (action.route) {
-          const routeParams = resourceName ? { [resourceName]: record.id } : { id: record.id };
-          const url = route(action.route, routeParams);
-
-          if (action.confirm) {
-            pendingAction.value = {
-              message: action.confirmMessage,
-              method: action.method ?? 'get',
-              url,
-            };
-
-            confirmModal.value = true;
-
-            return;
-          }
-
-          if (action.method === 'delete') {
-            void router.delete(url);
-          } else {
-            void router.navigate({ url });
-          }
-        }
-      },
+      onSelect: () => executeInlineAction(action, record),
     }));
   };
 
-  const onContextMenu = (_event: Event, row: { original: T }): void => {
-    contextMenuItems.value = getRowActions(row.original);
+  const contextMenuItems = ref<DropdownMenuItem[]>([]);
+
+  const onContextMenu = (_event: Event, row: { index: number }): void => {
+    contextMenuItems.value = getRowActions(row.index);
   };
 
   return {
-    confirmModal,
+    bulkActions,
     contextMenuItems,
-    executeConfirmedAction,
+    executeBulkAction,
     getRowActions,
+    hasBulkActions,
+    hasInlineActions,
     onContextMenu,
-    pendingAction,
   };
 }

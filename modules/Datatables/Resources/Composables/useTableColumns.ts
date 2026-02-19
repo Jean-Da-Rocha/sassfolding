@@ -1,38 +1,39 @@
 export function useTableColumns<T extends Record<string, any>>(
-  config: ColumnGeneratorConfig<T>,
+  config: ColumnGeneratorConfig,
   components: ResolvedComponents,
 ): UseTableColumnsReturn<T> {
-  const { datatable, getRowActions, handleRowSelection, hasInlineActions, selectable } = config;
+  const { datatable, getRowActions, handleCheckboxClick, hasInlineActions, selectable } = config;
   const { UButton, UCheckbox, UDropdownMenu } = components;
 
   const columns = computed<ColumnDef<T>[]>(() => {
     const result: ColumnDef<T>[] = [];
 
     if (selectable) {
-      result.push(createSelectionColumn());
+      result.push(buildSelectionColumn());
     }
 
     datatable.columns.forEach((column: HybridlyTableColumn) => {
-      result.push(createDataColumn(column));
+      result.push(buildDataColumn(column));
     });
 
     if (hasInlineActions) {
-      result.push(createActionsColumn());
+      result.push(buildActionsColumn());
     }
 
     return result;
   });
 
-  function createSelectionColumn(): ColumnDef<T> {
+  function buildSelectionColumn(): ColumnDef<T> {
     return {
-      cell: ({ row }: TableRowContext<T>) => h(UCheckbox, {
-        modelValue: row.getIsSelected(),
+      cell: ({ row }: TableRowContext<T>) => h('label', {
+        class: 'cursor-pointer',
         onClick: (event: MouseEvent) => {
           event.preventDefault();
-
-          handleRowSelection(row.index, !row.getIsSelected(), event);
+          handleCheckboxClick(row.index, event);
         },
-      }),
+      }, h(UCheckbox, {
+        modelValue: row.getIsSelected(),
+      })),
       header: ({ table }: TableHeaderContext) => h(UCheckbox, {
         'indeterminate': table.getIsSomePageRowsSelected(),
         'modelValue': table.getIsAllPageRowsSelected(),
@@ -43,14 +44,13 @@ export function useTableColumns<T extends Record<string, any>>(
     } as ColumnDef<T>;
   }
 
-  function createDataColumn(column: HybridlyTableColumn): ColumnDef<T> {
-    const isSortable = column.isSortable ?? false;
+  function buildDataColumn(column: HybridlyTableColumn): ColumnDef<T> {
     const columnName = String(column.name);
 
     return {
       accessorKey: columnName,
-      enableSorting: isSortable,
-      header: isSortable
+      enableSorting: column.isSortable,
+      header: column.isSortable
         ? () => h(UButton, {
             'class': '-mx-2.5',
             'color': 'neutral',
@@ -65,22 +65,10 @@ export function useTableColumns<T extends Record<string, any>>(
     } as ColumnDef<T>;
   }
 
-  function getSortIcon(column: HybridlyTableColumn): string | undefined {
-    if (column.isSorting('asc')) {
-      return 'i-lucide-arrow-up-narrow-wide';
-    }
-
-    if (column.isSorting('desc')) {
-      return 'i-lucide-arrow-down-wide-narrow';
-    }
-
-    return undefined;
-  }
-
-  function createActionsColumn(): ColumnDef<T> {
+  function buildActionsColumn(): ColumnDef<T> {
     return {
       cell: ({ row }: TableRowContext<T>) => h(UDropdownMenu, {
-        items: getRowActions(row.original),
+        items: getRowActions(row.index),
       }, () => h(UButton, {
         color: 'neutral',
         icon: 'i-lucide-ellipsis-vertical',
@@ -93,4 +81,16 @@ export function useTableColumns<T extends Record<string, any>>(
   }
 
   return { columns };
+}
+
+function getSortIcon(column: HybridlyTableColumn): string | undefined {
+  if (column.isSorting('asc')) {
+    return 'i-lucide-arrow-up-narrow-wide';
+  }
+
+  if (column.isSorting('desc')) {
+    return 'i-lucide-arrow-down-wide-narrow';
+  }
+
+  return undefined;
 }

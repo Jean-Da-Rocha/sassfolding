@@ -1,29 +1,25 @@
-export function useTableColumnVisibility(datatable: ReturnType<typeof useTable>, hiddenColumns: readonly string[]): UseTableColumnVisibilityReturn {
+// Datatable parameter typed as `any` because ReturnType<typeof useTable>
+// produces unresolvable conditional types across generic boundaries.
+
+export function useTableColumnVisibility(datatable: any, hiddenColumns: readonly string[]): UseTableColumnVisibilityReturn {
   const columnVisibility = ref<Record<string, boolean>>(
     buildInitialVisibility(datatable.columns, hiddenColumns),
   );
 
   const visibilityItems = computed<VisibilityItem[]>(() =>
-    datatable.columns.map((column: HybridlyTableColumn) => ({
-      icon: columnVisibility.value[String(column.name)] ? 'i-lucide-check' : undefined,
-      label: column.label,
-      onSelect: (event: Event) => {
-        event.preventDefault();
+    datatable.columns.map((column: HybridlyTableColumn) => {
+      const columnName = String(column.name);
 
-        toggleColumnVisibility(String(column.name));
-      },
-    })),
+      return {
+        icon: columnVisibility.value[columnName] ? 'i-lucide-check' : undefined,
+        label: column.label,
+        onSelect: (event: Event) => {
+          event.preventDefault();
+          toggleColumnVisibility(columnName);
+        },
+      };
+    }),
   );
-
-  function buildInitialVisibility(
-    columns: readonly { name: string | number }[],
-    hidden: readonly string[],
-  ): Record<string, boolean> {
-    return Object.fromEntries([
-      ...columns.map(column => [String(column.name), true]),
-      ...hidden.map(columnName => [columnName, false]),
-    ]);
-  }
 
   function toggleColumnVisibility(columnName: string): void {
     columnVisibility.value = {
@@ -36,4 +32,19 @@ export function useTableColumnVisibility(datatable: ReturnType<typeof useTable>,
     columnVisibility,
     visibilityItems,
   };
+}
+
+function buildInitialVisibility(
+  columns: readonly HybridlyTableColumn[],
+  hiddenColumns: readonly string[],
+): Record<string, boolean> {
+  const hiddenSet = new Set(hiddenColumns);
+
+  return Object.fromEntries(
+    columns.map((column) => {
+      const columnName = String(column.name);
+
+      return [columnName, !hiddenSet.has(columnName)];
+    }),
+  );
 }

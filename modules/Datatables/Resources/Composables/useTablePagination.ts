@@ -1,8 +1,13 @@
-export function useTablePagination(datatable: ReturnType<typeof useTable>, options?: PaginationOptions): UseTablePaginationReturn {
-  const perPageChoices = options?.perPageOptions ?? [10, 25, 50, 100];
+// Datatable parameter typed as `any` because ReturnType<typeof useTable>
+// produces unresolvable conditional types across generic boundaries.
 
-  const paginatorMeta = computed(
-    () => datatable.paginator.meta as TablePaginatorMeta,
+const DEFAULT_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
+
+export function useTablePagination(datatable: any, options?: PaginationOptions): UseTablePaginationReturn {
+  const perPageChoices = options?.perPageOptions ?? DEFAULT_PER_PAGE_OPTIONS;
+
+  const paginatorMeta = computed<TablePaginatorMeta>(
+    () => datatable.paginator.meta,
   );
 
   const goToPage = (page: number): void => {
@@ -28,7 +33,7 @@ export function useTablePagination(datatable: ReturnType<typeof useTable>, optio
   };
 
   const perPageItems = computed<PerPageItem[]>(() =>
-    perPageChoices.map((size: number) => ({
+    perPageChoices.map(size => ({
       class: paginatorMeta.value.per_page === size ? 'bg-primary text-inverted' : undefined,
       label: String(size),
       onSelect: () => changePerPage(size),

@@ -1,12 +1,17 @@
-export function useTableSearch(datatable: ReturnType<typeof useTable>, options?: SearchOptions): UseTableSearchReturn {
-  const search = datatable.bindFilter('search', {
-    debounce: options?.debounce ?? 300,
+// Datatable parameter typed as `any` because ReturnType<typeof useTable>
+// produces unresolvable conditional types across generic boundaries.
+
+const DEFAULT_DEBOUNCE_MS = 300;
+
+export function useTableSearch(datatable: any, options?: SearchOptions): UseTableSearchReturn {
+  const search: Ref<string> = datatable.bindFilter('search', {
+    debounce: options?.debounce ?? DEFAULT_DEBOUNCE_MS,
     syncDebounce: 0,
     transformUrl: { query: { page: undefined } },
-  }) as Ref<string>;
+  });
 
-  const hasSearchFilter = computed(() =>
-    datatable.filters.some((filter: { name: string }) => filter.name === 'search'),
+  const hasSearchFilter = computed<boolean>(() =>
+    datatable.filters.some((filter: BoundFilterRefinement) => filter.name === 'search'),
   );
 
   return {
