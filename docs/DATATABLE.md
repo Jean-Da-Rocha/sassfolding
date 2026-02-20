@@ -7,12 +7,12 @@ The Datatables module provides a reusable, full-featured table system built on t
 ## Features
 
 - Server-side pagination, sorting, and search
-- Per-column filtering (ternary, boolean, date, select, trashed)
+- Per-column filtering (ternary, boolean, date, select with multi-select, trashed)
 - Column visibility toggle
 - Row selection with shift-click range selection and bulk actions (backend-driven)
 - Per-row inline actions (backend-driven, with optional confirmation modal)
 - Right-click context menu
-- Custom cell rendering via slots
+- Custom cell rendering via slots (including dynamic badge rendering)
 - Loading state and empty state
 
 ## Backend: Define a Table
@@ -104,6 +104,32 @@ public function index(): HybridlyView
 }
 ```
 
+## Relationship Columns
+
+To display data from eager-loaded relationships, use `transformValueUsing` with an underscore-based column name
+(avoid dots — TanStack Table interprets them as nested property access):
+
+```php
+protected function defineColumns(): array
+{
+    return [
+        TextColumn::make('organization_name')
+            ->label('Organization')
+            ->transformValueUsing(fn (Project $project) => $project->organization->name),
+        TextColumn::make('owner_name')
+            ->label('Owner')
+            ->transformValueUsing(fn (Project $project) => $project->owner->name),
+    ];
+}
+
+protected function defineQuery(): Builder
+{
+    return Project::query()
+        ->select(['id', 'name', 'organization_id', 'owner_id'])
+        ->with(['organization:id,name', 'owner:id,name']);
+}
+```
+
 ## Inline Actions
 
 Per-row actions are defined in the backend Table class via `defineActions()` using `InlineAction::make()`.
@@ -181,6 +207,33 @@ new ActionMetaData(
 | `confirm`        | `bool`          | Show confirmation modal before execution |
 | `confirmMessage` | `?string`       | Custom confirmation message              |
 
+## Multi-Select Filters
+
+`SelectFilter` supports multi-select via the `->multiple()` method. The frontend dropdown automatically
+shows checkmarks and allows toggling multiple options. Hybridly handles `whereIn` queries automatically
+for standard column filters.
+
+```php
+SelectFilter::make('status')
+    ->label('Status')
+    ->multiple()
+    ->options(ProjectStatus::labelMap()),
+```
+
+For custom query callbacks with `->multiple()`, the callback receives `array $selectedOptions`
+(keyed by value). Use `array_keys()` with `whereIn`:
+
+```php
+SelectFilter::make('member_role')
+    ->label('Member Role')
+    ->multiple()
+    ->options($roleOptions)
+    ->query(fn (Builder $builder, array $selectedOptions) => $builder->whereHas(
+        'users',
+        fn (Builder $query) => $query->whereIn('pivot.role', array_keys($selectedOptions)),
+    )),
+```
+
 ## Frontend: Use the Datatable Component
 
 The view receives a typed `Table<T>` prop and passes it to the `Datatable` component.
@@ -200,7 +253,11 @@ defineProps<{ users: Table<UserData> }>();
 
 ## Custom Cell Rendering
 
-Override how a column renders using the `#<column-name>-cell` slot pattern:
+Override how a column renders using the `#<column-name>-cell` slot pattern.
+The slot name is derived from the column key passed to `TextColumn::make('<column-name>')`.
+
+The slot receives `slotProps` which may be `undefined`, so always use optional chaining.
+Access typed row data via `slotProps.row.original` (the DTO object):
 
 ```vue
 <Datatable :table="users">
@@ -212,6 +269,121 @@ Override how a column renders using the `#<column-name>-cell` slot pattern:
   </template>
 </Datatable>
 ```
+
+## Dynamic Badge Rendering
+
+For status/priority columns, use Nuxt UI's `UBadge` with backend-driven colors.
+This avoids hardcoding color maps in the frontend — colors are defined once in PHP enums
+and passed as view props.
+
+### Step 1: Add color methods to the PHP enum
+
+```php
+#[TypeScript]
+enum ProjectStatus: string
+{
+    case Active = 'active';
+    case Archived = 'archived';
+    case OnHold = 'on_hold';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::Active => 'Active',
+            self::Archived => 'Archived',
+            self::OnHold => 'On Hold',
+        };
+    }
+
+    public function color(): string
+    {
+        return match ($this) {
+            self::Active => 'success',
+            self::Archived => 'neutral',
+            self::OnHold => 'warning',
+        };
+    }
+
+    /** @return array<string, string> */
+    public static function colorMap(): array
+    {
+        return collect(self::cases())->mapWithKeys(
+            fn (self $case) => [$case->value => $case->color()],
+        )->all();
+    }
+
+    /** @return array<string, string> */
+    public static function labelMap(): array
+    {
+        return collect(self::cases())->mapWithKeys(
+            fn (self $case) => [$case->value => $case->label()],
+        )->all();
+    }
+}
+```
+
+Available Nuxt UI badge colors: `primary`, `secondary`, `success`, `info`, `warning`, `error`, `neutral`.
+
+### Step 2: Pass color and label maps from the controller
+
+```php
+public function index(): HybridlyView
+{
+    return hybridly('projects::list-projects', [
+        'projects' => ProjectTable::make(),
+        'statusColors' => ProjectStatus::colorMap(),
+        'statusLabels' => ProjectStatus::labelMap(),
+    ]);
+}
+```
+
+### Step 3: Render badges in the view using cell slots
+
+The `#<column-name>-cell` slot receives the row data. Use the color/label maps dynamically:
+
+```vue
+<script setup lang="ts">
+const props = defineProps<{
+  projects: Table<Modules.Projects.Data.ProjectData>;
+  statusColors: Record<string, string>;
+  statusLabels: Record<string, string>;
+}>();
+</script>
+
+<template layout="core::main">
+  <datatable selectable :table="props.projects">
+    <template #status-cell="slotProps">
+      <UBadge
+        v-if="slotProps?.row"
+        :color="props.statusColors[slotProps.row.original.status] ?? 'neutral'"
+        :label="props.statusLabels[slotProps.row.original.status] ?? slotProps.row.original.status"
+        variant="subtle"
+      />
+    </template>
+  </datatable>
+</template>
+```
+
+Multiple badge columns work the same way — just add more `#<column>-cell` slots
+(e.g., `#status-cell` and `#priority-cell` in the tasks listing).
+
+For boolean columns (like `is_active`), badges can be rendered inline without backend maps:
+
+```vue
+<Datatable :table="organizations">
+  <template #active-cell="slotProps">
+    <UBadge
+      v-if="slotProps?.row"
+      :color="slotProps.row.original.active ? 'success' : 'error'"
+      :label="slotProps.row.original.active ? 'Active' : 'Inactive'"
+      variant="subtle"
+    />
+  </template>
+</Datatable>
+```
+
+> **Note:** If the column name contains underscores (e.g., `is_active`), the slot name
+> follows the same pattern: `#is_active-cell`.
 
 ## Create Button
 
