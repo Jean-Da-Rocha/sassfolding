@@ -77,9 +77,9 @@ export function useTableFilters(datatable: any): UseTableFiltersReturn {
   };
 
   const clearAllFilters = (): void => {
-    displayFilters.value
-      .filter(filter => filter.is_active)
-      .forEach(filter => datatable.clearFilter(filter.name));
+    if (hasActiveFilters.value) {
+      datatable.clearFilters();
+    }
   };
 
   return {
@@ -153,7 +153,12 @@ function buildSelectItems(datatable: any, filter: BoundFilterRefinement): Dropdo
   const items: DropdownMenuItem[] = Object.entries(options).map(([key, label]) => ({
     icon: isSelected(key) ? 'i-lucide-check' : undefined,
     label,
-    onSelect: () => toggleValue(key),
+    onSelect: (event: Event) => {
+      if (isMultiple) {
+        event.preventDefault();
+      }
+      toggleValue(key);
+    },
   }));
 
   const clearItems = buildClearItem(datatable, filter);
