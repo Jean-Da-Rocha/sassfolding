@@ -3,6 +3,8 @@ export function useNavigation(): UseNavigationReturn {
 
   const allItems: ModuleNavigationItem[] = [
     ...useCoreNavigation(),
+    ...useOrganizationsNavigation(),
+    ...useProjectsNavigation(),
     ...useUsersNavigation(),
   ].sort((a, b) => a.order - b.order);
 

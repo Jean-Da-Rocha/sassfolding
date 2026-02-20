@@ -7,8 +7,12 @@ namespace Modules\Users\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Modules\Organizations\Models\Organization;
+use Modules\Projects\Models\Project;
 use Modules\Users\Database\Factories\UserFactory;
 
 /**
@@ -70,5 +74,17 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function nameInitial(): Attribute
     {
         return Attribute::make(get: fn () => ucfirst(substr($this->name, 0, 1)));
+    }
+
+    /** @return BelongsToMany<Organization, $this> */
+    public function organizations(): BelongsToMany
+    {
+        return $this->belongsToMany(Organization::class)->withPivot('role')->withTimestamps();
+    }
+
+    /** @return HasMany<Project, $this> */
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class, 'owner_id');
     }
 }
