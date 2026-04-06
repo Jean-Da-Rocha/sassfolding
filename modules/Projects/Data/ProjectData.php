@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Projects\Data;
 
-use Carbon\CarbonInterface;
+use Carbon\Carbon;
 use Modules\Projects\Enums\ProjectStatus;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Attributes\Validation\Exists;
@@ -25,6 +25,6 @@ final class ProjectData extends Data
         public readonly Optional|int $ownerId,
         #[Exists('organizations', 'id')]
         public readonly int $organizationId,
-        public readonly Optional|CarbonInterface|null $createdAt,
+        public readonly Optional|Carbon|null $createdAt,
     ) {}
 }

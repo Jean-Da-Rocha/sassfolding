@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Organizations\Data;
 
-use Carbon\CarbonInterface;
+use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Attributes\Validation\Max;
 use Spatie\LaravelData\Attributes\Validation\Unique;
@@ -23,6 +23,6 @@ final class OrganizationData extends Data
         #[Max(255), Unique(table: 'organizations', column: 'slug', ignore: new RouteParameterReference('organization', 'id', true))]
         public readonly string $slug,
         public readonly Optional|bool $isActive,
-        public readonly Optional|CarbonInterface|null $createdAt,
+        public readonly Optional|Carbon|null $createdAt,
     ) {}
 }
