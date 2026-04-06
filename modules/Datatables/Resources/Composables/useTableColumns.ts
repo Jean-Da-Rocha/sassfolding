@@ -44,24 +44,39 @@ export function useTableColumns<T extends Record<string, any>>(
     } as ColumnDef<T>;
   }
 
-  function buildDataColumn(column: HybridlyTableColumn): ColumnDef<T> {
-    const columnName = String(column.name);
+  function buildDataColumn(hybridlyColumn: HybridlyTableColumn): ColumnDef<T> {
+    const columnName = String(hybridlyColumn.name);
 
     return {
       accessorKey: columnName,
-      enableSorting: column.isSortable,
-      header: column.isSortable
-        ? () => h(UButton, {
-            'class': '-mx-2.5',
-            'color': 'neutral',
-            'label': column.label,
-            'onClick': () => column.toggleSort({
-              direction: column.isSorting('asc') ? 'desc' : 'asc',
-            }),
-            'trailing-icon': getSortIcon(column),
-            'variant': 'ghost',
-          })
-        : column.label,
+      enableSorting: hybridlyColumn.isSortable,
+      header: ({ column }: TableHeaderContext) => {
+        const isPinned = column.getIsPinned();
+
+        const sortButton = hybridlyColumn.isSortable
+          ? h(UButton, {
+              'class': '-mx-2.5',
+              'color': 'neutral',
+              'label': hybridlyColumn.label,
+              'onClick': () => hybridlyColumn.toggleSort({
+                direction: hybridlyColumn.isSorting('asc') ? 'desc' : 'asc',
+              }),
+              'trailing-icon': getSortIcon(hybridlyColumn),
+              'variant': 'ghost',
+            })
+          : h('span', hybridlyColumn.label);
+
+        const pinButton = h(UButton, {
+          class: 'ml-auto',
+          color: 'neutral',
+          icon: isPinned ? 'i-lucide-pin-off' : 'i-lucide-pin',
+          onClick: () => column.pin(isPinned ? false : 'left'),
+          size: '2xs',
+          variant: 'ghost',
+        });
+
+        return h('div', { class: 'flex items-center' }, [sortButton, pinButton]);
+      },
     } as ColumnDef<T>;
   }
 

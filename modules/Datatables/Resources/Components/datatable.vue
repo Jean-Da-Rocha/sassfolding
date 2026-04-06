@@ -6,7 +6,6 @@ type Props = {
   emptyText?: string;
   hiddenColumns?: readonly string[];
   loadingAnimation?: 'carousel' | 'carousel-inverse' | 'elastic' | 'swing';
-  pinnedColumns?: ColumnPinningState;
   searchable?: boolean;
   selectable?: boolean;
   stickyHeader?: boolean;
@@ -87,21 +86,7 @@ const { columns: generatedColumns } = useTableColumns<T>(
 
 const tableColumns = computed(() => props.columns ?? generatedColumns.value);
 
-const columnPinning = computed<ColumnPinningState>(() => {
-  const left = [
-    ...(props.selectable ? ['select'] : []),
-    ...(props.pinnedColumns?.left ?? []),
-  ];
-  const right = [
-    ...(props.pinnedColumns?.right ?? []),
-    ...(hasInlineActions.value ? ['actions'] : []),
-  ];
-
-  return {
-    left,
-    right,
-  };
-});
+const columnPinning = ref({});
 </script>
 
 <template>
@@ -197,8 +182,8 @@ const columnPinning = computed<ColumnPinningState>(() => {
     <!-- Table -->
     <UContextMenu :items="contextMenuItems">
       <UTable
+        v-model:column-pinning="columnPinning"
         v-model:column-visibility="columnVisibility"
-        :column-pinning="columnPinning"
         :columns="tableColumns"
         :data="datatable.data"
         :loading="isLoading"

@@ -11,7 +11,13 @@ export type HybridlyTableColumn = {
   readonly toggleSort: (options?: { direction?: SortDirection }) => Promise<unknown>;
 };
 
+export type ColumnPinningPosition = false | 'left' | 'right';
+
 export type TableHeaderContext = {
+  readonly column: {
+    readonly getIsPinned: () => ColumnPinningPosition;
+    readonly pin: (position: ColumnPinningPosition) => void;
+  };
   readonly table: {
     readonly getIsAllPageRowsSelected: () => boolean;
     readonly getIsSomePageRowsSelected: () => boolean;
@@ -46,11 +52,6 @@ export type ResolvedComponents = {
 
 export type UseTableColumnsReturn<T extends Record<string, any>> = {
   readonly columns: ComputedRef<ColumnDef<T>[]>;
-};
-
-export type ColumnPinningState = {
-  readonly left?: string[];
-  readonly right?: string[];
 };
 
 export type VisibilityItem = {
