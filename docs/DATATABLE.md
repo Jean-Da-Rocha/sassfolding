@@ -13,6 +13,7 @@ The Datatables module provides a reusable, full-featured table system built on t
 - Per-row inline actions (backend-driven, with optional confirmation modal)
 - Right-click context menu
 - Custom cell rendering via slots (including dynamic badge rendering)
+- Column pinning (native TanStack pin/unpin toggle in column headers)
 - Loading state and empty state
 
 ## Backend: Define a Table
@@ -200,12 +201,12 @@ new ActionMetaData(
 )
 ```
 
-| Property         | Type            | Description                              |
-|------------------|-----------------|------------------------------------------|
-| `icon`           | `?string`       | Lucide icon class (e.g. `i-lucide-trash-2`) |
-| `color`          | `?FlashMessage` | Button color via `FlashMessage` enum     |
-| `confirm`        | `bool`          | Show confirmation modal before execution |
-| `confirmMessage` | `?string`       | Custom confirmation message              |
+| Property          | Type            | Description                              |
+|-------------------|-----------------|------------------------------------------|
+| `icon`            | `?string`       | Lucide icon class (e.g. `i-lucide-trash-2`) |
+| `color`           | `?FlashMessage` | Button color via `FlashMessage` enum     |
+| `confirm`         | `bool`          | Show confirmation modal before execution |
+| `confirm_message` | `?string`       | Custom confirmation message              |
 
 ## Multi-Select Filters
 
@@ -410,3 +411,6 @@ Use the `#create` slot to add a button in the table header:
 | `emptyIcon`       | `string`                | `i-lucide-database` | Icon shown when table is empty        |
 | `emptyText`       | `string`                | `No data available` | Text shown when table is empty        |
 | `loadingAnimation`| `string`                | `carousel`          | Loading animation style               |
+
+Column pinning is built-in via the native TanStack `column.pin()` API. Each column header
+includes a pin/unpin toggle button. Pinned columns become sticky on the left side of the table.
