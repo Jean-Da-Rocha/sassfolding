@@ -54,12 +54,36 @@ export default defineConfig(({ command, mode }): UserConfig => {
         imports: ['useHead', 'useSeoMeta'],
       },
       {
+        from: '@internationalized/date',
+        imports: ['parseDate'],
+      },
+      {
+        from: '@internationalized/date',
+        imports: ['DateValue'],
+        type: true,
+      },
+      {
         from: 'hybridly',
         imports: ['can', 'getRouterContext', 'route', 'router'],
       },
       {
         from: 'hybridly',
         imports: ['NavigationResponse', 'RouteName'],
+        type: true,
+      },
+      {
+        from: 'hybridly/vue',
+        imports: [
+          'BaseFilterRefinement',
+          'BoundFilterRefinement',
+          'BulkAction',
+          'DateFilterRefinement',
+          'FilterRefinement',
+          'InlineAction',
+          'SortDirection',
+          'TimeSuggestion',
+          'TimeframeSuggestion',
+        ],
         type: true,
       },
       {

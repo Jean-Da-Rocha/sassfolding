@@ -62,11 +62,11 @@ describe('users listing', function () {
             ->assertHybrid()
             ->assertHybridView('users::list-users')
             ->assertHybridDialog(
-                view: 'users::edit-user',
                 properties: [
                     'user.email' => $existingUser->email,
                     'user.name' => $existingUser->name,
                 ],
+                view: 'users::edit-user',
             );
     });
 

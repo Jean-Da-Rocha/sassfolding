@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Modules\Core\Enums\FlashMessage;
 use Modules\Core\Http\Controllers\Controller;
+use Modules\Users\Actions\DeleteUserAction;
 use Modules\Users\Actions\Fortify\CreateNewUserAction;
 use Modules\Users\Actions\Fortify\UpdateUserProfileInformationAction;
 use Modules\Users\Data\UserData;
@@ -53,12 +54,10 @@ class UserController extends Controller
         return back()->with(FlashMessage::Success->value, sprintf('User "%s" successfully updated', $user->name));
     }
 
-    public function destroy(User $user): RedirectResponse
+    public function destroy(User $user, DeleteUserAction $action): RedirectResponse
     {
-        $username = $user->name;
+        $action->execute($user);
 
-        $user->delete();
-
-        return back()->with(FlashMessage::Success->value, sprintf('User "%s" successfully deleted', $username));
+        return back();
     }
 }
