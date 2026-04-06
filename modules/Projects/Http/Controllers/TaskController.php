@@ -42,8 +42,7 @@ class TaskController extends Controller
     {
         Task::create($data->toArray());
 
-        return redirect()->route('tasks.index')
-            ->with(FlashMessage::Success->value, 'Task created successfully.');
+        return back()->with(FlashMessage::Success->value, 'Task created successfully.');
     }
 
     public function edit(Task $task): HybridlyView
@@ -60,14 +59,13 @@ class TaskController extends Controller
     {
         $task->update($data->toArray());
 
-        return redirect()->route('tasks.index')
-            ->with(FlashMessage::Success->value, 'Task updated successfully.');
+        return back()->with(FlashMessage::Success->value, 'Task updated successfully.');
     }
 
     public function destroy(Task $task, DeleteTaskAction $action): RedirectResponse
     {
         $action->execute($task);
 
-        return redirect()->route('tasks.index');
+        return back();
     }
 }

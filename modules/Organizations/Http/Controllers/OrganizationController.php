@@ -32,8 +32,7 @@ class OrganizationController extends Controller
     {
         Organization::create($data->toArray());
 
-        return redirect()->route('organizations.index')
-            ->with(FlashMessage::Success->value, 'Organization created successfully.');
+        return back()->with(FlashMessage::Success->value, 'Organization created successfully.');
     }
 
     public function edit(Organization $organization): HybridlyView
@@ -47,14 +46,13 @@ class OrganizationController extends Controller
     {
         $organization->update($data->toArray());
 
-        return redirect()->route('organizations.index')
-            ->with(FlashMessage::Success->value, 'Organization updated successfully.');
+        return back()->with(FlashMessage::Success->value, 'Organization updated successfully.');
     }
 
     public function destroy(Organization $organization, DeleteOrganizationAction $action): RedirectResponse
     {
         $action->execute($organization);
 
-        return redirect()->route('organizations.index');
+        return back();
     }
 }

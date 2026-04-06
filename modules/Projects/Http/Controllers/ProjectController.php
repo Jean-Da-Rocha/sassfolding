@@ -42,8 +42,7 @@ class ProjectController extends Controller
             'owner_id' => auth()->id(),
         ]);
 
-        return redirect()->route('projects.index')
-            ->with(FlashMessage::Success->value, 'Project created successfully.');
+        return back()->with(FlashMessage::Success->value, 'Project created successfully.');
     }
 
     public function edit(Project $project): HybridlyView
@@ -61,14 +60,13 @@ class ProjectController extends Controller
     {
         $project->update($data->toArray());
 
-        return redirect()->route('projects.index')
-            ->with(FlashMessage::Success->value, 'Project updated successfully.');
+        return back()->with(FlashMessage::Success->value, 'Project updated successfully.');
     }
 
     public function destroy(Project $project, DeleteProjectAction $action): RedirectResponse
     {
         $action->execute($project);
 
-        return redirect()->route('projects.index');
+        return back();
     }
 }
