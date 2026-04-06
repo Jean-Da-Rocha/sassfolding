@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import type { DateValue } from '@internationalized/date';
-import { CalendarDate } from '@internationalized/date';
-
 const props = defineProps<{
   priorities: Record<string, string>;
   projects: Record<string, string>;
@@ -36,22 +33,7 @@ const form = useForm<{
   url: route('tasks.update', { task: props.task.id }),
 });
 
-const inputDate = useTemplateRef('inputDate');
-
-const dueAtDate = computed<DateValue | undefined>({
-  get: () => {
-    if (!form.fields.due_at) {
-      return undefined;
-    }
-    const [year, month, day] = form.fields.due_at.split('-').map(Number);
-    return new CalendarDate(year, month, day);
-  },
-  set: (value) => {
-    form.fields.due_at = value
-      ? `${value.year}-${String(value.month).padStart(2, '0')}-${String(value.day).padStart(2, '0')}`
-      : '';
-  },
-});
+const dueAtDate = useDateField(toRef(form.fields, 'due_at'));
 
 const projectItems = computed(() =>
   Object.entries(props.projects).map(([value, label]) => ({
@@ -146,7 +128,6 @@ useHead({ title: 'Edit Task' });
           <div class="grid grid-cols-2 gap-4">
             <UFormField :error="form.errors.due_at" label="Due Date">
               <UInputDate
-                ref="inputDate"
                 v-model="dueAtDate"
                 class="w-full"
               >
