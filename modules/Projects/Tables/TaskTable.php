@@ -44,7 +44,7 @@ final class TaskTable extends Table
             TextColumn::make('priority')->label('Priority'),
             TextColumn::make('project_name')
                 ->label('Project')
-                ->transformValueUsing(fn (Task $task) => $task->project->name),
+                ->transformValueUsing(fn (Task $task) => $task->project?->name),
             TextColumn::make('is_pinned')
                 ->label('Pinned')
                 ->transformValueUsing(fn (Task $task) => $task->is_pinned ? 'Yes' : 'No'),

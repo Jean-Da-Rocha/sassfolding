@@ -8,6 +8,7 @@ use Hybridly\View\Factory as HybridlyView;
 use Illuminate\Http\RedirectResponse;
 use Modules\Core\Enums\FlashMessage;
 use Modules\Core\Http\Controllers\Controller;
+use Modules\Organizations\Models\Organization;
 use Modules\Projects\Actions\DeleteProjectAction;
 use Modules\Projects\Data\ProjectData;
 use Modules\Projects\Enums\ProjectStatus;
@@ -28,7 +29,7 @@ class ProjectController extends Controller
     public function create(): HybridlyView
     {
         return hybridly('projects::create-project', [
-            'organizations' => \Modules\Organizations\Models\Organization::query()
+            'organizations' => Organization::query()
                 ->orderBy('name')
                 ->pluck('name', 'id'),
             'statuses' => ProjectStatus::labelMap(),
@@ -48,7 +49,7 @@ class ProjectController extends Controller
     public function edit(Project $project): HybridlyView
     {
         return hybridly('projects::edit-project', [
-            'organizations' => \Modules\Organizations\Models\Organization::query()
+            'organizations' => Organization::query()
                 ->orderBy('name')
                 ->pluck('name', 'id'),
             'project' => ProjectData::from($project),
