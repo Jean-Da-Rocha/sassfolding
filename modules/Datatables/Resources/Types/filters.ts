@@ -3,11 +3,6 @@ export type FilterOption = {
   readonly value: unknown;
 };
 
-export type NumericSuggestion = {
-  readonly label: string;
-  readonly value: number;
-};
-
 export type TimeSuggestion = {
   readonly date: string;
   readonly label: string;

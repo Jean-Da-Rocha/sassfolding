@@ -4,7 +4,6 @@
 const FILTER_ICON_MAP = {
   boolean: 'i-lucide-toggle-left',
   date: 'i-lucide-calendar',
-  numeric: 'i-lucide-hash',
   select: 'i-lucide-list',
   trashed: 'i-lucide-trash-2',
 } as const satisfies Record<string, string>;
@@ -70,8 +69,6 @@ export function useTableFilters(datatable: any): UseTableFiltersReturn {
         ]);
       case 'date':
         return buildDateItems(datatable, filter);
-      case 'numeric':
-        return buildNumericItems(datatable, filter);
       case 'select':
         return buildSelectItems(datatable, filter);
       default:
@@ -162,20 +159,6 @@ function buildSelectItems(datatable: any, filter: BoundFilterRefinement): Dropdo
       }
       toggleValue(key);
     },
-  }));
-
-  const clearItems = buildClearItem(datatable, filter);
-
-  return clearItems.length > 0 ? [items, clearItems] : [items];
-}
-
-function buildNumericItems(datatable: any, filter: BoundFilterRefinement): DropdownMenuItem[][] {
-  const suggestions: readonly NumericSuggestion[] = filter.metadata?.suggestions ?? [];
-
-  const items: DropdownMenuItem[] = suggestions.map(suggestion => ({
-    icon: String(filter.value) === String(suggestion.value) ? 'i-lucide-check' : undefined,
-    label: suggestion.label,
-    onSelect: () => datatable.applyFilter(filter.name, suggestion.value),
   }));
 
   const clearItems = buildClearItem(datatable, filter);

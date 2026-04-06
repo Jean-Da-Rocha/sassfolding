@@ -6,7 +6,6 @@ namespace Modules\Projects\Tables;
 
 use Hybridly\Refining\Filters\BooleanFilter;
 use Hybridly\Refining\Filters\DateFilter;
-use Hybridly\Refining\Filters\NumericFilter;
 use Hybridly\Refining\Filters\Operator;
 use Hybridly\Refining\Filters\SelectFilter;
 use Hybridly\Refining\Filters\TernaryFilter;
@@ -82,7 +81,7 @@ final class TaskTable extends Table
         ];
     }
 
-    /** @return array<int, BooleanFilter|DateFilter|Group|NumericFilter|SelectFilter|Sort|TernaryFilter> */
+    /** @return array<int, BooleanFilter|DateFilter|Group|SelectFilter|Sort|TernaryFilter> */
     protected function defineRefiners(): array
     {
         return [
@@ -113,17 +112,6 @@ final class TaskTable extends Table
                 ),
             BooleanFilter::make('is_pinned')
                 ->label('Pinned'),
-            NumericFilter::make('estimated_hours')
-                ->label('Est. Hours')
-                ->defaultOperator(Operator::LESS_THAN_OR_EQUAL)
-                ->appendMetadata(fn () => [
-                    'suggestions' => [
-                        ['label' => '≤ 1h', 'value' => 1],
-                        ['label' => '≤ 4h', 'value' => 4],
-                        ['label' => '≤ 8h', 'value' => 8],
-                        ['label' => '≤ 16h', 'value' => 16],
-                    ],
-                ]),
             DateFilter::make('due_at')
                 ->label('Due Date')
                 ->suggest([
