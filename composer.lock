@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "90662dede5ab625d13b8bac7c1839b35",
+    "content-hash": "50018510260bcb28f4cc64a5a896999c",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1358,20 +1358,20 @@
         },
         {
             "name": "hybridly/laravel",
-            "version": "v0.10.0-beta.11",
+            "version": "v0.10.0-beta.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hybridly/laravel.git",
-                "reference": "79971b4e85fd18e7165a0286093385480b35d913"
+                "reference": "2d3bea3c8598e053a4620320c0519312a12f5f6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hybridly/laravel/zipball/79971b4e85fd18e7165a0286093385480b35d913",
-                "reference": "79971b4e85fd18e7165a0286093385480b35d913",
+                "url": "https://api.github.com/repos/hybridly/laravel/zipball/2d3bea3c8598e053a4620320c0519312a12f5f6f",
+                "reference": "2d3bea3c8598e053a4620320c0519312a12f5f6f",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^10.0|^11.0|^12.0",
+                "illuminate/contracts": "^12.0|^13.0",
                 "laravel/prompts": "^0.1|^0.2|^0.3",
                 "php": "^8.4",
                 "spatie/laravel-package-tools": "^1.16",
@@ -1422,7 +1422,7 @@
                 "issues": "https://github.com/hybridly/hybridly/issues",
                 "source": "https://github.com/hybridly/hybridly"
             },
-            "time": "2026-02-12T16:02:21+00:00"
+            "time": "2026-03-18T18:10:25+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
