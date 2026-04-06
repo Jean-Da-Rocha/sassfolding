@@ -54,6 +54,15 @@ export default defineConfig(({ command, mode }): UserConfig => {
         imports: ['useHead', 'useSeoMeta'],
       },
       {
+        from: '@internationalized/date',
+        imports: ['parseDate'],
+      },
+      {
+        from: '@internationalized/date',
+        imports: ['DateValue'],
+        type: true,
+      },
+      {
         from: 'hybridly',
         imports: ['can', 'getRouterContext', 'route', 'router'],
       },
