@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Projects\Enums;
 
+use Modules\Core\Enums\FlashMessage;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
@@ -24,13 +25,13 @@ enum TaskPriority: string
         };
     }
 
-    public function color(): string
+    public function color(): FlashMessage
     {
         return match ($this) {
-            self::High => 'warning',
-            self::Low => 'neutral',
-            self::Medium => 'info',
-            self::Urgent => 'error',
+            self::High => FlashMessage::Warning,
+            self::Low => FlashMessage::Neutral,
+            self::Medium => FlashMessage::Info,
+            self::Urgent => FlashMessage::Error,
         };
     }
 
@@ -38,7 +39,7 @@ enum TaskPriority: string
     public static function colorMap(): array
     {
         return collect(self::cases())->mapWithKeys(
-            fn (self $priority) => [$priority->value => $priority->color()],
+            fn (self $priority) => [$priority->value => $priority->color()->value],
         )->all();
     }
 

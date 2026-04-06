@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Projects\Enums;
 
+use Modules\Core\Enums\FlashMessage;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
@@ -24,13 +25,13 @@ enum TaskStatus: string
         };
     }
 
-    public function color(): string
+    public function color(): FlashMessage
     {
         return match ($this) {
-            self::Cancelled => 'error',
-            self::Done => 'success',
-            self::InProgress => 'info',
-            self::Todo => 'neutral',
+            self::Cancelled => FlashMessage::Error,
+            self::Done => FlashMessage::Success,
+            self::InProgress => FlashMessage::Info,
+            self::Todo => FlashMessage::Neutral,
         };
     }
 
@@ -38,7 +39,7 @@ enum TaskStatus: string
     public static function colorMap(): array
     {
         return collect(self::cases())->mapWithKeys(
-            fn (self $status) => [$status->value => $status->color()],
+            fn (self $status) => [$status->value => $status->color()->value],
         )->all();
     }
 
