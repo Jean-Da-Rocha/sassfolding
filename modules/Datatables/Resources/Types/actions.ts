@@ -1,7 +1,7 @@
 export type TableActionMetadata = {
   readonly color?: Modules.Core.Enums.FlashMessage;
   readonly confirm?: boolean;
-  readonly confirmMessage?: string;
+  readonly confirm_message?: string;
   readonly icon?: string;
 };
 

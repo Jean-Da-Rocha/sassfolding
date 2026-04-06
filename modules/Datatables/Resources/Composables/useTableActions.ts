@@ -12,7 +12,7 @@ export function useTableActions(
 
   const executeWithConfirmation = (action: TableAction, onExecute: () => void): void => {
     if (action.metadata?.confirm) {
-      requestConfirmation(action.metadata.confirmMessage, onExecute);
+      requestConfirmation(action.metadata.confirm_message, onExecute);
       return;
     }
 
