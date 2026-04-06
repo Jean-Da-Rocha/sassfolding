@@ -1,6 +1,3 @@
-// Datatable parameter typed as `any` because ReturnType<typeof useTable>
-// produces unresolvable conditional types across generic boundaries.
-
 const DEFAULT_DEBOUNCE_MS = 300;
 
 export function useTableSearch(datatable: any, options?: SearchOptions): UseTableSearchReturn {

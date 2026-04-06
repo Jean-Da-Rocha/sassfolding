@@ -1,8 +1,3 @@
-/**
- * Structural type for Hybridly table columns.
- * Defined explicitly because ReturnType<typeof useTable>['columns'][number]
- * is unresolvable due to generic type parameters.
- */
 export type HybridlyTableColumn = {
   readonly isSortable: boolean;
   readonly isSorting: (direction?: SortDirection) => boolean;

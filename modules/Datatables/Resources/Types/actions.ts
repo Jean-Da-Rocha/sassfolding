@@ -12,11 +12,6 @@ export type TableAction = {
   readonly name: string;
 };
 
-/**
- * Structural type for a Hybridly table record.
- * Defined explicitly because the record shape from useTable
- * is unresolvable due to generic type parameters.
- */
 export type TableRecord = {
   readonly actions: readonly TableAction[];
   readonly deselect: () => void;

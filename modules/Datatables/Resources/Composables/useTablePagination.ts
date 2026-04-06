@@ -1,6 +1,3 @@
-// Datatable parameter typed as `any` because ReturnType<typeof useTable>
-// produces unresolvable conditional types across generic boundaries.
-
 const DEFAULT_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
 
 export function useTablePagination(datatable: any, options?: PaginationOptions): UseTablePaginationReturn {

@@ -1,6 +1,3 @@
-// Datatable parameter typed as `any` because ReturnType<typeof useTable>
-// produces unresolvable conditional types across generic boundaries.
-
 export function useTableSelection(datatable: any): UseTableSelectionReturn {
   const lastClickedIndex = ref<number | null>(null);
 

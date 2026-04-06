@@ -1,6 +1,3 @@
-// Datatable parameter typed as `any` because ReturnType<typeof useTable>
-// produces unresolvable conditional types across generic boundaries.
-
 export function useTableColumnVisibility(datatable: any, hiddenColumns: readonly string[]): UseTableColumnVisibilityReturn {
   const columnVisibility = ref<Record<string, boolean>>(
     buildInitialVisibility(datatable.columns, hiddenColumns),

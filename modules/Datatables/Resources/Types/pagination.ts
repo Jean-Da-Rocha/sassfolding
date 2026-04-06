@@ -1,8 +1,3 @@
-/**
- * Paginator metadata for length-aware pagination.
- * Defined explicitly because Hybridly's PaginatorMeta is unresolvable
- * through ReturnType<typeof useTable> due to nested conditional types.
- */
 export type TablePaginatorMeta = {
   readonly current_page: number;
   readonly first_page: number;

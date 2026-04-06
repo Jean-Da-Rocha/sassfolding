@@ -68,7 +68,6 @@ const {
   selectedCount,
 } = useTableSelection(datatable);
 
-// resolveComponent must be called in setup context
 const { columns: generatedColumns } = useTableColumns<T>(
   {
     datatable,

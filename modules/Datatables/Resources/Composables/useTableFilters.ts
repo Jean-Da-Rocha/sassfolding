@@ -1,6 +1,3 @@
-// Datatable parameter typed as `any` because ReturnType<typeof useTable>
-// produces unresolvable conditional types across generic boundaries.
-
 const FILTER_ICON_MAP = {
   boolean: 'i-lucide-toggle-left',
   date: 'i-lucide-calendar',
@@ -92,8 +89,6 @@ export function useTableFilters(datatable: any): UseTableFiltersReturn {
     hasActiveFilters,
   };
 }
-
-// --- Private helper functions ---
 
 function buildClearItem(datatable: any, filter: BoundFilterRefinement): DropdownMenuItem[] {
   if (!filter.is_active) {

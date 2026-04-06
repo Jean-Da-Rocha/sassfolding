@@ -1,7 +1,3 @@
-// Datatable parameter typed as `any` because ReturnType<typeof useTable>
-// produces unresolvable conditional types across generic boundaries.
-// No explicit return type: known TS2589 with deeply nested Hybridly generics.
-
 export function useTableActions(
   datatable: any,
   requestConfirmation: (message: string | undefined, onConfirm: () => void) => void,
