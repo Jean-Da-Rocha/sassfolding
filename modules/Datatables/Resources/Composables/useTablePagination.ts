@@ -11,14 +11,7 @@ export function useTablePagination(datatable: any, options?: PaginationOptions):
   );
 
   const goToPage = (page: number): void => {
-    void router.reload({
-      transformUrl: {
-        query: {
-          page,
-          per_page: paginatorMeta.value.per_page,
-        },
-      },
-    });
+    datatable.paginator.to(page);
   };
 
   const changePerPage = (size: number): void => {
