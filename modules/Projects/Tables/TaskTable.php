@@ -62,7 +62,7 @@ final class TaskTable extends Table
     {
         return Task::query()
             ->select(['id', 'title', 'status', 'priority', 'project_id', 'is_pinned', 'due_at', 'estimated_hours', 'completed_at', 'created_at'])
-            ->with(['project:id,name']);
+            ->with(['project' => fn ($query) => $query->withTrashed()->select(['id', 'name'])]);
     }
 
     /** @return array<int, BulkAction|InlineAction> */

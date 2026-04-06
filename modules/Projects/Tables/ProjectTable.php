@@ -56,7 +56,10 @@ final class ProjectTable extends Table
     {
         return Project::query()
             ->select(['id', 'name', 'status', 'organization_id', 'owner_id', 'created_at'])
-            ->with(['organization:id,name', 'owner:id,name']);
+            ->with([
+                'organization' => fn ($query) => $query->withTrashed()->select(['id', 'name']),
+                'owner:id,name',
+            ]);
     }
 
     /** @return array<int, BulkAction|InlineAction> */
