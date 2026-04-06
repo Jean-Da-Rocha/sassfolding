@@ -5,3 +5,5 @@ ignoredBuiltDependencies:
 
 onlyBuiltDependencies:
   - esbuild
+overrides:
+  eslint-plugin-perfectionist: 5.3.1
