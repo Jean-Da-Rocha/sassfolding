@@ -41,7 +41,7 @@ final class ProjectTable extends Table
             TextColumn::make('status')->label('Status'),
             TextColumn::make('organization_name')
                 ->label('Organization')
-                ->transformValueUsing(fn (Project $project) => $project->organization->name),
+                ->transformValueUsing(fn (Project $project) => $project->organization?->name),
             TextColumn::make('owner_name')
                 ->label('Owner')
                 ->transformValueUsing(fn (Project $project) => $project->owner->name),

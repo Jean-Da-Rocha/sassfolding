@@ -339,7 +339,7 @@ return [
     |
     */
 
-    'enforce_nullable_relationships' => false,
+    'enforce_nullable_relationships' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -362,7 +362,7 @@ return [
     |
     */
 
-    'soft_deletes_force_nullable' => false,
+    'soft_deletes_force_nullable' => true,
 
     /*
     |--------------------------------------------------------------------------
