@@ -48,6 +48,11 @@ export type UseTableColumnsReturn<T extends Record<string, any>> = {
   readonly columns: ComputedRef<ColumnDef<T>[]>;
 };
 
+export type ColumnPinningState = {
+  readonly left?: string[];
+  readonly right?: string[];
+};
+
 export type VisibilityItem = {
   readonly icon?: string;
   readonly label: string;
