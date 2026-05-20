@@ -10,7 +10,7 @@
   "require": {
     "php": "^8.3",
     "ext-pdo": "*",
-    "hybridly/laravel": "^v0.10.0-beta.14",
+    "hybridly/laravel": "0.10.0-beta.14",
     "laravel/fortify": "^1.21",
     "laravel/framework": "^13.0",
     "laravel/octane": "^2.13",
