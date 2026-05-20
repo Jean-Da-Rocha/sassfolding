@@ -168,6 +168,7 @@ const items = computed(() => {
       variant="ghost"
     />
 
+    <!-- @vue-ignore dynamic slot from Nuxt UI DropdownMenu component. -->
     <template #chip-leading="{ item }">
       <div class="inline-flex size-5 shrink-0 items-center justify-center">
         <span
