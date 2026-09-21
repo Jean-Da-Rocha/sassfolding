@@ -1,11 +1,3 @@
-export type HybridlyTableColumn = {
-  readonly isSortable: boolean;
-  readonly isSorting: (direction?: SortDirection) => boolean;
-  readonly label: string;
-  readonly name: string | number | symbol;
-  readonly toggleSort: (options?: { direction?: SortDirection }) => Promise<unknown>;
-};
-
 export type ColumnPinningPosition = false | 'left' | 'right';
 
 export type TableHeaderContext = {
@@ -29,10 +21,8 @@ export type TableRowContext<T> = {
   };
 };
 
-export type ColumnGeneratorConfig = {
-  // Typed as `any` because ReturnType<typeof useTable> produces
-  // unresolvable conditional types across generic boundaries.
-  readonly datatable: any;
+export type ColumnGeneratorConfig<T extends Record<string, any>> = {
+  readonly datatable: Datatable<T>;
   readonly getRowActions: (rowIndex: number) => readonly DropdownMenuItem[];
   readonly handleCheckboxClick: (index: number, event: MouseEvent) => void;
   readonly hasInlineActions: boolean;

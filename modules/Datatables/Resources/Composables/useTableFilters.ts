@@ -7,7 +7,7 @@ const FILTER_ICON_MAP = {
 
 const DEFAULT_FILTER_ICON = 'i-lucide-filter';
 
-export function useTableFilters(datatable: any): UseTableFiltersReturn {
+export function useTableFilters<T extends Record<string, any>>(datatable: Datatable<T>): UseTableFiltersReturn {
   const displayFilters = computed<readonly BoundFilterRefinement[]>(() =>
     datatable.filters.filter((filter: BoundFilterRefinement) => filter.type !== 'text' && !filter.hidden),
   );
@@ -90,7 +90,7 @@ export function useTableFilters(datatable: any): UseTableFiltersReturn {
   };
 }
 
-function buildClearItem(datatable: any, filter: BoundFilterRefinement): DropdownMenuItem[] {
+function buildClearItem(datatable: Datatable<any>, filter: BoundFilterRefinement): DropdownMenuItem[] {
   if (!filter.is_active) {
     return [];
   }
@@ -106,7 +106,7 @@ function buildClearItem(datatable: any, filter: BoundFilterRefinement): Dropdown
 }
 
 function buildRadioItems(
-  datatable: any,
+  datatable: Datatable<any>,
   filter: BoundFilterRefinement,
   options: readonly FilterOption[],
 ): DropdownMenuItem[][] {
@@ -121,7 +121,7 @@ function buildRadioItems(
   ];
 }
 
-function buildSelectItems(datatable: any, filter: BoundFilterRefinement): DropdownMenuItem[][] {
+function buildSelectItems(datatable: Datatable<any>, filter: BoundFilterRefinement): DropdownMenuItem[][] {
   const options: Record<string, string> = filter.metadata?.options ?? {};
   const isMultiple = filter.metadata?.is_multiple === true;
   const currentValues: string[] = normalizeFilterValues(filter.value);
@@ -161,7 +161,7 @@ function buildSelectItems(datatable: any, filter: BoundFilterRefinement): Dropdo
   return clearItems.length > 0 ? [items, clearItems] : [items];
 }
 
-function buildDateItems(datatable: any, filter: BoundFilterRefinement): DropdownMenuItem[][] {
+function buildDateItems(datatable: Datatable<any>, filter: BoundFilterRefinement): DropdownMenuItem[][] {
   const suggestions: readonly TimeSuggestion[] = filter.metadata?.suggestions ?? [];
 
   const items: DropdownMenuItem[] = suggestions.map(suggestion => ({
