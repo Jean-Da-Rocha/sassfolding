@@ -1,11 +1,13 @@
+# Traefik and dnsmasq are not included here: they are shared by every project on the
+# machine and live in ${DOCKER_DIRECTORY}/shared/docker-compose.yml, started by
+# 'make shared-start' (which 'make start' does on its own).
+
 include:
-  - ${DOCKER_DIRECTORY}/dnsmasq/docker-compose.yml
   - ${DOCKER_DIRECTORY}/hybridly/docker-compose.yml
   - ${DOCKER_DIRECTORY}/mailpit/docker-compose.yml
   - ${DOCKER_DIRECTORY}/mysql/docker-compose.yml
   - ${DOCKER_DIRECTORY}/redis/docker-compose.yml
   - ${DOCKER_DIRECTORY}/rustfs/docker-compose.yml
-  - ${DOCKER_DIRECTORY}/traefik/docker-compose.yml
 
 networks:
   laravel:
