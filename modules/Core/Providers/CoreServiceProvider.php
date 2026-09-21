@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\Core\Providers;
 
-use Hybridly\Hybridly;
 use Illuminate\Support\ServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
 {
-    public const string MODULE_NAMESPACE = 'core';
-
-    public function boot(Hybridly $hybridly): void
+    public function boot(): void
     {
         $commandFiles = glob(__DIR__.'/../Console/Commands/*.php');
 
@@ -26,7 +23,5 @@ class CoreServiceProvider extends ServiceProvider
         }
 
         $this->loadRoutesFrom(__DIR__.'/../Routes/web.php');
-
-        $hybridly->loadLayoutsFrom(base_path('modules/Core/Resources/Layouts'), self::MODULE_NAMESPACE);
     }
 }

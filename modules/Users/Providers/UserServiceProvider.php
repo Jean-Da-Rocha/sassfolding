@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Users\Providers;
 
-use Hybridly\Hybridly;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Contracts\EmailVerificationNotificationSentResponse as EmailVerificationNotificationSentResponseContract;
 use Laravel\Fortify\Contracts\ProfileInformationUpdatedResponse as ProfileInformationUpdatedResponseContract;
@@ -20,9 +19,7 @@ use Modules\Users\Http\Responses\SuccessfulPasswordResetLinkRequestResponse;
 
 class UserServiceProvider extends ServiceProvider
 {
-    const string MODULE_NAMESPACE = 'users';
-
-    public function boot(Hybridly $hybridly): void
+    public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
 
@@ -45,7 +42,5 @@ class UserServiceProvider extends ServiceProvider
         );
 
         $this->app->register(RouteServiceProvider::class);
-
-        $hybridly->loadViewsFrom(base_path('modules/Users/Resources/Views'), self::MODULE_NAMESPACE);
     }
 }

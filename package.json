@@ -34,7 +34,7 @@
     "eslint": "^10.4.0",
     "eslint-plugin-better-tailwindcss": "^4.5.0",
     "husky": "^9.1.7",
-    "hybridly": "0.10.0-beta.14",
+    "hybridly": "0.10.0-beta.36",
     "lint-staged": "^17.0.5",
     "tailwindcss": "^4.3.0",
     "taze": "^19.13.0",

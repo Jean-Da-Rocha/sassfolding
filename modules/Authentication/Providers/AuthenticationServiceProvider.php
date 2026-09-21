@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Authentication\Providers;
 
-use Hybridly\Hybridly;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -14,16 +13,14 @@ use Laravel\Fortify\Fortify;
 
 class AuthenticationServiceProvider extends ServiceProvider
 {
-    const string MODULE_NAMESPACE = 'authentication';
-
-    public function boot(Hybridly $hybridly): void
+    public function boot(): void
     {
-        Fortify::verifyEmailView(fn () => hybridly('authentication::verify-email'));
-        Fortify::loginView(fn () => hybridly('authentication::login'));
-        Fortify::requestPasswordResetLinkView(fn () => hybridly('authentication::forgot-password'));
-        Fortify::registerView(fn () => hybridly('authentication::register'));
+        Fortify::verifyEmailView(fn () => hybridly()->view('authentication::verify-email'));
+        Fortify::loginView(fn () => hybridly()->view('authentication::login'));
+        Fortify::requestPasswordResetLinkView(fn () => hybridly()->view('authentication::forgot-password'));
+        Fortify::registerView(fn () => hybridly()->view('authentication::register'));
         Fortify::resetPasswordView(function (Request $request) {
-            return hybridly('authentication::reset-password', [
+            return hybridly()->view('authentication::reset-password', [
                 'token' => $request->route('token'),
                 'email' => $request->input('email'),
             ]);
@@ -36,7 +33,5 @@ class AuthenticationServiceProvider extends ServiceProvider
 
             return Limit::perMinute(5)->by($throttleKey);
         });
-
-        $hybridly->loadViewsFrom(base_path('modules/Authentication/Resources/Views'), self::MODULE_NAMESPACE);
     }
 }

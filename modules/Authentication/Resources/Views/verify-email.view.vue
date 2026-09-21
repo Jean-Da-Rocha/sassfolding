@@ -43,7 +43,7 @@ useHead({ title: 'Verify Email' });
           </p>
         </div>
 
-        <form @submit.prevent="form.submit">
+        <form @submit.prevent="form.submit()">
           <UButton
             block
             color="primary"

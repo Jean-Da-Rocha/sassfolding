@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Core\Http\Middleware;
 
-use Hybridly\Http\Middleware;
+use Closure;
+use Hybridly\Hybridly;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Core\Data\AppData;
@@ -13,17 +14,24 @@ use Modules\Core\Data\RouteData;
 use Modules\Core\Data\SharedData;
 use Modules\Core\Enums\FlashMessage;
 use Modules\Users\Data\UserData;
+use Symfony\Component\HttpFoundation\Response;
 
-class HandleHybridRequests extends Middleware
+/**
+ * Defines the properties that are shared with every hybrid response.
+ *
+ * Hybridly's own middleware handles the protocol itself and is registered separately in
+ * bootstrap/app.php. Sharing data is done from a dedicated middleware, as documented in
+ * https://hybridly.dev/guide/global-properties.html
+ */
+final readonly class ShareGlobalProperties
 {
-    protected bool $shareFlashNotifications = false;
+    public function __construct(
+        private Hybridly $hybridly,
+    ) {}
 
-    /**
-     * Defines the properties that are shared to all requests.
-     */
-    public function share(Request $request): SharedData
+    public function __invoke(Request $request, Closure $next): Response
     {
-        return new SharedData(
+        $this->hybridly->share(new SharedData(
             app: new AppData(name: str(config()->string('app.name'))->title()->toString()),
             authenticatedUser: UserData::optional(auth()->user()),
             flash: new FlashData(
@@ -36,9 +44,8 @@ class HandleHybridRequests extends Middleware
                 warning: $request->session()->get(FlashMessage::Warning->value),
             ),
             route: new RouteData(name: Route::currentRouteName()),
-            // The errors array is used to type hint the 'error' property on the front-end.
-            // This property will be overwritten by Hybridly automatically.
-            errors: [],
-        );
+        ));
+
+        return $next($request);
     }
 }
