@@ -165,7 +165,7 @@ function buildDateItems(datatable: Datatable<any>, filter: BoundFilterRefinement
   const suggestions: readonly TimeSuggestion[] = filter.metadata?.suggestions ?? [];
 
   const items: DropdownMenuItem[] = suggestions.map(suggestion => ({
-    icon: filter.value === suggestion.date ? 'i-lucide-check' : undefined,
+    icon: suggestion.is_current ? 'i-lucide-check' : undefined,
     label: suggestion.label,
     onSelect: () => datatable.applyFilter(filter.name, suggestion.date),
   }));
