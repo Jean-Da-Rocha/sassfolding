@@ -9,7 +9,7 @@ The front-end components are also in the same module folder to improve readabili
 ## Stack
 
 - PHP 8.5
-- Laravel 12
+- Laravel 13
 - MySQL
 - Redis (caching, sessions, queue driver)
 - Hybridly
@@ -194,7 +194,9 @@ See `docs/DATATABLE.md` for full datatable documentation (basic usage, inline/bu
 ## Git Workflow
 
 - **Conventional Commits** enforced by `commitlint` (`@commitlint/config-conventional`)
-- **Branch naming**: `{type}/{TICKET-ID}/description` — types: `build`, `bugfix`, `bump`, `docs`, `experimental`, `feature`, `hotfix`, `merge`, `release`, `test`
+- **Branch naming**: `{type}/{TICKET-ID}/description` — the ticket is optional. Types: `build`, `bugfix`, `bump`,
+  `docs`, `experimental`, `feature`, `hotfix`, `merge`, `refactor`, `release`, `test`. The regex in `package.json`
+  is the source of truth.
 - **Pre-commit hooks** (via Husky + lint-staged):
   - `*.vue, *.ts` files: ESLint auto-fix
   - `*.php` files: Laravel Pint
@@ -217,6 +219,8 @@ All commands run inside Docker via `make` targets. Never run PHP/Node commands d
 - `make test` — run Pest tests (`make test filter=UserControllerTest` to filter)
 - `make migrate` — run database migrations
 - `make fresh` — drop all tables and re-run migrations (`make fresh seed=1` to also seed)
+- `make reset` — stop the containers and delete their data volumes
+- `make rebuild` — rebuild the images and restart the project
 - `make seed module=Users class=UserSeeder` — run a module-scoped seeder
 - `make eslint` — run ESLint with auto-fix
 - `make vue-tsc` — run TypeScript type checking

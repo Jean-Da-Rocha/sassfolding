@@ -65,13 +65,13 @@ controllers, models, views, migrations, and tests.
 │    Actions/Services stay encapsulated within module             │
 └─────────────────────────────────────────────────────────────────┘
                               ▲
-        ┌─────────────────────┼─────────────────────┐
-        │                     │                     │
-┌───────┴───────┐     ┌───────┴───────┐     ┌───────┴───────┐
-│AUTHENTICATION │     │    MENUS      │     │  [YOUR NEW    │
-│               │     │               │     │   MODULE]     │
-│Feature Module │     │Feature Module │     │               │
-└───────────────┘     └───────────────┘     └───────────────┘
+                  ┌─────────────────────┐
+                  │                     │
+          ┌───────┴───────┐     ┌───────┴───────┐
+          │AUTHENTICATION │     │  [YOUR NEW    │
+          │               │     │   MODULE]     │
+          │Feature Module │     │Feature Module │
+          └───────────────┘     └───────────────┘
         ✗ Feature modules should NOT import from each other
 ```
 
@@ -82,7 +82,7 @@ controllers, models, views, migrations, and tests.
 | Foundation     | Core                 | Laravel/Vendor, Users\Data            | All modules           |
 | Infrastructure | Datatables           | Core                                  | All modules           |
 | Domain         | Users                | Core, Datatables                      | All (Model/Data only) |
-| Feature        | Authentication, Menus| Core, Datatables, Users (Model/Data)  | None                  |
+| Feature        | Authentication       | Core, Datatables, Users (Model/Data)  | None                  |
 
 ### Key Architectural Decisions
 
@@ -165,6 +165,7 @@ Once the docker containers are running, you can access the following URL:
 ## Documentation
 
 - [Datatables](docs/DATATABLE.md) — how to build server-side tables with inline actions, bulk actions, sorting, and more
+- [GitHub Actions](docs/GITHUB_ACTIONS.md) — how the CI pipelines are built, cached, and why they don't use Docker
 
 ## Contributing
 
