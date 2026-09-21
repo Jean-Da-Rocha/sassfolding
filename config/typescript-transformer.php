@@ -3,7 +3,6 @@
 declare(strict_types=1);
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Hybridly\Support\TypeScriptTransformer\DataResourceTypeScriptCollector;
 use Spatie\LaravelData\Support\TypeScriptTransformer\DataTypeScriptCollector;
 use Spatie\LaravelData\Support\TypeScriptTransformer\DataTypeScriptTransformer;
 use Spatie\LaravelTypeScriptTransformer\Transformers\DtoTransformer;
@@ -28,7 +27,6 @@ return [
      */
 
     'collectors' => [
-        DataResourceTypeScriptCollector::class,
         DataTypeScriptCollector::class,
         EnumCollector::class,
     ],
@@ -62,7 +60,11 @@ return [
      * The package will write the generated TypeScript to this file.
      */
 
-    'output_file' => resource_path('types/generated.d.ts'),
+    /*
+     * Hybridly overrides this when running `hybridly:types`, which writes the PHP types to
+     * `.hybridly/php-types.d.ts`. This value only applies to a standalone `typescript:transform`.
+     */
+    'output_file' => base_path('.hybridly/php-types.d.ts'),
 
     /*
      * When the package is writing types to the output file, a writer is used to
