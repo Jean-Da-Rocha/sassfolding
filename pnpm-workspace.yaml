@@ -1,10 +1,12 @@
-ignoredBuiltDependencies:
-  - '@tailwindcss/oxide'
-  - unrs-resolver
-  - vue-demi
+# Which dependencies are allowed to run their install scripts. Only esbuild needs it:
+# it downloads the platform binary that Vite relies on. The others ship prebuilt
+# native bindings, so their scripts are pure overhead.
+allowBuilds:
+  '@tailwindcss/oxide': false
+  esbuild: true
+  unrs-resolver: false
+  vue-demi: false
 
-onlyBuiltDependencies:
-  - esbuild
 overrides:
   eslint-plugin-perfectionist: 5.3.1
   '@internationalized/date': ~3.12.4
