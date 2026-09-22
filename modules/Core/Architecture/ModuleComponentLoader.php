@@ -15,12 +15,9 @@ use SplFileInfo;
 use const GLOB_ONLYDIR;
 
 /**
- * Registers module views and layouts under a flat `{module}::{name}` identifier.
- *
  * Hybridly ships a ModulesComponentLoader, but it builds the identifier from the whole path
  * below the module directory, which would turn `users::list-users` into
- * `users::resources.views.list-users`. This loader keeps the identifiers the module
- * service providers used to register by hand.
+ * `users::resources.views.list-users`. This loader keeps the identifiers flat.
  */
 final readonly class ModuleComponentLoader implements ComponentLoader
 {

@@ -8,6 +8,7 @@
     "lint": "eslint . --debug",
     "lint:fix": "eslint . --fix",
     "prepare": "husky",
+    "vitest": "vitest run",
     "vue-tsc": "vue-tsc --noEmit"
   },
   "commitlint": {
@@ -41,6 +42,7 @@
     "unplugin-icons": "^24.0.0",
     "validate-branch-name": "^1.3.2",
     "vite": "^8.3.0",
+    "vitest": "^5.0.1",
     "vue": "^3.5.43",
     "vue-eslint-parser": "^10.4.1",
     "vue-tsc": "^3.3.11"

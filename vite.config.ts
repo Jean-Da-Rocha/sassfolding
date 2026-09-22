@@ -141,7 +141,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
     ],
     resolve: {
       alias: {
-        '@public': path.resolve(__dirname, './public'),
+        '@public': path.resolve(import.meta.dirname, './public'),
       },
     },
     server: {

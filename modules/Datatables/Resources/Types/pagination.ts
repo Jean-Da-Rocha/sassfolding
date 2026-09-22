@@ -1,4 +1,3 @@
-/** Mirrors Hybridly's own paginator metadata, which is declared globally. */
 export type TablePaginatorMeta = Paginator['meta'];
 
 export type PaginationOptions = {

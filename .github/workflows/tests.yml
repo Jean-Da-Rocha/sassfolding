@@ -94,3 +94,20 @@ jobs:
 
       - name: Run ${{ matrix.testsuite }} tests
         run: php artisan test --order-by random --testsuite=${{ matrix.testsuite }}
+
+  vitest:
+    needs: build
+    name: Front-end Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Laravel environment
+        uses: ./.github/actions/setup-laravel
+        with:
+          download-build: 'true'
+
+      - name: Run Vitest
+        run: pnpm run vitest

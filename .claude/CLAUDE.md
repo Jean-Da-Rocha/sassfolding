@@ -61,7 +61,7 @@ modules/{ModuleName}/
     Views/              Hybridly view pages
   Routes/               Route files (web.php)
   Tables/               Hybridly Table classes
-  Tests/                Pest tests (Feature/, Unit/, Architecture/)
+  Tests/                Pest tests (Feature/, Unit/, Architecture/) and Vitest tests (Unit/*.test.ts)
 ```
 
 ## Naming Conventions
@@ -141,9 +141,12 @@ The following are **globally auto-imported** via `unplugin-auto-import` in `vite
 
 ### Hybridly Patterns
 
-- **Dialog views**: controller uses `->base('route.name')`, frontend wraps content in `<HybridlyModal>`
-- **Forms**: use `useForm<T>({ fields, method, url, hooks })` from Hybridly
-- **Tables**: controller passes `Table<T>` via `hybridly('view', ['table' => TableClass::make()])`
+- **Views**: `hybridly()->view('module::view', [...])`. The `hybridly()` helper takes no argument
+- **Dialog views**: controller uses `->configureDialog(baseUrl: route('route.name'))`, frontend wraps content in `<HybridlyModal>`
+- **Forms**: use `useForm<T>({ fields, method, url, hooks })`. `form.submit` takes options, so always call it: `form.submit()`
+- **Tables**: controller passes `Table<T>` via `hybridly()->view('view', ['table' => TableClass::make()])`
+- **Global properties**: shared from the `ShareGlobalProperties` middleware with `hybridly()->share(...)`
+- **Module views and layouts**: registered by `Modules\Core\Architecture\ModuleComponentLoader`, not by the service providers
 
 ### Sidebar & Navbar Navigation
 
@@ -161,7 +164,7 @@ and `UDashboardNavbar`. The navigation system is modular:
 
 ### Known Gotchas
 
-- `TablePaginatorMeta`: use this explicit type instead of extracting from `ReturnType<typeof useTable>` (conditional types are unresolvable)
+- `Datatable<T>`: use this alias in composables instead of `ReturnType<typeof useTable>` (conditional types do not resolve across generic component boundaries)
 - `useHybridlyLoading`: do NOT add explicit `Ref<boolean>` return type — it breaks Volar template ref unwrapping
 - Generic components (`generic="T"`) + `withDefaults` can lose type resolution — use `?? []` fallbacks
 
@@ -223,6 +226,7 @@ All commands run inside Docker via `make` targets. Never run PHP/Node commands d
 - `make rebuild` — rebuild the images and restart the project
 - `make seed module=Users class=UserSeeder` — run a module-scoped seeder
 - `make eslint` — run ESLint with auto-fix
+- `make vitest` runs the front-end test suite
 - `make vue-tsc` — run TypeScript type checking
 - `make phpstan` — run PHPStan static analysis
 - `make pint` — run PHP code style fixer

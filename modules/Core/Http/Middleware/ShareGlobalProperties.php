@@ -17,10 +17,8 @@ use Modules\Users\Data\UserData;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Defines the properties that are shared with every hybrid response.
- *
- * Hybridly's own middleware handles the protocol itself and is registered separately in
- * bootstrap/app.php. Sharing data is done from a dedicated middleware, as documented in
+ * Hybridly's own middleware handles the protocol and is registered separately in
+ * bootstrap/app.php. Sharing data belongs to a dedicated middleware, as documented in
  * https://hybridly.dev/guide/global-properties.html
  */
 final readonly class ShareGlobalProperties

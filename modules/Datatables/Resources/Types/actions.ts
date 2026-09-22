@@ -10,7 +10,6 @@ export type TableInlineAction<T extends Record<string, any> = Record<string, any
 
 export type TableRecord<T extends Record<string, any> = Record<string, any>> = UseTableRecordItem<T>;
 
-/** An inline action already bound to one record, as exposed by `record.actions`. */
 export type TableRecordAction<T extends Record<string, any> = Record<string, any>> = TableRecord<T>['actions'][number] & {
   readonly metadata?: TableActionMetadata;
 };
