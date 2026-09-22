@@ -17,7 +17,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:9.5
+        image: mysql:9.7
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: testing
@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Laravel environment
         uses: ./.github/actions/setup-laravel
@@ -64,7 +64,7 @@ jobs:
         run: php ./vendor/bin/pint --test
 
       - name: Cache PHPStan results
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: storage/phpstan
           key: phpstan-${{ runner.os }}-${{ hashFiles('**/composer.lock', 'phpstan.neon', 'phpstan-baseline.neon') }}
