@@ -81,7 +81,7 @@ steps:
     -   uses: shivammathur/setup-php@v2
         with:
             php-version: '8.5'
-            extensions: bcmath, gd, mbstring, pcntl, pdo_mysql, redis, zip
+            extensions: bcmath, gd, intl, mbstring, pcntl, pdo_mysql, redis, zip
             tools: composer:v2
             coverage: none
 ```
@@ -139,7 +139,7 @@ build:
         -   uses: ./.github/actions/setup-laravel
         -   run: php artisan hybridly:config  # Generate .hybridly/tsconfig.json
         -   run: pnpm vite build --logLevel error
-        -   uses: actions/upload-artifact@v4
+        -   uses: actions/upload-artifact@v7
             with:
                 name: frontend-build
                 path: |
@@ -151,7 +151,7 @@ build:
 tests:
     needs: build
     steps:
-        -   uses: actions/download-artifact@v4
+        -   uses: actions/download-artifact@v8
             with:
                 name: frontend-build
                 path: .
@@ -183,7 +183,7 @@ tests:
     run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
 -   name: Cache Composer dependencies
-    uses: actions/cache@v4
+    uses: actions/cache@v6
     with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
@@ -198,10 +198,10 @@ tests:
 #### pnpm Dependencies
 
 ```yaml
--   uses: pnpm/action-setup@v4
+-   uses: pnpm/action-setup@v6
     # No version specified - automatically reads from package.json "packageManager" field
 
--   uses: actions/setup-node@v4
+-   uses: actions/setup-node@v7
     with:
         node-version: 24
         cache: 'pnpm'  # Automatic caching!
@@ -209,7 +209,7 @@ tests:
 -   run: pnpm install --frozen-lockfile
 ```
 
-**Version management**: `pnpm/action-setup@v4` automatically reads the pnpm version from `package.json` (`"packageManager": "pnpm@10.28.0"`)
+**Version management**: `pnpm/action-setup@v6` automatically reads the pnpm version from `package.json` (`"packageManager": "pnpm@12.5.1"`)
 **Cache key**: Automatic (based on pnpm-lock.yaml)
 **Cache behavior**: Similar to Composer - hits when lockfile unchanged, misses when dependencies change
 
@@ -217,7 +217,7 @@ tests:
 
 ```yaml
 -   name: Cache PHPStan results
-    uses: actions/cache@v4
+    uses: actions/cache@v6
     with:
         path: storage/phpstan
         key: phpstan-${{ runner.os }}-${{ hashFiles('**/composer.lock', 'phpstan.neon', 'phpstan-baseline.neon') }}
@@ -242,7 +242,7 @@ This is normal - GitHub Actions checks both the exact key and partial match. Sub
 
 ### tests.yml - Test Suite Execution
 
-**Jobs**: 3 parallel jobs (Feature, Unit, Architecture)
+**Jobs**: 3 parallel PHP jobs (Feature, Unit, Architecture) plus a front-end job running Vitest
 
 **Matrix Strategy**:
 
@@ -261,11 +261,11 @@ See all test failures at once, not just the first one.
 ```yaml
 services:
     mysql:
-        image: mysql:9.5
+        image: mysql:9.7
         # Health checks ensure DB ready before tests start
 
     redis:
-        image: redis:8.0
+        image: redis:8.10
         # Used for caching, sessions, queues in tests
 ```
 
@@ -275,12 +275,30 @@ services:
 3. Build frontend: `pnpm vite build`
 4. Upload artifact: `public/build` + `.hybridly`
 
-**Test job steps (3 parallel jobs):**
+**Test job steps (3 parallel PHP jobs):**
 1. Setup Laravel environment (composite action)
 2. Download pre-built frontend assets (from build job)
 3. Setup Laravel (.env.ci, generate key)
 4. Run migrations
 5. Execute test suite: `php artisan test --testsuite=${{ matrix.testsuite }}`
+
+#### Front-end tests
+
+A fourth job depends on the same shared build artifact and runs the Vitest suite, which covers the
+Datatables composables:
+
+```yaml
+vitest:
+  needs: build
+  steps:
+    -   uses: actions/checkout@v7
+    -   uses: ./.github/actions/setup-laravel
+        with:
+          download-build: 'true'
+    -   run: pnpm run vitest
+```
+
+It needs neither MySQL nor Redis: the composables are tested against fake table objects.
 
 ### style.yml - Code Quality Checks
 
@@ -360,7 +378,7 @@ steps:
 # GOOD: Build once in separate job, download in others
 needs: build
 steps:
-    -   uses: actions/download-artifact@v4
+    -   uses: actions/download-artifact@v8
 ```
 
 ---
@@ -376,7 +394,7 @@ steps:
 
 ```yaml
 # GOOD: Cache Composer's download cache
--   uses: actions/cache@v4
+-   uses: actions/cache@v6
     with:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: composer-${{ hashFiles('**/composer.lock') }}
@@ -402,7 +420,7 @@ steps:
     -   uses: shivammathur/setup-php@v2
         with:
             php-version: '8.5'
-            extensions: bcmath, gd, mbstring, pcntl, pdo_mysql, redis, zip
+            extensions: bcmath, gd, intl, mbstring, pcntl, pdo_mysql, redis, zip
 ```
 
 ## Differences from Local Development
