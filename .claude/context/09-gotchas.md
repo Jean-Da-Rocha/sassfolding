@@ -39,6 +39,17 @@ The 0.10 beta line changed a lot, and older tutorials are actively misleading:
 - PHP 8.5 raises a deprecation inside Hybridly's `HasRefiners`, passing null to `explode()`. It is
   upstream and harmless, but it shows up in verbose output.
 
+## Vite dev server
+
+The `dev` script binds every interface so Docker can publish the port, but `0.0.0.0` is a listen
+address, not a connectable host. Firefox rejects it outright with `Module source URI is not
+allowed`, while Chrome silently remaps it to localhost, so the bug only shows up in one browser.
+
+The host written to `public/hot` comes from `server.hmr.host`, then `server.host`, then the bound
+address. `vite.config.ts` therefore sets an HMR host derived from `APP_URL`, which is also covered
+by the wildcard certificate. Changing the `dev` script's `--host` value will not fix this on its
+own.
+
 ## TypeScript
 
 - Generated declarations live in `.hybridly/`, which is not tracked. A missing `php-types.d.ts`
