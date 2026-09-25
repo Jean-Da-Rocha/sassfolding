@@ -60,10 +60,6 @@ return [
      * The package will write the generated TypeScript to this file.
      */
 
-    /*
-     * Hybridly overrides this when running `hybridly:types`, which writes the PHP types to
-     * `.hybridly/php-types.d.ts`. This value only applies to a standalone `typescript:transform`.
-     */
     'output_file' => base_path('.hybridly/php-types.d.ts'),
 
     /*

@@ -16,11 +16,7 @@ use Modules\Core\Enums\FlashMessage;
 use Modules\Users\Data\UserData;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Hybridly's own middleware handles the protocol and is registered separately in
- * bootstrap/app.php. Sharing data belongs to a dedicated middleware, as documented in
- * https://hybridly.dev/guide/global-properties.html
- */
+/** @see https://hybridly.dev/guide/global-properties.html */
 final readonly class ShareGlobalProperties
 {
     public function __construct(
