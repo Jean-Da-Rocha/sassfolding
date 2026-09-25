@@ -11,9 +11,8 @@ use Modules\Core\Http\Middleware\ShareGlobalProperties;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(health: '/up')
     ->withMiddleware(function (Middleware $middleware) {
-        // Trusting every proxy lets any client forge X-Forwarded-For, which defeats rate
-        // limiters keyed on the IP, starting with Fortify's login throttle. The private ranges
-        // cover Docker networks and a LAN reverse proxy. Narrow this to your proxy in production.
+        // Trusting every proxy lets any client forge X-Forwarded-For and defeat rate limiters
+        // keyed on the IP, starting with Fortify's login throttle. Narrow this in production.
         $middleware->trustProxies(at: [
             '10.0.0.0/8',
             '172.16.0.0/12',

@@ -1,6 +1,5 @@
-# Which dependencies are allowed to run their install scripts. Only esbuild needs it:
-# it downloads the platform binary that Vite relies on. The others ship prebuilt
-# native bindings, so their scripts are pure overhead.
+# Only esbuild needs its install script, to download the platform binary Vite relies on.
+# The others ship prebuilt native bindings, so their scripts are pure overhead.
 allowBuilds:
   '@tailwindcss/oxide': false
   esbuild: true

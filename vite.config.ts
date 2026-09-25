@@ -13,8 +13,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
   const env = loadEnv(mode, process.cwd(), '');
   const composeProjectName = env.VITE_APP_NAME;
 
-  // The dev server binds every interface so that Docker can publish it, but 0.0.0.0 is a listen
-  // address, not a connectable host: Firefox rejects it outright, and it is what ends up in
+  // 0.0.0.0 is a listen address, not a connectable host: Firefox rejects it, and it lands in
   // public/hot unless an HMR host is given. Advertise the application host instead.
   const devServerHost = env.APP_URL ? new URL(env.APP_URL).hostname : undefined;
   const certPath = `/certs/${composeProjectName}`;

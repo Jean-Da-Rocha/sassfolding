@@ -1,6 +1,5 @@
-# Traefik and dnsmasq are not included here: they are shared by every project on the
-# machine and live in ${DOCKER_DIRECTORY}/shared/docker-compose.yml, started by
-# 'make shared-start' (which 'make start' does on its own).
+# Traefik and dnsmasq are shared by every project on the machine, so they live in
+# ${DOCKER_DIRECTORY}/shared/docker-compose.yml, which 'make start' brings up on its own.
 
 include:
   - ${DOCKER_DIRECTORY}/hybridly/docker-compose.yml
