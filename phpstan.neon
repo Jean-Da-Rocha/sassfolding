@@ -21,3 +21,9 @@ parameters:
       message: '#Call to an undefined method Pest\\PendingCalls\\TestCall::expect\(\)\.#'
       paths:
         - modules/*/Tests/Architecture/*Test.php
+
+    # Hybridly registers its testing assertions with TestResponse::mixin() at runtime
+    - identifier: method.notFound
+      message: '#Call to an undefined method Illuminate\\Testing\\TestResponse::assertHybrid[A-Za-z]*\(\)\.#'
+      paths:
+        - modules/*/Tests/Feature/*

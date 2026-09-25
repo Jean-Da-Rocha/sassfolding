@@ -36,7 +36,7 @@ useHead({ title: 'Edit User' });
               color="neutral"
               icon="i-lucide-x"
               variant="ghost"
-              @click="closeModal"
+              @click="closeModal()"
             />
           </div>
         </template>
@@ -69,7 +69,7 @@ useHead({ title: 'Edit User' });
               color="neutral"
               label="Cancel"
               variant="outline"
-              @click="closeModal"
+              @click="closeModal()"
             />
             <UButton
               label="Save Changes"

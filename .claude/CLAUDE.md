@@ -9,7 +9,7 @@ The front-end components are also in the same module folder to improve readabili
 ## Stack
 
 - PHP 8.5
-- Laravel 12
+- Laravel 13
 - MySQL
 - Redis (caching, sessions, queue driver)
 - Hybridly
@@ -61,7 +61,7 @@ modules/{ModuleName}/
     Views/              Hybridly view pages
   Routes/               Route files (web.php)
   Tables/               Hybridly Table classes
-  Tests/                Pest tests (Feature/, Unit/, Architecture/)
+  Tests/                Pest tests (Feature/, Unit/, Architecture/) and Vitest tests (Unit/*.test.ts)
 ```
 
 ## Naming Conventions
@@ -141,9 +141,12 @@ The following are **globally auto-imported** via `unplugin-auto-import` in `vite
 
 ### Hybridly Patterns
 
-- **Dialog views**: controller uses `->base('route.name')`, frontend wraps content in `<HybridlyModal>`
-- **Forms**: use `useForm<T>({ fields, method, url, hooks })` from Hybridly
-- **Tables**: controller passes `Table<T>` via `hybridly('view', ['table' => TableClass::make()])`
+- **Views**: `hybridly()->view('module::view', [...])`. The `hybridly()` helper takes no argument
+- **Dialog views**: controller uses `->configureDialog(baseUrl: route('route.name'))`, frontend wraps content in `<HybridlyModal>`
+- **Forms**: use `useForm<T>({ fields, method, url, hooks })`. `form.submit` takes options, so always call it: `form.submit()`
+- **Tables**: controller passes `Table<T>` via `hybridly()->view('view', ['table' => TableClass::make()])`
+- **Global properties**: shared from the `ShareGlobalProperties` middleware with `hybridly()->share(...)`
+- **Module views and layouts**: registered by `Modules\Core\Architecture\ModuleComponentLoader`, not by the service providers
 
 ### Sidebar & Navbar Navigation
 
@@ -161,7 +164,7 @@ and `UDashboardNavbar`. The navigation system is modular:
 
 ### Known Gotchas
 
-- `TablePaginatorMeta`: use this explicit type instead of extracting from `ReturnType<typeof useTable>` (conditional types are unresolvable)
+- `Datatable<T>`: use this alias in composables instead of `ReturnType<typeof useTable>` (conditional types do not resolve across generic component boundaries)
 - `useHybridlyLoading`: do NOT add explicit `Ref<boolean>` return type — it breaks Volar template ref unwrapping
 - Generic components (`generic="T"`) + `withDefaults` can lose type resolution — use `?? []` fallbacks
 
@@ -194,7 +197,9 @@ See `docs/DATATABLE.md` for full datatable documentation (basic usage, inline/bu
 ## Git Workflow
 
 - **Conventional Commits** enforced by `commitlint` (`@commitlint/config-conventional`)
-- **Branch naming**: `{type}/{TICKET-ID}/description` — types: `build`, `bugfix`, `bump`, `docs`, `experimental`, `feature`, `hotfix`, `merge`, `release`, `test`
+- **Branch naming**: `{type}/{TICKET-ID}/description` — the ticket is optional. Types: `build`, `bugfix`, `bump`,
+  `docs`, `experimental`, `feature`, `hotfix`, `merge`, `refactor`, `release`, `test`. The regex in `package.json`
+  is the source of truth.
 - **Pre-commit hooks** (via Husky + lint-staged):
   - `*.vue, *.ts` files: ESLint auto-fix
   - `*.php` files: Laravel Pint
@@ -217,8 +222,11 @@ All commands run inside Docker via `make` targets. Never run PHP/Node commands d
 - `make test` — run Pest tests (`make test filter=UserControllerTest` to filter)
 - `make migrate` — run database migrations
 - `make fresh` — drop all tables and re-run migrations (`make fresh seed=1` to also seed)
+- `make reset` — stop the containers and delete their data volumes
+- `make rebuild` — rebuild the images and restart the project
 - `make seed module=Users class=UserSeeder` — run a module-scoped seeder
 - `make eslint` — run ESLint with auto-fix
+- `make vitest` runs the front-end test suite
 - `make vue-tsc` — run TypeScript type checking
 - `make phpstan` — run PHPStan static analysis
 - `make pint` — run PHP code style fixer

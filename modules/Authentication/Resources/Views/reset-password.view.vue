@@ -45,7 +45,7 @@ useHead({ title: 'Reset Password' });
         </div>
       </template>
 
-      <form class="space-y-6" @submit.prevent="form.submit">
+      <form class="space-y-6" @submit.prevent="form.submit()">
         <div class="space-y-2">
           <label class="block text-sm font-medium" for="email">
             Email address

@@ -1,10 +1,9 @@
-ignoredBuiltDependencies:
-  - '@tailwindcss/oxide'
-  - unrs-resolver
-  - vue-demi
+allowBuilds:
+  '@tailwindcss/oxide': false
+  esbuild: true
+  unrs-resolver: false
+  vue-demi: false
 
-onlyBuiltDependencies:
-  - esbuild
 overrides:
   eslint-plugin-perfectionist: 5.3.1
-  '@internationalized/date': ~3.11.0
+  '@internationalized/date': ~3.12.4

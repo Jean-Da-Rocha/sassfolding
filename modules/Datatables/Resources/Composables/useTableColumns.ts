@@ -1,5 +1,5 @@
 export function useTableColumns<T extends Record<string, any>>(
-  config: ColumnGeneratorConfig,
+  config: ColumnGeneratorConfig<T>,
   components: ResolvedComponents,
 ): UseTableColumnsReturn<T> {
   const { datatable, getRowActions, handleCheckboxClick, hasInlineActions, selectable } = config;
@@ -12,7 +12,7 @@ export function useTableColumns<T extends Record<string, any>>(
       result.push(buildSelectionColumn());
     }
 
-    datatable.columns.forEach((column: HybridlyTableColumn) => {
+    datatable.columns.forEach((column: UseTableColumn<T>) => {
       result.push(buildDataColumn(column));
     });
 
@@ -44,7 +44,7 @@ export function useTableColumns<T extends Record<string, any>>(
     } as ColumnDef<T>;
   }
 
-  function buildDataColumn(hybridlyColumn: HybridlyTableColumn): ColumnDef<T> {
+  function buildDataColumn(hybridlyColumn: UseTableColumn<T>): ColumnDef<T> {
     const columnName = String(hybridlyColumn.name);
 
     return {
@@ -98,7 +98,7 @@ export function useTableColumns<T extends Record<string, any>>(
   return { columns };
 }
 
-function getSortIcon(column: HybridlyTableColumn): string | undefined {
+function getSortIcon<T extends Record<string, any>>(column: UseTableColumn<T>): string | undefined {
   if (column.isSorting('asc')) {
     return 'i-lucide-arrow-up-narrow-wide';
   }

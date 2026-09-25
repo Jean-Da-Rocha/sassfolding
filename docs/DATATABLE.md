@@ -1,5 +1,10 @@
 # Datatables
 
+> [!NOTE]
+> The examples below use a `Project` / `Task` domain with statuses and relationships. That domain is
+> **not** part of the scaffolding: it is only there to show relationship columns, enum badges and
+> multi-select filters, which a single `User` table cannot demonstrate. Transpose them to your own models.
+
 The Datatables module provides a reusable, full-featured table system built on top of
 [Hybridly Tables](https://hybridly.dev/guide/tables.html) (server-side) and
 [Nuxt UI's UTable](https://ui.nuxt.com/components/table) (TanStack Table, client-side).

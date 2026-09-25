@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Users\Http\Controllers;
 
-use Hybridly\View\Factory as HybridlyView;
+use Hybridly\HybridResponseFactory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -19,14 +19,14 @@ use Modules\Users\Tables\UserTable;
 
 class UserController extends Controller
 {
-    public function index(): HybridlyView
+    public function index(): HybridResponseFactory
     {
-        return hybridly('users::list-users', ['users' => UserTable::make()]);
+        return hybridly()->view('users::list-users', ['users' => UserTable::make()]);
     }
 
-    public function create(): HybridlyView
+    public function create(): HybridResponseFactory
     {
-        return hybridly('users::create-user')->base('users.index');
+        return hybridly()->view('users::create-user')->configureDialog(baseUrl: route('users.index'));
     }
 
     /**
@@ -39,9 +39,9 @@ class UserController extends Controller
         return back()->with(FlashMessage::Success->value, sprintf('User "%s" successfully created', $createdUser->name));
     }
 
-    public function edit(User $user): HybridlyView
+    public function edit(User $user): HybridResponseFactory
     {
-        return hybridly('users::edit-user', ['user' => UserData::from($user)])->base('users.index');
+        return hybridly()->view('users::edit-user', ['user' => UserData::from($user)])->configureDialog(baseUrl: route('users.index'));
     }
 
     /**

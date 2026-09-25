@@ -25,18 +25,33 @@
 - Environment variable: `DOCKER_DIRECTORY`
 - Dockerfiles and configs managed separately from application code
 
-### Container Architecture (8 containers)
+### Container Architecture
+
+Traefik and dnsmasq are **shared**: one instance per machine serves every project, started by
+`make shared-start` (which `make start` runs on its own). They are named after
+`SHARED_PROJECT_NAME` (`localdev`) instead of the project. Traefik reads the Docker socket, so
+one instance already sees every project's containers, and dnsmasq answers the same thing for
+all of them. Sharing them frees ports 80, 443 and 53 from any collision between projects.
+
+Every project joins the shared `localdev` network alongside its own `project.{name}` network.
+
+**Shared** (`shared/docker-compose.yml`, project `localdev`):
 
 | Container       | Purpose                                               |
 |-----------------|-------------------------------------------------------|
-| **dnsmasq**     | Wildcard DNS for `*.{project}.test` domains          |
+| **Traefik**     | Dynamic reverse proxy with TLS and dashboard          |
+| **dnsmasq**     | Wildcard DNS for `*.{project}.test` domains           |
+
+**Per project** (prefixed with `COMPOSE_PROJECT_NAME`):
+
+| Container       | Purpose                                               |
+|-----------------|-------------------------------------------------------|
 | **Hybridly**    | FrankenPHP + Octane + Node.js (PHP server + Vite dev) |
 | **Mailpit**     | Local SMTP server and email inbox                     |
 | **MySQL**       | Relational database (local and testing)               |
 | **Redis**       | Cache, sessions, and queue driver                     |
 | **RustFS**      | S3-compatible object storage                          |
 | **RustFS-init** | Init container for bucket creation (exits after run)  |
-| **Traefik**     | Dynamic reverse proxy with TLS and dashboard          |
 
 ### Request Flow
 
@@ -65,32 +80,43 @@ Browser → Traefik (TLS on :443) → FrankenPHP/Octane (:8000) → Laravel
 ### Service Versions (from `make/infra.mk`)
 
 ```makefile
-COMPOSER_VERSION = 2.9.2
-DNSMASQ_VERSION = 2.91
-MYSQL_VERSION = 9.5.0
+COMPOSER_VERSION = 2.10.3
+DNSMASQ_VERSION = 2.93
+MYSQL_VERSION = 9.7.2
 NODE_VERSION = 24
 PHP_VERSION = 8.5
-PNPM_VERSION = 10.25.0
-REDIS_VERSION = 8.4.0
-TRAEFIK_VERSION = v3.6.4
-XDEBUG_VERSION = 3.5.0
+PNPM_VERSION = 12.5.1
+REDIS_VERSION = 8.10.2
+TRAEFIK_VERSION = v3.7.13
+XDEBUG_VERSION = 3.5.3
 ```
 
 ### Local-Only Services (NOT in CI/Prod)
 
-- **Traefik**: Reverse proxy with automatic TLS certificate handling
-- **dnsmasq**: Wildcard DNS server for local domain resolution
+- **Traefik**: Reverse proxy with automatic TLS certificate handling (shared)
+- **dnsmasq**: Wildcard DNS server for local domain resolution (shared)
 - **RustFS**: S3-compatible object storage for local file testing
 - **Mailpit**: SMTP server for email testing
 
 ### DNS Resolution
 
-A dnsmasq container provides wildcard DNS for all `*.{project}.test` domains. The OS resolver is configured
-once (via `make setup-dns`) to forward queries for `.test` to dnsmasq:
+A shared dnsmasq container provides wildcard DNS for all `*.{project}.test` domains, published on
+`127.0.0.1:53` only. `make setup-dns` then points the OS resolver at it, picking the mechanism that
+fits the system:
 
-- **Linux**: systemd-resolved drop-in at `/etc/systemd/resolved.conf.d/test.conf` using a routing domain
-  (`~test`) so only `.test` queries go to dnsmasq — all other DNS uses the system default
-- **macOS**: Resolver file at `/etc/resolver/test`
+- **macOS**: a resolver file at `/etc/resolver/test`. macOS resolves per domain by design, so this
+  never conflicts with the rest of the DNS configuration.
+- **Linux with NetworkManager**: a dedicated profile named `test-dns`, carried by a dummy `test0`
+  interface, holding `ipv4.dns 127.0.0.1` and the routing domain `ipv4.dns-search ~test`. A routing
+  domain attached to a link beats a global one, which is how Tailscale and corporate VPNs route
+  their own domains.
+- **Linux without NetworkManager**: a systemd-resolved drop-in at
+  `/etc/systemd/resolved.conf.d/test.conf`, holding the same server and routing domain globally.
+
+The NetworkManager path exists because systemd-resolved does not bind a server to a domain inside
+its global scope: every global server is a candidate for every global routing domain. A machine
+that already pins its own resolver with `Domains=~.` would therefore answer `.test` queries from
+that resolver instead of dnsmasq. `make setup-dns` warns when it detects this and cannot avoid it.
 
 The TLD is `.test` (IETF-reserved, RFC 6761), defined as `DNS_DOMAIN` in `make/infra.mk`.
 
@@ -128,15 +154,15 @@ steps:
     -   uses: shivammathur/setup-php@v2
         with:
             php-version: '8.5'
-            extensions: bcmath, gd, mbstring, pcntl, pdo_mysql, redis, zip
+            extensions: bcmath, gd, intl, mbstring, pcntl, pdo_mysql, redis, zip
             tools: composer:v2
             coverage: none
 
 services:
     mysql:
-        image: mysql:9.5
+        image: mysql:9.7
     redis:
-        image: redis:8.0
+        image: redis:8.10
 ```
 
 **Key Differences from Local** (intentional, don't affect tests):
@@ -198,9 +224,9 @@ CMD ["php", "artisan", "octane:start", "--server=frankenphp", "--host=0.0.0.0", 
 ### MUST Maintain Consistency:
 
 1. PHP 8.5 across all environments
-2. Same PHP extensions (bcmath, gd, mbstring, pcntl, pdo_mysql, redis, zip)
+2. Same PHP extensions (bcmath, gd, intl, mbstring, pcntl, pdo_mysql, redis, zip)
 3. MySQL 9.x and Redis 8.x service versions
-4. Composer 2.9.x and pnpm 10.x
+4. Composer 2.10.x and pnpm 12.x
 
 ## File Locations
 

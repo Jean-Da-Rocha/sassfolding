@@ -31,3 +31,5 @@ docker-compose.yml
 **/caddy
 frankenphp
 frankenphp-worker.php
+
+.claude/context/

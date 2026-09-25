@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Hybridly\Support\Configuration\Architecture;
-use Hybridly\Support\TypeScriptTransformer\GlobalPropertiesNamespaceTransformer;
+use Hybridly\Configuration\Architecture;
+use Modules\Core\Architecture\ModuleComponentLoader;
 
 return [
     /*
@@ -19,6 +19,7 @@ return [
     | `exclude` array. Filters in the `exclude` array support wildcards (*).
     */
     'router' => [
+        'generate_absolute_urls' => false,
         'allowed_vendors' => [
             'laravel/fortify',
         ],
@@ -38,13 +39,11 @@ return [
     | See: https://hybridly.dev/guide/architecture.html
     */
     'architecture' => [
-        'load_default_module' => false,
+        'component_loader' => ModuleComponentLoader::class,
         'eager_load_views' => true,
+        'entrypoint' => Architecture::ENTRYPOINT,
         'root_directory' => 'modules/Core/Resources/Application',
-        'application_main' => 'main.ts',
         'root_view' => Architecture::ROOT_VIEW,
-        'extensions' => ['vue', 'tsx'],
-        'excluded_views_directories' => [],
     ],
 
     /*
@@ -87,18 +86,8 @@ return [
     | actually exist on the disk when hybrid testing utilities are used.
     */
     'testing' => [
+        'disable_versioning' => true,
         'ensure_views_exist' => true,
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | TypeScript
-    |--------------------------------------------------------------------------
-    */
-    'typescript' => [
-        'namespace_transformer' => GlobalPropertiesNamespaceTransformer::class,
-        'base_paths' => [
-            base_path('modules'),
-        ],
-    ],
 ];

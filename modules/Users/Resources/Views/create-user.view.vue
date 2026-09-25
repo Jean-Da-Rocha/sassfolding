@@ -39,12 +39,12 @@ useHead({ title: 'Create User' });
               color="neutral"
               icon="i-lucide-x"
               variant="ghost"
-              @click="closeModal"
+              @click="closeModal()"
             />
           </div>
         </template>
 
-        <form class="space-y-4" @submit.prevent="form.submit">
+        <form class="space-y-4" @submit.prevent="form.submit()">
           <UFormField :error="form.errors.email" label="Email address">
             <UInput
               v-model="form.fields.email"
@@ -114,12 +114,12 @@ useHead({ title: 'Create User' });
               color="neutral"
               label="Cancel"
               variant="outline"
-              @click="closeModal"
+              @click="closeModal()"
             />
             <UButton
               label="Create User"
               :loading="form.processing"
-              @click="form.submit"
+              @click="form.submit()"
             />
           </div>
         </template>

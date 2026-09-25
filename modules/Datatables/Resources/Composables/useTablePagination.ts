@@ -1,11 +1,12 @@
 const DEFAULT_PER_PAGE_OPTIONS = [10, 25, 50, 100] as const;
 
-export function useTablePagination(datatable: any, options?: PaginationOptions): UseTablePaginationReturn {
+export function useTablePagination<T extends Record<string, any>>(
+  datatable: Datatable<T>,
+  options?: PaginationOptions,
+): UseTablePaginationReturn {
   const perPageChoices = options?.perPageOptions ?? DEFAULT_PER_PAGE_OPTIONS;
 
-  const paginatorMeta = computed<TablePaginatorMeta>(
-    () => datatable.paginator.meta,
-  );
+  const paginatorMeta = computed<TablePaginatorMeta>(() => datatable.paginator.meta);
 
   const goToPage = (page: number): void => {
     datatable.paginator.to(page);

@@ -1,10 +1,13 @@
-export function useTableColumnVisibility(datatable: any, hiddenColumns: readonly string[]): UseTableColumnVisibilityReturn {
+export function useTableColumnVisibility<T extends Record<string, any>>(
+  datatable: Datatable<T>,
+  hiddenColumns: readonly string[],
+): UseTableColumnVisibilityReturn {
   const columnVisibility = ref<Record<string, boolean>>(
     buildInitialVisibility(datatable.columns, hiddenColumns),
   );
 
   const visibilityItems = computed<VisibilityItem[]>(() =>
-    datatable.columns.map((column: HybridlyTableColumn) => {
+    datatable.columns.map((column: UseTableColumn<T>) => {
       const columnName = String(column.name);
 
       return {
@@ -31,8 +34,8 @@ export function useTableColumnVisibility(datatable: any, hiddenColumns: readonly
   };
 }
 
-function buildInitialVisibility(
-  columns: readonly HybridlyTableColumn[],
+function buildInitialVisibility<T extends Record<string, any>>(
+  columns: readonly UseTableColumn<T>[],
   hiddenColumns: readonly string[],
 ): Record<string, boolean> {
   const hiddenSet = new Set(hiddenColumns);

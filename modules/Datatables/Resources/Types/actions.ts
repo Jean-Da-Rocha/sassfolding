@@ -1,24 +1,23 @@
-export type TableActionMetadata = {
-  readonly color?: Modules.Core.Enums.FlashMessage;
-  readonly confirm?: boolean;
-  readonly confirm_message?: string;
-  readonly icon?: string;
-};
+export type TableActionMetadata = Modules.Datatables.Data.ActionMetaData;
 
-export type TableAction = {
-  readonly execute?: () => void;
-  readonly label: string;
+export type TableBulkAction = UseTableBulkActionItem & {
   readonly metadata?: TableActionMetadata;
-  readonly name: string;
 };
 
-export type TableRecord = {
-  readonly actions: readonly TableAction[];
-  readonly deselect: () => void;
-  readonly execute: (name: string) => void;
-  readonly select: () => void;
-  readonly selected: boolean;
+export type TableInlineAction<T extends Record<string, any> = Record<string, any>> = UseTableInlineActionItem<T> & {
+  readonly metadata?: TableActionMetadata;
 };
+
+export type TableRecord<T extends Record<string, any> = Record<string, any>> = UseTableRecordItem<T>;
+
+export type TableRecordAction<T extends Record<string, any> = Record<string, any>> = TableRecord<T>['actions'][number] & {
+  readonly metadata?: TableActionMetadata;
+};
+
+export type TableAction<T extends Record<string, any> = Record<string, any>>
+  = | TableBulkAction
+    | TableInlineAction<T>
+    | TableRecordAction<T>;
 
 export type PendingConfirmation = {
   readonly message?: string;

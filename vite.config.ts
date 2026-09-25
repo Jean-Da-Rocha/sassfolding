@@ -10,8 +10,12 @@ import IconsResolver from 'unplugin-icons/resolver';
 import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ command, mode }): UserConfig => {
-  const env = loadEnv(mode, process.cwd());
+  const env = loadEnv(mode, process.cwd(), '');
   const composeProjectName = env.VITE_APP_NAME;
+
+  // 0.0.0.0 is a listen address, not a connectable host: Firefox rejects it, and it lands in
+  // public/hot unless an HMR host is given. Advertise the application host instead.
+  const devServerHost = env.APP_URL ? new URL(env.APP_URL).hostname : undefined;
   const certPath = `/certs/${composeProjectName}`;
 
   // Only configure HTTPS for dev server when certificates are available
@@ -31,6 +35,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
       {
         from: 'hybridly/vue',
         imports: [
+          'getBulkSelectionRange',
           'registerHook',
           'setProperty',
           'useBackForward',
@@ -79,10 +84,18 @@ export default defineConfig(({ command, mode }): UserConfig => {
           'BulkAction',
           'DateFilterRefinement',
           'FilterRefinement',
+          'Column',
           'InlineAction',
+          'RecordIdentifier',
           'SortDirection',
+          'Table',
           'TimeSuggestion',
           'TimeframeSuggestion',
+          'UseTableBulkActionItem',
+          'UseTableColumn',
+          'UseTableInlineActionItem',
+          'UseTableRecordItem',
+          'UseTableReturn',
         ],
         type: true,
       },
@@ -132,10 +145,11 @@ export default defineConfig(({ command, mode }): UserConfig => {
     ],
     resolve: {
       alias: {
-        '@public': path.resolve(__dirname, './public'),
+        '@public': path.resolve(import.meta.dirname, './public'),
       },
     },
     server: {
+      ...(devServerHost ? { hmr: { host: devServerHost } } : {}),
       ...(httpsConfig ? { https: httpsConfig } : {}),
       watch: {
         // Ignore directories that slow down Vite and cause 'file watchers limit' errors.

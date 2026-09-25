@@ -3,11 +3,6 @@ export type FilterOption = {
   readonly value: unknown;
 };
 
-export type TimeSuggestion = {
-  readonly date: string;
-  readonly label: string;
-};
-
 export type UseTableFiltersReturn = {
   readonly activeFilterCount: ComputedRef<number>;
   readonly clearAllFilters: () => void;
