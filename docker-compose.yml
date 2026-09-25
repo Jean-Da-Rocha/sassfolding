@@ -1,6 +1,3 @@
-# Traefik and dnsmasq are shared by every project on the machine, so they live in
-# ${DOCKER_DIRECTORY}/shared/docker-compose.yml, which 'make start' brings up on its own.
-
 include:
   - ${DOCKER_DIRECTORY}/hybridly/docker-compose.yml
   - ${DOCKER_DIRECTORY}/mailpit/docker-compose.yml
