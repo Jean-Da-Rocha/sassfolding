@@ -65,7 +65,7 @@ Browser → Traefik (TLS on :443) → FrankenPHP/Octane (:8000) → Laravel
 
 - **base stage**: `dunglas/frankenphp:php8.5` + PHP extensions + Composer
 - **dev stage**: base + Xdebug + Node.js 24 + pnpm + supervisor
-- **prod stage**: base only (no dev tools) — scaffolded, needs `COPY` and dependency install before use
+- **prod stage**: base only (no dev tools), scaffolded and needs `COPY` and dependency install before use
 
 **PHP Extensions**: bcmath, gd, mbstring, pcntl, pdo_mysql, zip, redis (+ xdebug in dev)
 

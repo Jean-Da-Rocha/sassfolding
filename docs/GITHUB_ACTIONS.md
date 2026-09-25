@@ -44,7 +44,7 @@
 - Process manager (Supervisor vs direct exec)
 - Development tooling (Traefik, DNSMasq, Xdebug)
 
-**Why?** Because your tests don't care HOW the environment was built—only that PHP executes correctly, database queries
+**Why?** Because your tests don't care HOW the environment was built, only that PHP executes correctly, database queries
 work, and your business logic is sound.
 
 ## Why CI Doesn't Use Docker Containers

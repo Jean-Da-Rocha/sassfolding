@@ -81,7 +81,7 @@ modules/{ModuleName}/
 
 ## Auto-Import System
 
-The following are **globally auto-imported** via `unplugin-auto-import` in `vite.config.ts`. **Do NOT add manual imports for these — unnecessary imports cause ESLint errors.**
+The following are **globally auto-imported** via `unplugin-auto-import` in `vite.config.ts`. **Do NOT add manual imports for these. Unnecessary imports cause ESLint errors.**
 
 - **Vue**: `ref`, `computed`, `watch`, `onMounted`, `onUnmounted`, `h`, `resolveComponent`, `nextTick`, `Component` type, etc.
 - **Hybridly**: `router`, `route`, `can`, `useForm`, `useDialog`, `useTable`, `useProperty`, `useProperties`, `registerHook`, `usePaginator`, `useRefinements`, `useRoute`, `setProperty` + types `RouteName`, `NavigationResponse`
@@ -116,7 +116,7 @@ The following are **globally auto-imported** via `unplugin-auto-import` in `vite
   `->whereKeyNot($currentUser->getKey())`, use `->where('id', '!=', $currentUser->id)`.
 - Don't add `::query()` when running Eloquent `create()` statements. Use `User::create()` directly.
 - When adding columns in a migration, update the model's `$fillable` array to include those new attributes.
-- Never chain multiple migration-creating commands with `&&` or `;` — they may get identical timestamps.
+- Never chain multiple migration-creating commands with `&&` or `;`: they may get identical timestamps.
 - Enums: always use enum cases (or `->value`) instead of raw strings everywhere.
 - Controllers: Single-method Controllers should use `__invoke()`; multi-method RESTful controllers should use
   `Route::resource()->only([])`
@@ -165,8 +165,8 @@ and `UDashboardNavbar`. The navigation system is modular:
 ### Known Gotchas
 
 - `Datatable<T>`: use this alias in composables instead of `ReturnType<typeof useTable>` (conditional types do not resolve across generic component boundaries)
-- `useHybridlyLoading`: do NOT add explicit `Ref<boolean>` return type — it breaks Volar template ref unwrapping
-- Generic components (`generic="T"`) + `withDefaults` can lose type resolution — use `?? []` fallbacks
+- `useHybridlyLoading`: do NOT add explicit `Ref<boolean>` return type: it breaks Volar template ref unwrapping
+- Generic components (`generic="T"`) + `withDefaults` can lose type resolution, use `?? []` fallbacks
 
 ## Datatable Usage
 
@@ -197,7 +197,7 @@ See `docs/DATATABLE.md` for full datatable documentation (basic usage, inline/bu
 ## Git Workflow
 
 - **Conventional Commits** enforced by `commitlint` (`@commitlint/config-conventional`)
-- **Branch naming**: `{type}/{TICKET-ID}/description` — the ticket is optional. Types: `build`, `bugfix`, `bump`,
+- **Branch naming**: `{type}/{TICKET-ID}/description`, the ticket is optional. Types: `build`, `bugfix`, `bump`,
   `docs`, `experimental`, `feature`, `hotfix`, `merge`, `refactor`, `release`, `test`. The regex in `package.json`
   is the source of truth.
 - **Pre-commit hooks** (via Husky + lint-staged):
@@ -218,25 +218,25 @@ See `docs/DATATABLE.md` for full datatable documentation (basic usage, inline/bu
 
 All commands run inside Docker via `make` targets. Never run PHP/Node commands directly.
 
-- `make help` — list all available commands (grouped by category)
-- `make test` — run Pest tests (`make test filter=UserControllerTest` to filter)
-- `make migrate` — run database migrations
-- `make fresh` — drop all tables and re-run migrations (`make fresh seed=1` to also seed)
-- `make reset` — stop the containers and delete their data volumes
-- `make rebuild` — rebuild the images and restart the project
-- `make seed module=Users class=UserSeeder` — run a module-scoped seeder
-- `make eslint` — run ESLint with auto-fix
-- `make vitest` runs the front-end test suite
-- `make vue-tsc` — run TypeScript type checking
-- `make phpstan` — run PHPStan static analysis
-- `make pint` — run PHP code style fixer
-- `make cache-clear` — clear all Laravel caches
-- `make logs` — tail all container logs (`make logs svc=hybridly` for one service)
-- `make shell` — open bash in the hybridly container
-- `make ps` — show status of all containers
-- `make artisan cmd="..."` — run any Artisan command
-- `make pnpm cmd="..."` — run any pnpm command
-- `make composer cmd="..."` — run any Composer command
+- `make help`: list all available commands (grouped by category)
+- `make test`: run Pest tests (`make test filter=UserControllerTest` to filter)
+- `make migrate`: run database migrations
+- `make fresh`: drop all tables and re-run migrations (`make fresh seed=1` to also seed)
+- `make reset`: stop the containers and delete their data volumes
+- `make rebuild`: rebuild the images and restart the project
+- `make seed module=Users class=UserSeeder`: run a module-scoped seeder
+- `make eslint`: run ESLint with auto-fix
+- `make vitest`: run the front-end test suite
+- `make vue-tsc`: run TypeScript type checking
+- `make phpstan`: run PHPStan static analysis
+- `make pint`: run PHP code style fixer
+- `make cache-clear`: clear all Laravel caches
+- `make logs`: tail all container logs (`make logs svc=hybridly` for one service)
+- `make shell`: open bash in the hybridly container
+- `make ps`: show status of all containers
+- `make artisan cmd="..."`: run any Artisan command
+- `make pnpm cmd="..."`: run any pnpm command
+- `make composer cmd="..."`: run any Composer command
 
 ## Allowed Usage
 

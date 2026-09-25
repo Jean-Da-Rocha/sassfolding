@@ -16,7 +16,7 @@
 ## Introduction
 
 Setting up a new project has always been a real hassle for me: configuring tools, setting up linting, installing
-packages, and—more importantly—making it collaborative.
+packages, and, more importantly, making it collaborative.
 
 That’s why I decided to create a reusable boilerplate that lets you scaffold a project quickly, with almost zero
 configuration, thanks to the power of Docker and a few Make commands.
@@ -142,10 +142,9 @@ automatically do the following:
 - Build the docker images
 - Install pnpm & composer dependencies
 - Generate keys for both .env and .env.testing files
-- Define the **DNSMASQ_FORWARD_PORT** to use based on your operating system
 - Configure a DNS resolver based on .test Top-Level Domain (TLD)
 - Create the **sassfolding** and **sassfolding_testing** databases
-- Start the containers in detached mode
+- Start the shared infrastructure (Traefik and dnsmasq), then the project containers
 
 You can always run ```make help``` in your console to see which commands are available.
 
@@ -160,12 +159,16 @@ Once the docker containers are running, you can access the following URL:
 - **https://app.sassfolding.test** - The main application
 - **https://mail.sassfolding.test** - The Mailpit dashboard to receive your emails locally
 - **https://rustfs.sassfolding.test** - The RustFS dashboard to manage files, folders and buckets
-- **https://traefik.sassfolding.test** - The Traefik dashboard to view your entrypoints, routes etc.
+- **https://storage.sassfolding.test** - The RustFS S3 API endpoint
+- **https://traefik.localdev.test** - The Traefik dashboard to view your entrypoints, routes etc.
+
+Traefik and dnsmasq are shared by every project on the machine, which is why the dashboard lives
+under `localdev` rather than under the project name.
 
 ## Documentation
 
-- [Datatables](docs/DATATABLE.md) — how to build server-side tables with inline actions, bulk actions, sorting, and more
-- [GitHub Actions](docs/GITHUB_ACTIONS.md) — how the CI pipelines are built, cached, and why they don't use Docker
+- [Datatables](docs/DATATABLE.md): how to build server-side tables with inline actions, bulk actions, sorting, and more
+- [GitHub Actions](docs/GITHUB_ACTIONS.md): how the CI pipelines are built, cached, and why they don't use Docker
 
 ## Contributing
 

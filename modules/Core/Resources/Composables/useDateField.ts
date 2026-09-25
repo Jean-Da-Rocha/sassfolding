@@ -5,7 +5,7 @@ export function useDateField(field: Ref<string>) {
         return undefined;
       }
 
-      // Extract YYYY-MM-DD portion — handles both date-only and full datetime strings
+      // Extract YYYY-MM-DD portion, handles both date-only and full datetime strings
       return parseDate(field.value.substring(0, 10));
     },
     set: (value) => {

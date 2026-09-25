@@ -113,7 +113,7 @@ public function index(): HybridlyView
 ## Relationship Columns
 
 To display data from eager-loaded relationships, use `transformValueUsing` with an underscore-based column name
-(avoid dots — TanStack Table interprets them as nested property access):
+(avoid dots, TanStack Table interprets them as nested property access):
 
 ```php
 protected function defineColumns(): array
@@ -243,7 +243,7 @@ SelectFilter::make('member_role')
 ## Frontend: Use the Datatable Component
 
 The view receives a typed `Table<T>` prop and passes it to the `Datatable` component.
-Actions and filters are read from the backend — no frontend action definitions needed:
+Actions and filters are read from the backend, no frontend action definitions needed:
 
 ```vue
 <script setup lang="ts">
@@ -279,7 +279,7 @@ Access typed row data via `slotProps.row.original` (the DTO object):
 ## Dynamic Badge Rendering
 
 For status/priority columns, use Nuxt UI's `UBadge` with backend-driven colors.
-This avoids hardcoding color maps in the frontend — colors are defined once in PHP enums
+This avoids hardcoding color maps in the frontend, colors are defined once in PHP enums
 and passed as view props.
 
 ### Step 1: Add color methods to the PHP enum
@@ -370,7 +370,7 @@ const props = defineProps<{
 </template>
 ```
 
-Multiple badge columns work the same way — just add more `#<column>-cell` slots
+Multiple badge columns work the same way, just add more `#<column>-cell` slots
 (e.g., `#status-cell` and `#priority-cell` in the tasks listing).
 
 For boolean columns (like `is_active`), badges can be rendered inline without backend maps:
