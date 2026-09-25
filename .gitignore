@@ -31,3 +31,6 @@ docker-compose.yml
 **/caddy
 frankenphp
 frankenphp-worker.php
+
+# Claude context lives outside the repository, in the project memory space.
+.claude/context/
