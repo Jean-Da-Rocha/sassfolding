@@ -6,4 +6,3 @@ allowBuilds:
 
 overrides:
   eslint-plugin-perfectionist: 5.3.1
-  '@internationalized/date': ~3.12.4
