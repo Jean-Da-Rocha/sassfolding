@@ -21,9 +21,9 @@ use const GLOB_ONLYDIR;
  */
 final readonly class ModuleComponentLoader implements ComponentLoader
 {
-    private const array VIEW_SUFFIXES = ['.view.vue', '.view.tsx'];
+    private const array VIEW_SUFFIXES = ['.view.vue'];
 
-    private const array LAYOUT_SUFFIXES = ['.layout.vue', '.layout.tsx'];
+    private const array LAYOUT_SUFFIXES = ['.layout.vue'];
 
     /** @return Component[] */
     public function load(): array

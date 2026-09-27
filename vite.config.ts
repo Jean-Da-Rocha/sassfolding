@@ -6,7 +6,6 @@ import process from 'node:process';
 import ui from '@nuxt/ui/vite';
 import tailwindcss from '@tailwindcss/vite';
 import hybridly from 'hybridly/vite';
-import IconsResolver from 'unplugin-icons/resolver';
 import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ command, mode }): UserConfig => {
@@ -59,15 +58,6 @@ export default defineConfig(({ command, mode }): UserConfig => {
         imports: ['useHead', 'useSeoMeta'],
       },
       {
-        from: '@internationalized/date',
-        imports: ['parseDate'],
-      },
-      {
-        from: '@internationalized/date',
-        imports: ['DateValue'],
-        type: true,
-      },
-      {
         from: 'hybridly',
         imports: ['can', 'getRouterContext', 'route', 'router'],
       },
@@ -112,10 +102,6 @@ export default defineConfig(({ command, mode }): UserConfig => {
     dirs: ['modules/**'],
     dts: '.hybridly/components.d.ts',
     resolvers: [
-      IconsResolver({
-        enabledCollections: ['lucide'],
-        prefix: false,
-      }),
       // Custom resolver for RouterLink from hybridly
       (componentName: string) => {
         if (componentName === 'RouterLink') {
