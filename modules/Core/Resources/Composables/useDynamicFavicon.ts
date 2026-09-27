@@ -1,6 +1,7 @@
 export function useDynamicFavicon(): void {
   const appName = useProperty<string>('app.name');
   let scheduledFrameId: number | null = null;
+  let faviconLink: HTMLLinkElement | null = null;
 
   const updateFavicon = (): void => {
     const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--ui-primary').trim();
@@ -16,14 +17,21 @@ export function useDynamicFavicon(): void {
 
     const faviconHref = `data:image/svg+xml,${encodeURIComponent(svg)}`;
 
-    document.querySelectorAll<HTMLLinkElement>('link[rel="icon"]')
-      .forEach((existingFaviconLink: HTMLLinkElement) => existingFaviconLink.remove());
+    // The head observer watches child nodes, not attributes: recreating the link on every
+    // update would retrigger it forever, so the link is created once and only its href changes.
+    if (!faviconLink?.isConnected) {
+      document.querySelectorAll<HTMLLinkElement>('link[rel="icon"]')
+        .forEach((existingFaviconLink: HTMLLinkElement) => existingFaviconLink.remove());
 
-    const faviconLink = document.createElement('link');
-    faviconLink.rel = 'icon';
-    faviconLink.type = 'image/svg+xml';
-    document.head.appendChild(faviconLink);
-    faviconLink.href = faviconHref;
+      faviconLink = document.createElement('link');
+      faviconLink.rel = 'icon';
+      faviconLink.type = 'image/svg+xml';
+      document.head.appendChild(faviconLink);
+    }
+
+    if (faviconLink.href !== faviconHref) {
+      faviconLink.href = faviconHref;
+    }
   };
 
   const scheduleUpdate = (): void => {
